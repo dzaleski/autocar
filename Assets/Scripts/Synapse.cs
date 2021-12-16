@@ -12,7 +12,7 @@ namespace Assets.Scripts
         {
             InputNeuron = inputNeuron;
             OutputNeuron = outputNeuron;
-            Weight = Random.Range(-1, 1);
+            Weight = Random.Range(-1f, 1f);
         }
     }
 }

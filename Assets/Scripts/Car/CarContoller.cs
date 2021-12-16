@@ -3,35 +3,36 @@
 public class CarContoller : MonoBehaviour
 {
     [SerializeField] private WheelsController wheelsController;
+    [SerializeField] private SensorsController sensorController;
+
+    private NeuralNetwork neuralNetwork;
+
+    private void Awake()
+    {
+        int inputsCount = sensorController.Inputs;
+        int countOfNeruonPerHiddenLayer = NNManager.Instance.countOfHiddenLayers;
+        int countOfHiddenLayers = NNManager.Instance.countOfHiddenLayers;
+
+        neuralNetwork = new NeuralNetwork(inputsCount, countOfHiddenLayers, countOfNeruonPerHiddenLayer);
+    }
 
     private void Update()
     {
-        Accelerate();
-        Steer();
-        Brake();
+        float[] inputs = sensorController.GetDistances();
+
+        neuralNetwork.FeedForward(inputs);
+        (float accelerationMultiplier, float steerMultiplier) = neuralNetwork.GetOutputs();
+
+        Move(accelerationMultiplier, steerMultiplier);
+
+        Debug.Log($"{accelerationMultiplier} | {steerMultiplier}");
     }
 
-    private void Accelerate()
+    private void Move(float accelerationMultiplier, float steerMultiplier)
     {
-        float horizontalValue = Input.GetAxis("Vertical");
-        wheelsController.Accelerate(horizontalValue);
+        wheelsController.Accelerate(accelerationMultiplier);
+        wheelsController.SteerWheels(steerMultiplier);
     }
 
-    private void Steer()
-    {
-        float verticalValue = Input.GetAxis("Horizontal");
-        wheelsController.SteerWheels(verticalValue);
-    }
 
-    private void Brake()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            wheelsController.Brake(1);
-        }
-        else
-        { 
-            wheelsController.Brake(0);
-        }
-    }
 }
