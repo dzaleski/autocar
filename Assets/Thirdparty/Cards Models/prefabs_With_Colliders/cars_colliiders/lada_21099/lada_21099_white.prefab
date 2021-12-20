@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &507823810
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 507823811}
+  m_Layer: 0
+  m_Name: Sensors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &507823811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507823810}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1795638876044671833}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &490268471161571493
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,10 +42,9 @@ GameObject:
   - component: {fileID: 3352000812046124330}
   - component: {fileID: 449306453386644958}
   - component: {fileID: 719202360210327609}
-  - component: {fileID: 3037379390006259604}
   m_Layer: 0
-  m_Name: body
-  m_TagString: Untagged
+  m_Name: Car Body
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,19 +123,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.019197728, y: 0.007777594, z: 0.043234065}
   m_Center: {x: -0.00008336931, y: 0.0063164383, z: 0.0016328883}
---- !u!65 &3037379390006259604
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490268471161571493}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.01595999, y: 0.0045315386, z: 0.021696059}
-  m_Center: {x: 0.0000000059604637, y: 0.0124335755, z: -0.0021726862}
 --- !u!1 &806186310474034295
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,7 +429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5479817004866320778}
   m_Layer: 0
-  m_Name: Wheels_colliders
+  m_Name: Wheels Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -508,6 +524,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1795638876044671833}
   - component: {fileID: 2791612213406762410}
+  - component: {fileID: 1586527497}
+  - component: {fileID: 1586527498}
+  - component: {fileID: 1586527499}
+  - component: {fileID: 1586527502}
   m_Layer: 0
   m_Name: lada_21099_white
   m_TagString: Untagged
@@ -529,6 +549,7 @@ Transform:
   - {fileID: 4844850784122229059}
   - {fileID: 3470918814974369374}
   - {fileID: 5479817004866320778}
+  - {fileID: 507823811}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -542,12 +563,81 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1080
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
+--- !u!114 &1586527497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8067674067071232116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452dbcb68f243b84ea0177b19157d7c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelsController: {fileID: 1586527498}
+  sensorController: {fileID: 1586527499}
+  car: {fileID: 1586527502}
+--- !u!114 &1586527498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8067674067071232116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1711fb913d619ae43846d37322f4682b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontDriverW: {fileID: 5158303586085844588}
+  frontPassengerW: {fileID: 5248703335042698863}
+  backDriverW: {fileID: 5570457905168229108}
+  backPassengerW: {fileID: 224744739101238049}
+  frontDriverT: {fileID: 4964308620377193290}
+  frontPassengerT: {fileID: 6908174667251232429}
+  backDriverT: {fileID: 2853552687754801022}
+  backPassengerT: {fileID: 4300904273829449678}
+  maxSteerAngle: 45
+  maxDriveForce: 500
+--- !u!114 &1586527499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8067674067071232116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f72f7ce0cf6c5e4d8fab2c7a361a666, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorPrefab: {fileID: 2536782654483076098, guid: 2c693fdbb1fce314a94a7b4075dee239,
+    type: 3}
+  sensorsParent: {fileID: 507823811}
+  colorOfSensors: {r: 1, g: 0.27538368, b: 0, a: 1}
+  lengthOfSensors: 8
+  forwardSensorOffset: 0.8
+  sensorsCount: 15
+--- !u!114 &1586527502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8067674067071232116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa514e30fa7443e4c8a7a8412e0af4da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carScore: 0
 --- !u!1 &8631918565501516844
 GameObject:
   m_ObjectHideFlags: 0

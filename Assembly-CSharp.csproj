@@ -53,18 +53,21 @@
     <UnityVersion>2019.4.33f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraFollow.cs" />
-    <Compile Include="Assets\NNManager.cs" />
+    <Compile Include="Assets\Destination.cs" />
+    <Compile Include="Assets\DistanceToDestiantion.cs" />
+    <Compile Include="Assets\GAManager.cs" />
+    <Compile Include="Assets\PopulationHolder.cs" />
+    <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\Car\Car.cs" />
     <Compile Include="Assets\Scripts\Car\CarContoller.cs" />
-    <Compile Include="Assets\Scripts\Car\Layer.cs" />
     <Compile Include="Assets\Scripts\Car\WheelsController.cs" />
-    <Compile Include="Assets\Scripts\GeneticAlgorithm.cs" />
-    <Compile Include="Assets\Scripts\NeuralNetwork.cs" />
-    <Compile Include="Assets\Scripts\Neuron.cs" />
-    <Compile Include="Assets\Scripts\ParkingSpotController.cs" />
-    <Compile Include="Assets\Scripts\Synapse.cs" />
-    <Compile Include="Assets\Sensor.cs" />
-    <Compile Include="Assets\SensorsController.cs" />
+    <Compile Include="Assets\Scripts\NeuralNetwork\NNManager.cs" />
+    <Compile Include="Assets\Scripts\NeuralNetwork\NeuralNetwork.cs" />
+    <Compile Include="Assets\Scripts\NeuralNetwork\Neuron.cs" />
+    <Compile Include="Assets\Scripts\NeuralNetwork\Synapse.cs" />
+    <Compile Include="Assets\Scripts\Sensors\Sensor.cs" />
+    <Compile Include="Assets\Scripts\Sensors\SensorsController.cs" />
+    <Compile Include="Assets\Wall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
