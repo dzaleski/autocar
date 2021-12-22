@@ -9,7 +9,6 @@ public class SensorsController : MonoBehaviour
     [SerializeField] private Transform sensorsParent;
 
     [Header("Sensors Settings")]
-    [Range(2, 15)] public int sensorsCount;
     [SerializeField] private Color colorOfSensors;
     [SerializeField] private int lengthOfSensors;
     [SerializeField] private float forwardSensorOffset;
@@ -18,7 +17,6 @@ public class SensorsController : MonoBehaviour
     [SerializeField] private bool drawRays;
 
     private List<Sensor> sensors;
-    public int Inputs => sensorsCount;
 
     private void Awake()
     {
@@ -27,6 +25,8 @@ public class SensorsController : MonoBehaviour
 
     void Start()
     {
+        int sensorsCount = TrainingManager.Instance.Inputs;
+
         int angleBetweenSensors = 360 / sensorsCount;
 
         for (int i = 0; i < sensorsCount; i++)
@@ -41,11 +41,6 @@ public class SensorsController : MonoBehaviour
 
             sensors.Add(sensor);
         }
-    }
-
-    private void Update()
-    {
-
     }
 
     public float[] GetDistances()

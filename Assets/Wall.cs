@@ -4,9 +4,11 @@ public class Wall : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("Car"))
+        Car car = collision.transform.GetComponent<Car>();
+
+        if (car != null)
         {
-            Destroy(collision.gameObject);
+            car.DisableCar();
         }
     }
 }

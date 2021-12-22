@@ -236,8 +236,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 23783809}
+  - component: {fileID: 23783810}
   m_Layer: 0
-  m_Name: Population Start Place
+  m_Name: Start Pos
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -255,8 +256,20 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &23783810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23783808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 256a9f31750bd4443a94a42108aaff7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &48172711
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,51 +694,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e402d659c5a1d9342ad68df27c848e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &143567964
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 143567966}
-  - component: {fileID: 143567965}
-  m_Layer: 0
-  m_Name: NeuralNetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &143567965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143567964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8782a572b641fc4cbbefca644161101, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countOfHiddenLayers: 3
-  countOfNeruonPerHiddenLayer: 4
---- !u!4 &143567966
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143567964}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.911597, y: 3.6821175, z: 3.6861598}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &287290790
 GameObject:
   m_ObjectHideFlags: 0
@@ -2935,9 +2903,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 803512725}
-  - component: {fileID: 803512726}
   m_Layer: 0
-  m_Name: PopulationParent
+  m_Name: Cars Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2955,20 +2922,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &803512726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803512724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bc9bb4a1c7b36749b142d8255ac0b78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &807043598
 GameObject:
   m_ObjectHideFlags: 0
@@ -3084,7 +3039,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 810407924}
-  - component: {fileID: 810407923}
   m_Layer: 0
   m_Name: GAManager
   m_TagString: Untagged
@@ -3092,23 +3046,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &810407923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 810407922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b5d127e9bcee2943908f2de0cf6ce49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  populationSize: 100
-  populationParent: {fileID: 803512725}
-  startPosition: {fileID: 23783809}
-  individualCar: {fileID: 7370824719994925979, guid: a1da7193b5d2472469cd3e3e3a1400f6,
-    type: 3}
 --- !u!4 &810407924
 Transform:
   m_ObjectHideFlags: 0
@@ -3121,7 +3058,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &867939789
 GameObject:
@@ -3435,7 +3372,6 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3508,20 +3444,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &963194229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83b2a46a8d6bf0c46852773077d80fd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offset: {x: 0.5, y: 14, z: -15}
-  populationHolder: {fileID: 803512726}
 --- !u!1 &982168959
 GameObject:
   m_ObjectHideFlags: 0
@@ -3745,7 +3667,7 @@ GameObject:
   - component: {fileID: 1015065550}
   - component: {fileID: 1015065551}
   m_Layer: 0
-  m_Name: Destination
+  m_Name: End Pos
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -3763,7 +3685,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1015065551
 MonoBehaviour:
@@ -6321,6 +6243,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e402d659c5a1d9342ad68df27c848e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1924522429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1924522431}
+  - component: {fileID: 1924522430}
+  m_Layer: 0
+  m_Name: TrainingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1924522430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924522429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38bae5ebf7d938a4397f6b30d0e46f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  populationSize: 10
+  mutationProb: 0.05
+  numberOfParents: 2
+  Inputs: 10
+  HiddenLayers: 2
+  NeuronsPerHiddenLayer: 5
+  startPos: {fileID: 23783809}
+  endPos: {fileID: 1015065550}
+  carsHolder: {fileID: 803512725}
+  carPrefab: {fileID: 969595330179568302, guid: a1da7193b5d2472469cd3e3e3a1400f6,
+    type: 3}
+--- !u!4 &1924522431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924522429}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 57.54925, y: -251.34242, z: 8.802539}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1944902287
 GameObject:
   m_ObjectHideFlags: 0

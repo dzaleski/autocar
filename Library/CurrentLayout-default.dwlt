@@ -135,10 +135,10 @@ MonoBehaviour:
     y: 30
     width: 2560
     height: 1299
-  m_MinSize: {x: 709, y: 392}
-  m_MaxSize: {x: 18004, y: 14042}
+  m_MinSize: {x: 708, y: 392}
+  m_MaxSize: {x: 18003, y: 14042}
   vertical: 0
-  controlID: 95
+  controlID: 19
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_MinSize: {x: 433, y: 392}
   m_MaxSize: {x: 14003, y: 14042}
   vertical: 0
-  controlID: 96
+  controlID: 20
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_MinSize: {x: 201, y: 342}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 19
+  controlID: 60
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -234,8 +234,8 @@ MonoBehaviour:
     y: 1007
     width: 675
     height: 292
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 392}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 97
+  controlID: 21
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -495,9 +495,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: d4340000
       m_LastClickedID: 0
-      m_ExpandedIDs: 30aef6ffa6b7faff38f2faff70fffaffc2d8ffff66fbffff
+      m_ExpandedIDs: 66fbffff20380000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -583,9 +583,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 27.580627, y: -236.42249, z: 89.22676}
+    m_Target: {x: 52.696377, y: -313.38593, z: 20.169676}
     speed: 2
-    m_Value: {x: 27.580627, y: -236.42249, z: 89.22676}
+    m_Value: {x: 52.696377, y: -313.38593, z: 20.169676}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -631,13 +631,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.62094355, y: 0.06088765, z: -0.048638757, w: 0.78007436}
+    m_Target: {x: 0.47861707, y: 0.5158092, z: -0.4473816, w: 0.552164}
     speed: 2
-    m_Value: {x: 0.6208939, y: 0.06088278, z: -0.048634868, w: 0.78001195}
+    m_Value: {x: 0.4785767, y: 0.51576567, z: -0.44734383, w: 0.5521174}
   m_Size:
-    m_Target: 145.51332
+    m_Target: 187.61737
     speed: 2
-    m_Value: 145.51332
+    m_Value: 187.61737
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -765,20 +765,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 78
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets
   m_LastFoldersGridSize: 78
   m_LastProjectPath: C:\Users\gaa84\OneDrive\Dokumenty\autocar
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 1a3a0000
-    m_LastClickedID: 14874
-    m_ExpandedIDs: 00000000003a0000023a0000043a0000063a00001e3a000000ca9a3b
+    m_SelectedIDs: 963a0000
+    m_LastClickedID: 14998
+    m_ExpandedIDs: 00000000963a0000983a00009a3a00009c3a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -806,7 +806,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 128}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000003a0000023a0000043a0000063a0000
+    m_ExpandedIDs: 00000000963a0000983a00009a3a00009c3a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -850,7 +850,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 12}
+      m_ClientGUIView: {fileID: 13}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -698122
+  m_LastSelectedObjectID: -73326
 --- !u!114 &23
 MonoBehaviour:
   m_ObjectHideFlags: 52

@@ -124,7 +124,6 @@ C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.Timeline.Editor.d
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.VisualStudio.Editor.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.VSCode.Editor.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEditor.dll
-C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEditor.UI.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.AccessibilityModule.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.AIModule.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.AndroidJNIModule.dll
@@ -167,7 +166,6 @@ C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.TextCoreMod
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.TextRenderingModule.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.TilemapModule.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.TLSModule.dll
-C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.UI.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.UIElementsModule.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.UIModule.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\UnityEngine.UmbraModule.dll
@@ -272,3 +270,7 @@ C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\Assembly-CSharp.csproj.CoreC
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\Assembly-CSharp.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\Assembly-CSharp.pdb
+C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\nunit.framework.dll
+C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\unityplastic.dll
+C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.Plastic.Newtonsoft.Json.dll
+C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.Plastic.Antlr3.Runtime.dll

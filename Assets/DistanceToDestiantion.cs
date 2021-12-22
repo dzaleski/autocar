@@ -1,50 +1,36 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class DistanceToDestiantion : MonoBehaviour
 {
-    [Header("Options")]
-    [SerializeField] private bool shouldDrawPath;
-    [SerializeField] private float secondsToUpdatePath;
+    private Vector3 destinationPoint;
+    private Vector3 startPoint;
 
-    private Transform target;
-    private NavMeshPath path;
+    private float distanceFromStartToDesitnation;
+    public float DistanceFromStartToDest => distanceFromStartToDesitnation;
 
-    void Start()
+    void Awake()
     {
-        path = new NavMeshPath();
-        target = FindObjectOfType<Destination>().transform;
-
-        StartCoroutine(UpdatePathCoroutine());
-    }
-    private IEnumerator UpdatePathCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(secondsToUpdatePath);
-            NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path);
-        }
+        destinationPoint = FindObjectOfType<Destination>().transform.position;
+        startPoint = FindObjectOfType<StartPoint>().transform.position;
     }
 
-    private void Update()
+    private void Start()
     {
-        if (shouldDrawPath && path.corners.Length >= 1)
-        {
-            DrawPath();
-        }
-    }
-
-    private void DrawPath()
-    {
-        for (int i = 0; i < path.corners.Length - 1; i++)
-        {
-            Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.red);
-        }
+        distanceFromStartToDesitnation = GetDistanceToDestinationPoint(startPoint);
     }
 
     public float GetDistanceToDestination()
     {
+        return GetDistanceToDestinationPoint(transform.position);
+    }
+
+    private float GetDistanceToDestinationPoint(Vector3 from)
+    {
+        NavMeshPath path = new NavMeshPath();
+
+        NavMesh.CalculatePath(from, destinationPoint, NavMesh.AllAreas, path);
+
         float wholeDistance = 0f;
 
         for (int i = 0; i < path.corners.Length - 1; i++)
@@ -55,3 +41,4 @@ public class DistanceToDestiantion : MonoBehaviour
         return wholeDistance;
     }
 }
+

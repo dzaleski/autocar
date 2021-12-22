@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,24 +10,33 @@ public class NeuralNetwork
     private int _countOfNeruonPerHiddenLayer;
     private int _outputs;
 
+    public float Score;
+
     private const float EULER_NUMBER = 2.7182818f;
 
     private List<Neuron> inputLayer;
     private List<List<Neuron>> hiddenLayers;
     private List<Neuron> outputLayer;
-    private List<List<Neuron>> allLayers;
-    public NeuralNetwork(int inputs, int countOfHiddenLayes, int countOfNeruonPerHiddenLayer, int outputs = 2)
+    public List<List<Neuron>> allLayers;
+
+    public NeuralNetwork()
     {
-        _inputs = inputs;
-        _countOfHiddenLayers = countOfHiddenLayes;
-        _countOfNeruonPerHiddenLayer = countOfNeruonPerHiddenLayer;
-        _outputs = outputs;
+        _inputs = TrainingManager.Instance.Inputs;
+        _countOfHiddenLayers = TrainingManager.Instance.HiddenLayers;
+        _countOfNeruonPerHiddenLayer = TrainingManager.Instance.NeuronsPerHiddenLayer;
+        _outputs = 2;
 
         InitInputLayer();
         InitHiddenLayers();
         InitOutputLayer();
-        InitAllLayers();
+        UnionAllLayers();
     }
+
+    public NeuralNetwork(NeuralNetwork[] parents, float mutationProb) : this()
+    {
+        //TODO create NN from parents
+    }
+
     private void InitInputLayer()
     {
         inputLayer = new List<Neuron>();
@@ -78,7 +86,7 @@ public class NeuralNetwork
         }
     }
 
-    private void InitAllLayers()
+    private void UnionAllLayers()
     {
         allLayers = new List<List<Neuron>>();
 

@@ -13,7 +13,6 @@ public class Neuron
         incomeSynapses = new List<Synapse>();
         outcomeSynapses = new List<Synapse>();
         Bias = UnityEngine.Random.Range(-1f, 1f);
-        Value = UnityEngine.Random.Range(-1f, 1f);
     }
 
     public Neuron(float value) : this()
