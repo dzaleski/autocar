@@ -12,22 +12,26 @@ public class SensorsController : MonoBehaviour
     [SerializeField] private Color colorOfSensors;
     [SerializeField] private int lengthOfSensors;
     [SerializeField] private float forwardSensorOffset;
+    [SerializeField] private int angle;
 
     [Header("Options")]
     [SerializeField] private bool drawRays;
 
     private List<Sensor> sensors;
 
+    private TrainingManager trainingManager;
+
     private void Awake()
     {
         sensors = new List<Sensor>();
+        trainingManager = FindObjectOfType<TrainingManager>();
     }
 
     void Start()
     {
-        int sensorsCount = TrainingManager.Instance.Inputs;
+        int sensorsCount = trainingManager.Inputs;
 
-        int angleBetweenSensors = 360 / sensorsCount;
+        int angleBetweenSensors = angle / (sensorsCount - 1);
 
         for (int i = 0; i < sensorsCount; i++)
         {

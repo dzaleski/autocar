@@ -1,17 +1,20 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TrainingManager : MonoBehaviour
 {
-    [Header("GA Settings")]
-    [SerializeField] private int populationSize;
-    [SerializeField] private float mutationProb;
-    [SerializeField] private int numberOfParents;
+    [Header("GA Controls")]
+    public int initialPopulation = 85;
+    [Range(0.0f, 1.0f)]
+    public float mutationRate = 0.055f;
+    public int parentsCount = 2;
+    public int bestAgentSelection = 8;
+    public int worstAgentSelection = 3;
+    public int numberToCrossover;
 
     [Header("NN Settings")]
-    [SerializeField] public int Inputs;
-    [SerializeField] public int HiddenLayers;
-    [SerializeField] public int NeuronsPerHiddenLayer;
+    public int Inputs;
+    public int HiddenLayers;
+    public int NeuronsPerHiddenLayer;
 
     [Header("Transforms")]
     [SerializeField] private Transform startPos;
@@ -21,86 +24,71 @@ public class TrainingManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private Car carPrefab;
 
-    private GeneticAlgorithm geneticAlgorithm;
-    private Car[] cars;
+    private GeneticManager geneticManager;
     private int disabledCarsCount;
     private int currentGeneration;
 
-    private static TrainingManager instance;
-    public static TrainingManager Instance => instance;
-
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-        geneticAlgorithm = new GeneticAlgorithm(populationSize, mutationProb, numberOfParents);
+        geneticManager = FindObjectOfType<GeneticManager>();
     }
 
     private void Start()
     {
-        CreateInitialPopulation();
+        var neuralNetworks = geneticManager.GetCurrentPopulation();
+        CreateCarsFromNeuralNetworks(neuralNetworks);
     }
-
-    private void CreateInitialPopulation()
+    private void CreateCarsFromNeuralNetworks(NeuralNetwork[] neuralNetworks)
     {
-        currentGeneration = 1;
-        NeuralNetwork[] neuralNetworks = geneticAlgorithm.CreateInitialPopulation();
-        CreatePopulationFromNetworks(neuralNetworks);
-    }
-
-    private void CreatePopulationFromNetworks(NeuralNetwork[] networks)
-    {
-        cars = new Car[networks.Length];
-
-        for (int i = 0; i < networks.Length; i++)
+        for (int i = 0; i < neuralNetworks.Length; i++)
         {
-            cars[i] = CreateIndividualCar(networks[i]);
+            CreateIndividualCar(neuralNetworks[i]);
         }
+
+        currentGeneration = 1;
     }
 
     private Car CreateIndividualCar(NeuralNetwork neuralNetwork)
     {
         Car car = Instantiate(carPrefab, carsHolder);
-        car.transform.position = startPos.position;
-        car.NeuralNetwork = neuralNetwork;
-
+        car.InitialiseCar(neuralNetwork, startPos.position);
         return car;
     }
 
-    public void CarDisabled()
+    private void ReCreateCars()
     {
+        currentGeneration++;
+        DestroyAllCars();
+
+        geneticManager.Reproduce();
+        var neuralNetworks = geneticManager.GetCurrentPopulation();
+        CreateCarsFromNeuralNetworks(neuralNetworks);
+
+        Debug.Log(currentGeneration);
+    }
+
+    public void CarDeath(float fitness, int carIndex)
+    {
+        geneticManager.SetFitness(fitness, carIndex);
+
         disabledCarsCount++;
 
-        if(disabledCarsCount == cars.Length)
+        Destroy(carsHolder.GetChild(carIndex).gameObject);
+
+        if (disabledCarsCount == initialPopulation)
         {
-            Reproduce();
+            ReCreateCars();
             disabledCarsCount = 0;
         }
     }
 
-    private void Reproduce()
-    {
-        currentGeneration++;
-
-        NeuralNetwork[] neuralNetworks = geneticAlgorithm.Reproduce();
-
-        DestroyAllCars();
-
-        CreatePopulationFromNetworks(neuralNetworks);
-
-        Debug.Log("Current Generation " + currentGeneration);
-    }
-
     private void DestroyAllCars()
     {
-        for (int i = 0;i < cars.Length;i++)
+        var cars = carsHolder.GetComponentsInChildren<Car>();
+
+        for (int i = 0; i < cars.Length; i++)
         {
             Destroy(cars[i].gameObject);
         }
-
-        cars = new Car[populationSize];
     }
 }

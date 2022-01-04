@@ -2,9 +2,9 @@
 
 public class Sensor : MonoBehaviour
 {
-     private float sensorLength = 50f;
-     private float distanceToWall = 1;
-     private Color rayColor;
+    private float sensorLength = 50f;
+    private float distanceToWall = 1;
+    private Color rayColor;
     private bool shouldDrawRay;
 
     void Update()

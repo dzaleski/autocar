@@ -256,7 +256,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &23783810
 MonoBehaviour:
@@ -2922,7 +2922,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &807043598
 GameObject:
@@ -3039,13 +3039,26 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 810407924}
+  - component: {fileID: 810407923}
   m_Layer: 0
-  m_Name: GAManager
+  m_Name: GeneticManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &810407923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810407922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e19706d9d762b4d831e1cf5d27b44d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &810407924
 Transform:
   m_ObjectHideFlags: 0
@@ -3437,8 +3450,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.51683307, y: -0.48143446, z: 0.5293618, w: -0.46997935}
-  m_LocalPosition: {x: 2.3078334, y: 84.49964, z: 64.01773}
+  m_LocalRotation: {x: 0.50079113, y: 0.49898595, z: -0.5016185, w: 0.4985982}
+  m_LocalPosition: {x: 4.052778, y: 48.40509, z: 23.898178}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3685,7 +3698,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1015065551
 MonoBehaviour:
@@ -6272,10 +6285,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bae5ebf7d938a4397f6b30d0e46f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationSize: 10
-  mutationProb: 0.05
-  numberOfParents: 2
-  Inputs: 10
+  initialPopulation: 10
+  mutationRate: 0.055
+  parentsCount: 2
+  bestAgentSelection: 8
+  worstAgentSelection: 3
+  numberToCrossover: 0
+  Inputs: 5
   HiddenLayers: 2
   NeuronsPerHiddenLayer: 5
   startPos: {fileID: 23783809}
@@ -6295,7 +6311,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1944902287
 GameObject:

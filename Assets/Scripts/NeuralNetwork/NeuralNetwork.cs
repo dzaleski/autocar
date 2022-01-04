@@ -1,142 +1,153 @@
-﻿using Assets.Scripts;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class NeuralNetwork
 {
-    private int _inputs;
-    private int _countOfHiddenLayers;
-    private int _countOfNeruonPerHiddenLayer;
-    private int _outputs;
+    private int _inputsCount;
+    private int _neuronsPerHiddenLayer;
+    private int _hiddenLayers;
+    private int _outputsCount;
 
-    public float Score;
+    private List<Matrix<float>> _weightsList;
+    private List<Matrix<float>> _neuronsValuesList;
+    private List<Matrix<float>> _biasesList;
 
-    private const float EULER_NUMBER = 2.7182818f;
+    public List<Matrix<float>> WeightsList => _weightsList;
+    public List<Matrix<float>> BiasesList => _biasesList;
 
-    private List<Neuron> inputLayer;
-    private List<List<Neuron>> hiddenLayers;
-    private List<Neuron> outputLayer;
-    public List<List<Neuron>> allLayers;
+    public float fitness;
 
-    public NeuralNetwork()
+    public NeuralNetwork(int inputs, int hiddenLayers, int neuronsPerHiddenLayer)
     {
-        _inputs = TrainingManager.Instance.Inputs;
-        _countOfHiddenLayers = TrainingManager.Instance.HiddenLayers;
-        _countOfNeruonPerHiddenLayer = TrainingManager.Instance.NeuronsPerHiddenLayer;
-        _outputs = 2;
+        _inputsCount = inputs;
+        _neuronsPerHiddenLayer = neuronsPerHiddenLayer;
+        _hiddenLayers = hiddenLayers;
+        _outputsCount = 2;
+        _neuronsValuesList = new List<Matrix<float>>();
+        _weightsList = new List<Matrix<float>>();
+        _biasesList = new List<Matrix<float>>();
 
-        InitInputLayer();
-        InitHiddenLayers();
-        InitOutputLayer();
-        UnionAllLayers();
+        FIllBiasesWithRandomValues();
+        FillRandomNeuronValues();
+        FillWeightsWithRandomValues();
     }
-
-    public NeuralNetwork(NeuralNetwork[] parents, float mutationProb) : this()
+    
+    public NeuralNetwork(int inputs, int hiddenLayers, int neuronsPerHiddenLayer, NeuralNetwork[] parents) : this(inputs, hiddenLayers, neuronsPerHiddenLayer)
     {
-        //TODO create NN from parents
-    }
-
-    private void InitInputLayer()
-    {
-        inputLayer = new List<Neuron>();
-
-        for (int i = 0; i < _inputs; i++)
+        for(int i = 0; i < _weightsList.Count; i++)
         {
-            inputLayer.Add(new Neuron());
-        }
-    }
-    private void InitHiddenLayers()
-    {
-        hiddenLayers = new List<List<Neuron>>();
-
-        List<Neuron> firstHiddenLayer = new List<Neuron>();
-
-        for (int i = 0; i < _countOfNeruonPerHiddenLayer; i++)
-        {
-            Neuron hiddenLayerNeuron = new Neuron(inputLayer);
-            firstHiddenLayer.Add(hiddenLayerNeuron);
-        }
-
-        hiddenLayers.Add(firstHiddenLayer);
-
-        for (int i = 1; i < _countOfHiddenLayers; i++)
-        {
-            List<Neuron> previousHiddenLayer = hiddenLayers[i - 1];
-            List<Neuron> hiddenLayer = new List<Neuron>();
-
-            for (int j = 0; j < _countOfNeruonPerHiddenLayer; j++)
+            for (int j = 0; j < _weightsList[i].RowCount; j++)
             {
-                Neuron newNeuron = new Neuron(previousHiddenLayer);
-                hiddenLayer.Add(newNeuron);
-            }
-
-            hiddenLayers.Add(hiddenLayer);
-        }
-    }
-    private void InitOutputLayer()
-    {
-        outputLayer = new List<Neuron>();
-        List<Neuron> lastHiddenLayer = hiddenLayers.Last();
-
-        for (int i = 0; i < _outputs; i++)
-        {
-            Neuron newNeuron = new Neuron(lastHiddenLayer);
-            outputLayer.Add(newNeuron);
-        }
-    }
-
-    private void UnionAllLayers()
-    {
-        allLayers = new List<List<Neuron>>();
-
-        allLayers.Add(inputLayer);
-        allLayers = allLayers.Union(hiddenLayers).ToList();
-        allLayers.Add(outputLayer);
-    }
-
-    public void FeedForward(float[] inputs)
-    {
-        for (int i = 0; i < inputLayer.Count; i++)
-        {
-            Neuron neuronFromInputLayer = inputLayer[i];
-            neuronFromInputLayer.Value = inputs[i];
-        }
-
-        for (int i = 1; i < allLayers.Count; i++)
-        {
-            List<Neuron> nextLayer = allLayers[i];
-
-            foreach (Neuron neuron in nextLayer)
-            {
-                float sumOfProductValuesAndWeights = 0;
-
-                foreach (Synapse synapse in neuron.incomeSynapses)
+                for (int k = 0; k < _weightsList[i].ColumnCount; k++)
                 {
-                    Neuron neuronFromPreviousLayer = synapse.InputNeuron;
-                    sumOfProductValuesAndWeights += neuronFromPreviousLayer.Value * synapse.Weight;
+                    var weightsFromRandomParent = parents[UnityEngine.Random.Range(0, parents.Length - 1)].WeightsList;
+                    _weightsList[i][j, k] = weightsFromRandomParent[i][j, k];
                 }
+            }
+        }
 
-                float valueFromActivationFunction = Tanh(sumOfProductValuesAndWeights);
-
-                neuron.Value = valueFromActivationFunction;
+        for (int i = 0; i < _biasesList.Count; i++)
+        {
+            for (int j = 0; j < _biasesList[i].ColumnCount; j++)
+            {
+                var biasesFromRandomParent = parents[UnityEngine.Random.Range(0, parents.Length - 1)].BiasesList;
+                _biasesList[i][0, j] = biasesFromRandomParent[i][0, j];
             }
         }
     }
 
-    public (float accelerationMultiplier, float steerMultiplier) GetOutputs()
+    private void FIllBiasesWithRandomValues()
     {
-        return (outputLayer[0].Value, outputLayer[1].Value);
+        int totalLayersCount = _hiddenLayers + 1; //Without input layer
+
+        for (int i = 0; i < totalLayersCount; i++)
+        {
+            if (i == totalLayersCount - 1)
+            {
+                var outputBiases = GetMatrixWithRandomValues(1, _outputsCount);
+                _biasesList.Add(outputBiases);
+            }
+            else
+            {
+                var hiddenBiases = GetMatrixWithRandomValues(1, _neuronsPerHiddenLayer);
+                _biasesList.Add(hiddenBiases);
+            }
+        }
     }
 
-    public float Tanh(float x)
+    private void FillWeightsWithRandomValues()
     {
-        float ePowX = Mathf.Pow(EULER_NUMBER, x);
-        float ePowMinusX = Mathf.Pow(EULER_NUMBER, -x);
+        for (int i = 0; i <= _hiddenLayers; i++)
+        {
+            if (i == 0)
+            {
+                var inputToHiddenWeights = GetMatrixWithRandomValues(_inputsCount, _neuronsPerHiddenLayer);
+                _weightsList.Add(inputToHiddenWeights);
+            }
+            else if (i == _hiddenLayers)
+            {
+                var hiddenToOutputWeights = GetMatrixWithRandomValues(_neuronsPerHiddenLayer, _outputsCount);
+                _weightsList.Add(hiddenToOutputWeights);
+            }
+            else
+            {
+                var hiddenToHiddenWeights = GetMatrixWithRandomValues(_neuronsPerHiddenLayer, _neuronsPerHiddenLayer);
+                _weightsList.Add(hiddenToHiddenWeights);
+            }
+        }
+    }
 
-        float numerator = ePowX - ePowMinusX;
-        float denominator = ePowX + ePowMinusX;
+    private void FillRandomNeuronValues()
+    {
+        int totalCountOfLayers = _hiddenLayers + 2; //Hidden layers plus input and output layer
 
-        return (numerator / denominator);
+        for (int i = 0; i < totalCountOfLayers; i++)
+        {
+            if (i == 0)
+            {
+                var inputs = GetMatrixWithRandomValues(1, _inputsCount);
+                _neuronsValuesList.Add(inputs);
+            }
+            else if (i == totalCountOfLayers - 1)
+            {
+                var outputs = GetMatrixWithRandomValues(1, _outputsCount);
+                _neuronsValuesList.Add(outputs);
+            }
+            else
+            {
+                var hiddenNeurons = GetMatrixWithRandomValues(1, _neuronsPerHiddenLayer);
+                _neuronsValuesList.Add(hiddenNeurons);
+            }
+        }
+    }
+
+    private Matrix<float> GetMatrixWithRandomValues(int rows, int columns)
+    {
+        return Matrix<float>.Build.Dense(rows, columns, (i, j) => UnityEngine.Random.Range(-1f, 1f));
+    }
+
+    public (float, float) Process(float[] inputs)
+    {
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            _neuronsValuesList[0][0, i] = inputs[i];
+        }
+
+        for (int i = 1; i < _neuronsValuesList.Count; i++)
+        {
+            _neuronsValuesList[i] = _neuronsValuesList[i - 1].Multiply(_weightsList[i - 1]) + _biasesList[i - 1];
+            _neuronsValuesList[i] = _neuronsValuesList[i].PointwiseTanh();
+        }
+
+        var outputLayer = _neuronsValuesList.Last();
+
+        return (Sigmoid(outputLayer[0, 0]), (float)Math.Tanh(outputLayer[0, 1]));
+    }
+
+    private float Sigmoid(double value)
+    {
+        return 1.0f / (1.0f + (float)Math.Exp(-value));
     }
 }

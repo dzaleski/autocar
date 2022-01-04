@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{C9EDCD03-F194-CCF0-60D8-95F9A91F1148}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -53,14 +54,13 @@
     <UnityVersion>2019.4.33f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Destination.cs" />
     <Compile Include="Assets\DistanceToDestiantion.cs" />
     <Compile Include="Assets\Scripts\Car\Car.cs" />
     <Compile Include="Assets\Scripts\Car\WheelsController.cs" />
-    <Compile Include="Assets\Scripts\GeneticAlgorithm.cs" />
+    <Compile Include="Assets\Scripts\Extensions\FloatRemapExtension.cs" />
+    <Compile Include="Assets\Scripts\GeneticManager.cs" />
+    <Compile Include="Assets\Scripts\NNet.cs" />
     <Compile Include="Assets\Scripts\NeuralNetwork\NeuralNetwork.cs" />
     <Compile Include="Assets\Scripts\NeuralNetwork\Neuron.cs" />
     <Compile Include="Assets\Scripts\NeuralNetwork\Synapse.cs" />
@@ -253,6 +253,9 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>Assets\Plugins\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>

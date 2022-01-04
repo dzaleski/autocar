@@ -29,4 +29,9 @@ public class Neuron
             incomeSynapses.Add(new Synapse(inputNeuron, this));
         }
     }
+
+    public List<Synapse> GetOutcomeSynapses()
+    {
+        return outcomeSynapses;
+    }
 }

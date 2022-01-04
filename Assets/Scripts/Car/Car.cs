@@ -1,31 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    [Header("NN Settings")]
-    [SerializeField] private int hiddenLayers;
-    [SerializeField] private int neuronsPerHiddenLayer;
-
     [Header("Idle Kill Settings")]
     [SerializeField] private float secondsToCheck;
     [SerializeField] private float distanceToTravel;
 
-    [Header("Scoring")]
-    [SerializeField] private float pointsForDistance;
+    [NonSerialized] public NeuralNetwork neuralNetwork;
 
+    private TrainingManager _trainingManager;
     private WheelsController _wheelsController;
-    private SensorsController _sensorController;
+    private SensorsController _sensorsController;
     private DistanceToDestiantion _distanceToDestiantion;
-
-    private NeuralNetwork neuralNetwork;
-    public NeuralNetwork NeuralNetwork
-    { 
-        get => neuralNetwork; 
-        set => neuralNetwork = value;
-    }
-
-    private float carScore;
-    public float CarScore => carScore;
 
     private float currentTime;
     private float previousDistance;
@@ -33,20 +20,26 @@ public class Car : MonoBehaviour
     private void Awake()
     {
         _wheelsController = GetComponent<WheelsController>();
-        _sensorController = GetComponent<SensorsController>();
+        _sensorsController = GetComponent<SensorsController>();
         _distanceToDestiantion = GetComponent<DistanceToDestiantion>();
+        _trainingManager = FindObjectOfType<TrainingManager>();
     }
 
     private void Update()
     {
-        float[] inputs = _sensorController.GetDistances();
+        float[] inputs = _sensorsController.GetDistances();
 
-        neuralNetwork.FeedForward(inputs);
-        (float accelerationMultiplier, float steerMultiplier) = neuralNetwork.GetOutputs();
+        (float accelerationMultiplier, float steerMultiplier) = neuralNetwork.Process(inputs);
 
         Move(accelerationMultiplier, steerMultiplier);
 
         KillIfIdle();
+    }
+
+    public void InitialiseCar(NeuralNetwork neuralNetwork, Vector3 startPosition)
+    {
+        transform.position = startPosition;
+        this.neuralNetwork = neuralNetwork;
     }
 
     private void Move(float accelerationMultiplier, float steerMultiplier)
@@ -55,11 +48,19 @@ public class Car : MonoBehaviour
         _wheelsController.SteerWheels(steerMultiplier);
     }
 
+    public void DisableCar()
+    {
+        float wholeDistnace = _distanceToDestiantion.GetDistanceFromStartToDestination();
+        float traveledDistance = _distanceToDestiantion.GetTraveledDistance();
+        float fitness = Mathf.Clamp01(traveledDistance / wholeDistnace);
+
+        _trainingManager.CarDeath(fitness, transform.GetSiblingIndex());
+    }
     private void KillIfIdle()
     {
         if (currentTime == 0)
         {
-            previousDistance = _distanceToDestiantion.GetDistanceToDestination();
+            previousDistance = _distanceToDestiantion.GetTraveledDistance();
         }
 
         currentTime += Time.deltaTime;
@@ -68,24 +69,12 @@ public class Car : MonoBehaviour
 
         currentTime = 0;
 
-        float currentDistance = _distanceToDestiantion.GetDistanceToDestination();
+        float currentDistance = _distanceToDestiantion.GetTraveledDistance();
         float differenceBetweenDistances = Mathf.Abs(currentDistance - previousDistance);
 
         if (differenceBetweenDistances < distanceToTravel)
         {
             DisableCar();
         }
-    }
-
-    public void DisableCar()
-    {
-        ChangePoints(-_distanceToDestiantion.GetDistanceToDestination());
-        TrainingManager.Instance.CarDisabled();
-        gameObject.SetActive(false);
-    }
-
-    public void ChangePoints(float amount)
-    {
-        neuralNetwork.Score += amount;
     }
 }

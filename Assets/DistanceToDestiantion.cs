@@ -6,30 +6,26 @@ public class DistanceToDestiantion : MonoBehaviour
     private Vector3 destinationPoint;
     private Vector3 startPoint;
 
-    private float distanceFromStartToDesitnation;
-    public float DistanceFromStartToDest => distanceFromStartToDesitnation;
-
     void Awake()
     {
         destinationPoint = FindObjectOfType<Destination>().transform.position;
         startPoint = FindObjectOfType<StartPoint>().transform.position;
     }
-
-    private void Start()
+    public float GetTraveledDistance()
     {
-        distanceFromStartToDesitnation = GetDistanceToDestinationPoint(startPoint);
+        return GetDistanceFromTo(startPoint, transform.position);
     }
 
-    public float GetDistanceToDestination()
+    public float GetDistanceFromStartToDestination()
     {
-        return GetDistanceToDestinationPoint(transform.position);
+        return GetDistanceFromTo(startPoint, destinationPoint);
     }
 
-    private float GetDistanceToDestinationPoint(Vector3 from)
+    private float GetDistanceFromTo(Vector3 from, Vector3 to)
     {
         NavMeshPath path = new NavMeshPath();
 
-        NavMesh.CalculatePath(from, destinationPoint, NavMesh.AllAreas, path);
+        NavMesh.CalculatePath(from, to, NavMesh.AllAreas, path);
 
         float wholeDistance = 0f;
 
@@ -40,5 +36,6 @@ public class DistanceToDestiantion : MonoBehaviour
 
         return wholeDistance;
     }
+
 }
 
