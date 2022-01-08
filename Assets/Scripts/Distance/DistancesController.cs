@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class DistanceToDestiantion : MonoBehaviour
+public class DistancesController: MonoBehaviour
 {
-    private Vector3 destinationPoint;
-    private Vector3 startPoint;
+    public Vector3 Destination { get; private set; }
+    public Vector3 Start { get; private set; }
 
     void Awake()
     {
-        destinationPoint = FindObjectOfType<Destination>().transform.position;
-        startPoint = FindObjectOfType<StartPoint>().transform.position;
+        Destination = FindObjectOfType<Destination>().transform.position;
+        Start = FindObjectOfType<StartPoint>().transform.position;
     }
     public float GetTraveledDistance()
     {
-        return GetDistanceFromTo(startPoint, transform.position);
+        return GetDistanceFromTo(Start, transform.position);
     }
 
     public float GetDistanceFromStartToDestination()
     {
-        return GetDistanceFromTo(startPoint, destinationPoint);
+        return GetDistanceFromTo(Start, Destination);
     }
 
     private float GetDistanceFromTo(Vector3 from, Vector3 to)

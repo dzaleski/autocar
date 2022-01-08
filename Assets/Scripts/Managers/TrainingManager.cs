@@ -24,9 +24,12 @@ public class TrainingManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private Car carPrefab;
 
+    [Header("Simulation Settings")]
+    [SerializeField] private int timeScale = 1;
+
     private GeneticManager geneticManager;
     private int disabledCarsCount;
-    private int currentGeneration;
+    private int currentGeneration = 1;
 
     private void Awake()
     {
@@ -35,17 +38,22 @@ public class TrainingManager : MonoBehaviour
 
     private void Start()
     {
+        geneticManager.CreateInitPopulation();
         var neuralNetworks = geneticManager.GetCurrentPopulation();
         CreateCarsFromNeuralNetworks(neuralNetworks);
     }
+
+    private void Update()
+    {
+        Time.timeScale = timeScale;
+    }
+
     private void CreateCarsFromNeuralNetworks(NeuralNetwork[] neuralNetworks)
     {
         for (int i = 0; i < neuralNetworks.Length; i++)
         {
             CreateIndividualCar(neuralNetworks[i]);
         }
-
-        currentGeneration = 1;
     }
 
     private Car CreateIndividualCar(NeuralNetwork neuralNetwork)
@@ -57,12 +65,13 @@ public class TrainingManager : MonoBehaviour
 
     private void ReCreateCars()
     {
-        currentGeneration++;
         DestroyAllCars();
 
         geneticManager.Reproduce();
         var neuralNetworks = geneticManager.GetCurrentPopulation();
         CreateCarsFromNeuralNetworks(neuralNetworks);
+
+        currentGeneration++;
 
         Debug.Log(currentGeneration);
     }

@@ -9,13 +9,13 @@ public class SensorsController : MonoBehaviour
     [SerializeField] private Transform sensorsParent;
 
     [Header("Sensors Settings")]
-    [SerializeField] private Color colorOfSensors;
-    [SerializeField] private int lengthOfSensors;
-    [SerializeField] private float forwardSensorOffset;
-    [SerializeField] private int angle;
+    [SerializeField] private Color colorOfSensors = Color.red;
+    [SerializeField] private int lengthOfSensors = 8;
+    [SerializeField] private float forwardSensorOffset = 0.8f;
+    [SerializeField] private int angle = 180;
 
     [Header("Options")]
-    [SerializeField] private bool drawRays;
+    [SerializeField] private bool drawRays = false;
 
     private List<Sensor> sensors;
 
@@ -47,8 +47,8 @@ public class SensorsController : MonoBehaviour
         }
     }
 
-    public float[] GetDistances()
+    public List<double> GetDistances()
     {
-        return sensors.Select(x => x.GetDistanceToWall()).ToArray();
+        return sensors.Select(x => x.GetDistanceToWall()).ToList();
     }
 }

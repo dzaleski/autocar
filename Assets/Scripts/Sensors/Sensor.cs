@@ -3,21 +3,23 @@
 public class Sensor : MonoBehaviour
 {
     private float sensorLength = 50f;
-    private float distanceToWall = 1;
     private Color rayColor;
     private bool shouldDrawRay;
 
     void Update()
     {
-        CheckDistance();
-
         if(shouldDrawRay)
         {
             DrawRay();
         }
     }
+    private void DrawRay()
+    {
+        var raycastDirection = transform.TransformDirection(Vector3.forward);
+        Debug.DrawRay(transform.position, raycastDirection * sensorLength, rayColor);
+    }
 
-    private void CheckDistance()
+    public double GetDistanceToWall()
     {
         RaycastHit hit;
         var raycastDirection = transform.TransformDirection(Vector3.forward);
@@ -25,23 +27,10 @@ public class Sensor : MonoBehaviour
 
         if (hit.collider != null && hit.collider.CompareTag("Wall"))
         {
-            distanceToWall = hit.distance / sensorLength;
+            return Mathf.Clamp01(hit.distance / sensorLength);
         }
-        else
-        {
-            distanceToWall = 1;
-        }
-    }
 
-    private void DrawRay()
-    {
-        var raycastDirection = transform.TransformDirection(Vector3.forward);
-        Debug.DrawRay(transform.position, raycastDirection * sensorLength, rayColor);
-    }
-
-    public float GetDistanceToWall()
-    {
-        return distanceToWall;
+        return 1;
     }
 
     public void RototateByDegrees(int degrees) 

@@ -1,18 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DistancesController))]
 public class Car : MonoBehaviour
 {
     [Header("Idle Kill Settings")]
     [SerializeField] private float secondsToCheck;
     [SerializeField] private float distanceToTravel;
 
-    [NonSerialized] public NeuralNetwork neuralNetwork;
+    [Header("Move Controls")]
+    [SerializeField] private float moveForwardMultiplier = 20;
+    [SerializeField] private float rotationMultiplier = 20;
+
+
+    [Header("Raycasts Controls")]
+    [SerializeField] private LayerMask raycastsMask;
+    [SerializeField] private float raycastLength = 1f;
+    [SerializeField] private int angleCoveredByRaycasts = 180;
+
+    [NonSerialized] public NeuralNetwork neuralNetwork = null;
 
     private TrainingManager _trainingManager;
     private WheelsController _wheelsController;
-    private SensorsController _sensorsController;
-    private DistanceToDestiantion _distanceToDestiantion;
+    private DistancesController _distancesController;
+
+    private Rigidbody _rb;
 
     private float currentTime;
     private float previousDistance;
@@ -20,47 +33,84 @@ public class Car : MonoBehaviour
     private void Awake()
     {
         _wheelsController = GetComponent<WheelsController>();
-        _sensorsController = GetComponent<SensorsController>();
-        _distanceToDestiantion = GetComponent<DistanceToDestiantion>();
+        _distancesController = GetComponent<DistancesController>();
         _trainingManager = FindObjectOfType<TrainingManager>();
+        _rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        float[] inputs = _sensorsController.GetDistances();
+        var inputs = GetInputs();
 
         (float accelerationMultiplier, float steerMultiplier) = neuralNetwork.Process(inputs);
 
         Move(accelerationMultiplier, steerMultiplier);
 
-        KillIfIdle();
+        //KillIfIdle();
+    }
+
+    private List<float> GetInputs()
+    {
+        var inputs = new List<float>();
+        int angleBetweenRaycasts = angleCoveredByRaycasts / _trainingManager.Inputs;
+
+        int raycastsCount = _trainingManager.Inputs - 1;
+
+        inputs.Add(GetDistanceFromRaycast(0f));
+
+        for (int i = 1; i <= raycastsCount / 2; i++)
+        {
+            inputs.Add(GetDistanceFromRaycast(i * angleBetweenRaycasts));
+            inputs.Add(GetDistanceFromRaycast(i * -angleBetweenRaycasts));
+        }
+
+        return inputs;
+    }
+
+    private float GetDistanceFromRaycast(float rotationDegrees)
+    {
+        var leftRotated = Quaternion.AngleAxis(rotationDegrees, transform.up) * transform.forward;
+
+        RaycastHit hit;
+        Physics.Raycast(transform.position, leftRotated, out hit, raycastLength, raycastsMask);
+        Debug.DrawRay(transform.position, leftRotated * raycastLength, Color.red);
+
+        if (hit.collider == null)
+        {
+            return 1;
+        }
+
+        Debug.Log($"Hitted {hit.collider.tag}");
+
+        return hit.distance / raycastLength;
     }
 
     public void InitialiseCar(NeuralNetwork neuralNetwork, Vector3 startPosition)
     {
-        transform.position = startPosition;
+        var newPos = new Vector3(startPosition.x, transform.position.y, startPosition.z);
+        transform.position = newPos;
         this.neuralNetwork = neuralNetwork;
     }
 
     private void Move(float accelerationMultiplier, float steerMultiplier)
     {
-        _wheelsController.Accelerate(accelerationMultiplier);
-        _wheelsController.SteerWheels(steerMultiplier);
+        _rb.MovePosition(_rb.position + transform.forward * accelerationMultiplier * moveForwardMultiplier * Time.deltaTime);
+        _rb.MoveRotation(Quaternion.Euler(_rb.rotation.eulerAngles + Vector3.up * steerMultiplier * rotationMultiplier * Time.deltaTime));
+
+        //_wheelsController.Accelerate(accelerationMultiplier);
+        //_wheelsController.SteerWheels(steerMultiplier);
     }
 
     public void DisableCar()
     {
-        float wholeDistnace = _distanceToDestiantion.GetDistanceFromStartToDestination();
-        float traveledDistance = _distanceToDestiantion.GetTraveledDistance();
-        float fitness = Mathf.Clamp01(traveledDistance / wholeDistnace);
-
-        _trainingManager.CarDeath(fitness, transform.GetSiblingIndex());
+        float traveledDistance = _distancesController.GetTraveledDistance();
+        _trainingManager.CarDeath(traveledDistance, transform.GetSiblingIndex());
     }
     private void KillIfIdle()
     {
         if (currentTime == 0)
         {
-            previousDistance = _distanceToDestiantion.GetTraveledDistance();
+            previousDistance = _distancesController.GetTraveledDistance();
         }
 
         currentTime += Time.deltaTime;
@@ -69,7 +119,7 @@ public class Car : MonoBehaviour
 
         currentTime = 0;
 
-        float currentDistance = _distanceToDestiantion.GetTraveledDistance();
+        float currentDistance = _distancesController.GetTraveledDistance();
         float differenceBetweenDistances = Mathf.Abs(currentDistance - previousDistance);
 
         if (differenceBetweenDistances < distanceToTravel)
