@@ -1,103 +1,101 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class TrainingManager : MonoBehaviour
 {
     [Header("GA Controls")]
-    public int initialPopulation = 85;
-    [Range(0.0f, 1.0f)]
-    public float mutationRate = 0.055f;
+    public int populationSize = 85;
+    public float mutationProb = 0.055f;
     public int parentsCount = 2;
-    public int bestAgentSelection = 8;
-    public int worstAgentSelection = 3;
-    public int numberToCrossover;
 
-    [Header("NN Settings")]
-    public int Inputs;
-    public int HiddenLayers;
-    public int NeuronsPerHiddenLayer;
+    [Header("NN Controls")]
+    public int inputs = 5;
+    public int hiddenLayers = 1;
+    public int neuronsPerHiddenLayer = 6;
 
-    [Header("Transforms")]
+    [Header("Positions")]
     [SerializeField] private Transform startPos;
     [SerializeField] private Transform endPos;
-    [SerializeField] private Transform carsHolder;
+
+    [Header("Holders")]
+    [SerializeField] private Transform brainsHolder;
 
     [Header("Prefabs")]
-    [SerializeField] private Car carPrefab;
+    [SerializeField] private Brain brainPrefab;
 
     [Header("Simulation Settings")]
     [SerializeField] private int timeScale = 1;
 
-    private GeneticManager geneticManager;
     private int disabledCarsCount;
     private int currentGeneration = 1;
 
+    private Brain[] brains;
+
     private void Awake()
     {
-        geneticManager = FindObjectOfType<GeneticManager>();
+        GeneticManager.Initialise(populationSize, mutationProb, parentsCount);
+        NeuralNetwork.Initialise(inputs, hiddenLayers, neuronsPerHiddenLayer, 2);
+        CreateFirstPopulation();
     }
 
-    private void Start()
+    private void CreateFirstPopulation()
     {
-        geneticManager.CreateInitPopulation();
-        var neuralNetworks = geneticManager.GetCurrentPopulation();
-        CreateCarsFromNeuralNetworks(neuralNetworks);
+        var firstPopulation = GeneticManager.GetFirstPopulation();
+        CreateBrainsFrom(firstPopulation);
+    }
+
+    private void CreateBrainsFrom(NeuralNetwork[] neuralNetworks)
+    {
+        brains = new Brain[populationSize];
+
+        for (int i = 0; i < neuralNetworks.Length; i++)
+        {
+            var brain = CreateBrain(neuralNetworks[i]);
+            brains[i] = brain;
+        }
     }
 
     private void Update()
     {
         Time.timeScale = timeScale;
-    }
 
-    private void CreateCarsFromNeuralNetworks(NeuralNetwork[] neuralNetworks)
-    {
-        for (int i = 0; i < neuralNetworks.Length; i++)
+        if (IsWholePopulationDied())
         {
-            CreateIndividualCar(neuralNetworks[i]);
+            currentGeneration++;
+            Debug.Log($"Current Generation: {currentGeneration}");
+            ReCreateCars();
         }
     }
 
-    private Car CreateIndividualCar(NeuralNetwork neuralNetwork)
+    private Brain CreateBrain(NeuralNetwork neuralNetwork)
     {
-        Car car = Instantiate(carPrefab, carsHolder);
-        car.InitialiseCar(neuralNetwork, startPos.position);
-        return car;
+        Brain brain = Instantiate(brainPrefab, brainsHolder);
+        brain.Initialise(neuralNetwork, startPos.position);
+        return brain;
     }
 
     private void ReCreateCars()
     {
-        DestroyAllCars();
+        var sortedNNs = brains.OrderByDescending(x => x.Score).Select(x => x.neuralNetwork).ToArray();
+        var reproducedNetworks = GeneticManager.Reproduce(sortedNNs);
 
-        geneticManager.Reproduce();
-        var neuralNetworks = geneticManager.GetCurrentPopulation();
-        CreateCarsFromNeuralNetworks(neuralNetworks);
+        DestroyAllBrains();
 
-        currentGeneration++;
-
-        Debug.Log(currentGeneration);
+        GeneticManager.Mutate(reproducedNetworks);
+        CreateBrainsFrom(reproducedNetworks);
     }
 
-    public void CarDeath(float fitness, int carIndex)
+    private bool IsWholePopulationDied()
     {
-        geneticManager.SetFitness(fitness, carIndex);
-
-        disabledCarsCount++;
-
-        Destroy(carsHolder.GetChild(carIndex).gameObject);
-
-        if (disabledCarsCount == initialPopulation)
-        {
-            ReCreateCars();
-            disabledCarsCount = 0;
-        }
+        int diedBrainsCount = brains.Count(x => x.Disabled);
+        return diedBrainsCount == populationSize;
     }
 
-    private void DestroyAllCars()
+    private void DestroyAllBrains()
     {
-        var cars = carsHolder.GetComponentsInChildren<Car>();
-
-        for (int i = 0; i < cars.Length; i++)
+        for (int i = 0; i < brains.Length; i++)
         {
-            Destroy(cars[i].gameObject);
+            Destroy(brains[i].gameObject);
         }
     }
 }

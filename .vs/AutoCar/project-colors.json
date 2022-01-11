@@ -10,7 +10,12 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Różne pliki",
       "ColorIndex": -1
+    },
+    "4abe4fbc-4912-7c3f-4ca0-163c23e7f2ec": {
+      "ProjectGuid": "4abe4fbc-4912-7c3f-4ca0-163c23e7f2ec",
+      "DisplayName": "UnityEngine.UI",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }

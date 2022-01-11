@@ -3,117 +3,112 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GeneticManager : MonoBehaviour
+public static class GeneticManager
 {
-    private int initialPopulation;
-    private float mutationProb;
-    private int parentsCount;
-    private int bestAgentSelection;
-    private int worstAgentSelection;
-    private int numberToCrossover;
+    public static int PopulationSize { get; private set; }
+    private static float _mutationProb;
+    private static int _parentsCount;
 
-    private NeuralNetwork[] population;
-
-    private int inputs;
-    private int neuronsPerHiddenLayer;
-    private int hiddenLayers;
-
-    private void Awake()
+    public static void Initialise(int populationSize, float mutationProb, int parentsCount)
     {
-        var trainingManager = FindObjectOfType<TrainingManager>();
-        inputs = trainingManager.Inputs;
-        hiddenLayers = trainingManager.HiddenLayers;
-        neuronsPerHiddenLayer = trainingManager.NeuronsPerHiddenLayer;
-        initialPopulation = trainingManager.initialPopulation;
-        mutationProb = trainingManager.mutationRate;
-        parentsCount = trainingManager.parentsCount;
-        bestAgentSelection = trainingManager.bestAgentSelection;
-        worstAgentSelection = trainingManager.worstAgentSelection;
-        numberToCrossover = trainingManager.numberToCrossover;
+        PopulationSize = populationSize;
+        _mutationProb = mutationProb;
+        _parentsCount = parentsCount;
     }
-    public void CreateInitPopulation()
-    {
-        population = new NeuralNetwork[initialPopulation];
 
-        for (int i = 0; i < population.Length; i++)
+    public static NeuralNetwork[] GetFirstPopulation()
+    {
+        var firstPopulation = new NeuralNetwork[PopulationSize];
+
+        for (int i = 0; i < PopulationSize; i++)
         {
-            population[i] = new NeuralNetwork(inputs, hiddenLayers, neuronsPerHiddenLayer);
-        }
-    }
-    public NeuralNetwork[] GetCurrentPopulation()
-    {
-        return population;
-    }
-
-    public void Reproduce()
-    {
-        var newPopulation = new NeuralNetwork[population.Length];
-
-        var parents = GetParentsAsBestNeuralNetworks();
-
-        Debug.Log($"Population: {string.Join(", ", population.Select(x => x.fitness))}");
-        Debug.Log($"Parents: {string.Join(", ", parents.Select(x => x.fitness))}");
-
-        for (int i = 0; i < population.Length; i++)
-        {
-            newPopulation[i] = new NeuralNetwork(inputs, hiddenLayers, neuronsPerHiddenLayer, parents);
+            firstPopulation[i] = new NeuralNetwork();
         }
 
-        population = newPopulation; 
+        return firstPopulation;
     }
 
-    private List<NeuralNetwork> GetParentsAsBestNeuralNetworks()
+    public static NeuralNetwork[] Reproduce(NeuralNetwork[] sortedNNs)
     {
-        return population.OrderByDescending(x => x.fitness).Take(parentsCount).ToList();
-    }
+        var reproducedPopulation = new NeuralNetwork[PopulationSize];
 
-    private List<NeuralNetwork> GetParentsFromGenePool()
-    {
-        var parents = new List<NeuralNetwork>();
-        var parentsIndexes = new List<int>();
+        var parents = sortedNNs.Take(_parentsCount).ToArray();
 
-        var genePool = CreateGenePool();
-
-        for (int i = 0; i < parentsCount; i++)
+        for (int i = 0; i < reproducedPopulation.Length; i++)
         {
-            while (true)
+            if(i < _parentsCount)
             {
-                int parentIndex = genePool[Random.Range(0, genePool.Count - 1)];
-
-                if (!parentsIndexes.Contains(parentIndex))
-                {
-                    parentsIndexes.Add(parentIndex);
-                    parents.Add(population[parentIndex]);
-                    break;
-                }
+                reproducedPopulation[i] = new NeuralNetwork(parents[i]);
+            }
+            else
+            {
+                reproducedPopulation[i] = new NeuralNetwork(parents);
             }
         }
 
-        return parents;
+        return reproducedPopulation;
     }
 
-    private List<int> CreateGenePool()
+    public static void Mutate(NeuralNetwork[] population)
     {
-        var genePool = new List<int>();
-
-        float highestFitenss = population.Max(x => x.fitness);
-
         for (int i = 0; i < population.Length; i++)
         {
-            float fitness = population[i].fitness.Remap(0, highestFitenss, 0f, 1f);
-            int occursInGenePool = Mathf.FloorToInt(fitness * 100);
-
-            for (int k = 0; k < occursInGenePool; k++)
-            {
-                genePool.Add(i);
-            }
+            population[i].Mutate(_mutationProb);
         }
-
-        return genePool;
     }
 
-    public void SetFitness(float fitness, int nnIndex)
-    {
-        population[nnIndex].fitness = fitness;
-    }
+    //private static List<NeuralNetwork> GetParentsAsBestNeuralNetworks()
+    //{
+    //    return population.OrderByDescending(x => x.fitness).Take(parentsCount).ToList();
+    //}
+
+    //private NeuralNetwork[] GetParentsFromGenePool(NeuralNetwork[] sortedNeuralNetworks)
+    //{
+    //    var parents = new NeuralNetwork[_parentsCount];
+    //    var parentsIndexes = new List<int>();
+
+    //    var genePool = CreateGenePool();
+
+    //    for (int i = 0; i < parentsCount; i++)
+    //    {
+    //        while (true)
+    //        {
+    //            int parentIndex = genePool[Random.Range(0, genePool.Count - 1)];
+
+    //            if (!parentsIndexes.Contains(parentIndex))
+    //            {
+    //                parentsIndexes.Add(parentIndex);
+    //                parents.Add(population[parentIndex]);
+    //                break;
+    //            }
+    //        }
+    //    }
+
+    //    return parents;
+    //}
+
+    //private static List<int> CreateGenePool()
+    //{
+    //    var genePool = new List<int>();
+
+    //    float highestFitenss = population.Max(x => x.fitness);
+
+    //    for (int i = 0; i < population.Length; i++)
+    //    {
+    //        float fitness = population[i].fitness.Remap(0, highestFitenss, 0f, 1f);
+    //        int occursInGenePool = Mathf.FloorToInt(fitness * 100);
+
+    //        for (int k = 0; k < occursInGenePool; k++)
+    //        {
+    //            genePool.Add(i);
+    //        }
+    //    }
+
+    //    return genePool;
+    //}
+
+    //public void SetFitness(float fitness, int nnIndex)
+    //{
+    //    population[nnIndex].fitness = fitness;
+    //}
 }

@@ -54,6 +54,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\BlockMove.cs" />
+    <Compile Include="Assets\Cube.cs" />
+    <Compile Include="Assets\RaycastController.cs" />
+    <Compile Include="Assets\Scripts\Brain.cs" />
     <Compile Include="Assets\Scripts\Car\Car.cs" />
     <Compile Include="Assets\Scripts\Car\WheelsController.cs" />
     <Compile Include="Assets\Scripts\Distance\Destination.cs" />

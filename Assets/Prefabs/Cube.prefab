@@ -44,8 +44,7 @@ GameObject:
   - component: {fileID: 5180851964947880623}
   - component: {fileID: 2068515295451512800}
   - component: {fileID: -7201081976925821348}
-  - component: {fileID: 1527892812015675880}
-  - component: {fileID: 2638208012162480458}
+  - component: {fileID: -8446534464644953628}
   m_Layer: 8
   m_Name: Cube
   m_TagString: Car
@@ -156,27 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c33f4ad327751c41be2a6dc7451bab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1527892812015675880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7056346098287456418}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f72f7ce0cf6c5e4d8fab2c7a361a666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorPrefab: {fileID: 2536782654483076098, guid: 2c693fdbb1fce314a94a7b4075dee239,
-    type: 3}
-  sensorsParent: {fileID: 8223423721334779240}
-  colorOfSensors: {r: 1, g: 0, b: 0, a: 1}
-  lengthOfSensors: 8
-  forwardSensorOffset: 0.8
-  angle: 360
-  drawRays: 1
---- !u!114 &2638208012162480458
+--- !u!114 &-8446534464644953628
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,15 +164,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7056346098287456418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452dbcb68f243b84ea0177b19157d7c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 57427b9789b6470459ced84eab8a6db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToCheck: 4
-  distanceToTravel: 8
-  moveForwardMultiplier: 5
-  rotationMultiplier: 20
-  raycastsMask:
-    serializedVersion: 2
-    m_Bits: 512
-  raycastLength: 8
-  angleCoveredByRaycasts: 180
+  moveForwardMultiplier: 25
+  rotationMultiplier: 100

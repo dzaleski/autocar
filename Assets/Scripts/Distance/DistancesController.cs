@@ -11,6 +11,7 @@ public class DistancesController: MonoBehaviour
         Destination = FindObjectOfType<Destination>().transform.position;
         Start = FindObjectOfType<StartPoint>().transform.position;
     }
+
     public float GetTraveledDistance()
     {
         return GetDistanceFromTo(Start, transform.position);

@@ -29,7 +29,7 @@ public class SensorsController : MonoBehaviour
 
     void Start()
     {
-        int sensorsCount = trainingManager.Inputs;
+        int sensorsCount = trainingManager.inputs;
 
         int angleBetweenSensors = angle / (sensorsCount - 1);
 

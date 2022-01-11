@@ -255,3 +255,4 @@ C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\UnityEngine.UI.csproj.CoreCo
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\UnityEngine.UI.csproj.CopyComplete
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\UnityEngine.UI.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\obj\Debug\UnityEngine.UI.pdb
+C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\MathNet.Numerics.dll
