@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 7056346098287456418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 3, y: 3, z: 6}
   m_Children:
   - {fileID: 8223423721334779240}
   m_Father: {fileID: 0}
@@ -167,5 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57427b9789b6470459ced84eab8a6db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForwardMultiplier: 25
-  rotationMultiplier: 100
+  moveForwardMultiplier: 20
+  rotationMultiplier: 200
+  raycastLength: 10
+  drawRays: 0
+  secondsUntilCheck: 2
+  distanceNeedToTravel: 10

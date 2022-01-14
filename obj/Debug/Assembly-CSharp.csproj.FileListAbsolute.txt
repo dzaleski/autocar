@@ -274,3 +274,4 @@ C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\nunit.framework.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\unityplastic.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.Plastic.Newtonsoft.Json.dll
 C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\Unity.Plastic.Antlr3.Runtime.dll
+C:\Users\gaa84\OneDrive\Dokumenty\autocar\Temp\bin\Debug\MathNet.Numerics.dll

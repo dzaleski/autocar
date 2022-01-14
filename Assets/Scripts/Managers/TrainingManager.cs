@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class TrainingManager : MonoBehaviour
@@ -9,13 +10,11 @@ public class TrainingManager : MonoBehaviour
     public int parentsCount = 2;
 
     [Header("NN Controls")]
-    public int inputs = 5;
     public int hiddenLayers = 1;
     public int neuronsPerHiddenLayer = 6;
 
     [Header("Positions")]
     [SerializeField] private Transform startPos;
-    [SerializeField] private Transform endPos;
 
     [Header("Holders")]
     [SerializeField] private Transform brainsHolder;
@@ -26,22 +25,48 @@ public class TrainingManager : MonoBehaviour
     [Header("Simulation Settings")]
     [SerializeField] private int timeScale = 1;
 
-    private int disabledCarsCount;
-    private int currentGeneration = 1;
+    private UIManager uiManager;
+    private ParkingController parkingController;
 
     private Brain[] brains;
 
     private void Awake()
     {
+        parkingController = FindObjectOfType<ParkingController>();
+        uiManager = FindObjectOfType<UIManager>();  
         GeneticManager.Initialise(populationSize, mutationProb, parentsCount);
-        NeuralNetwork.Initialise(inputs, hiddenLayers, neuronsPerHiddenLayer, 2);
+        NeuralNetwork.Initialise(hiddenLayers, neuronsPerHiddenLayer);
+
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
         CreateFirstPopulation();
+        StartCoroutine(TrainingCoroutine());
+        //StartCoroutine(EndGeneration());
+    }
+
+    private IEnumerator EndGeneration()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(15f);
+
+            CreateNewPopulation();
+        }
+    }
+
+    private void Update()
+    {
+        Time.timeScale = timeScale;
     }
 
     private void CreateFirstPopulation()
     {
         var firstPopulation = GeneticManager.GetFirstPopulation();
         CreateBrainsFrom(firstPopulation);
+        uiManager.UpdateCurrentGenerationText();
     }
 
     private void CreateBrainsFrom(NeuralNetwork[] neuralNetworks)
@@ -55,15 +80,14 @@ public class TrainingManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private IEnumerator TrainingCoroutine()
     {
-        Time.timeScale = timeScale;
-
-        if (IsWholePopulationDied())
+        while (true)
         {
-            currentGeneration++;
-            Debug.Log($"Current Generation: {currentGeneration}");
-            ReCreateCars();
+            yield return new WaitUntil(DidWholePopulationDie);
+
+            CreateNewPopulation();
+            uiManager.UpdateCurrentGenerationText();
         }
     }
 
@@ -74,21 +98,23 @@ public class TrainingManager : MonoBehaviour
         return brain;
     }
 
-    private void ReCreateCars()
+    private void CreateNewPopulation()
     {
-        var sortedNNs = brains.OrderByDescending(x => x.Score).Select(x => x.neuralNetwork).ToArray();
-        var reproducedNetworks = GeneticManager.Reproduce(sortedNNs);
-
+        var NNs = brains.Select(x => x.neuralNetwork).ToArray();
+        var reproducedNetworks = GeneticManager.Reproduce(NNs);
+        
         DestroyAllBrains();
 
         GeneticManager.Mutate(reproducedNetworks);
         CreateBrainsFrom(reproducedNetworks);
+
+        parkingController.RestartParkedCars();
     }
 
-    private bool IsWholePopulationDied()
+    private bool DidWholePopulationDie()
     {
         int diedBrainsCount = brains.Count(x => x.Disabled);
-        return diedBrainsCount == populationSize;
+        return diedBrainsCount >= populationSize;
     }
 
     private void DestroyAllBrains()

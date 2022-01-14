@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: 2589573265313726076}
   - component: {fileID: 813163641358333576}
   - component: {fileID: 328674179702223727}
+  - component: {fileID: 6894552921340511096}
+  - component: {fileID: 1843945767796858184}
   m_Layer: 8
   m_Name: Car Body
   m_TagString: Car
@@ -127,6 +129,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.019197728, y: 0.007777594, z: 0.043234065}
   m_Center: {x: -0.00008336931, y: 0.0063164383, z: 0.0016328883}
+--- !u!114 &6894552921340511096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844839733948527603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57427b9789b6470459ced84eab8a6db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveForwardMultiplier: 20
+  rotationMultiplier: 20
+  raycastLength: 8
+  drawRays: 1
+  secondsUntilCheck: 0
+  distanceNeedToTravel: 0
+--- !u!114 &1843945767796858184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844839733948527603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c33f4ad327751c41be2a6dc7451bab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &969595329117661541
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,10 +556,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1558199136854851599}
   - component: {fileID: 3155190816982138620}
-  - component: {fileID: 969595330179568302}
-  - component: {fileID: 969595330179568301}
-  - component: {fileID: 969595330179568300}
-  - component: {fileID: 566386875156729480}
   m_Layer: 8
   m_Name: IndividualCar
   m_TagString: Car
@@ -569,74 +597,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &969595330179568302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7098397597028750114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452dbcb68f243b84ea0177b19157d7c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  secondsToCheck: 2
-  distanceToTravel: 1
---- !u!114 &969595330179568301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7098397597028750114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1711fb913d619ae43846d37322f4682b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frontDriverW: {fileID: 5395673099206053178}
-  frontPassengerW: {fileID: 5018015004665525561}
-  backDriverW: {fileID: 4628165650099624354}
-  backPassengerW: {fileID: 1038860328664799351}
-  frontDriverT: {fileID: 5300866176815333404}
-  frontPassengerT: {fileID: 5956702729254950395}
-  backDriverT: {fileID: 3093246013330658344}
-  backPassengerT: {fileID: 3952841569452405912}
-  maxSteerAngle: 45
-  maxDriveForce: 500
---- !u!114 &969595330179568300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7098397597028750114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f72f7ce0cf6c5e4d8fab2c7a361a666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorPrefab: {fileID: 2536782654483076098, guid: 2c693fdbb1fce314a94a7b4075dee239,
-    type: 3}
-  sensorsParent: {fileID: 969595329117661540}
-  colorOfSensors: {r: 1, g: 0.27538368, b: 0, a: 1}
-  lengthOfSensors: 8
-  forwardSensorOffset: 0.8
-  angle: 180
-  drawRays: 1
---- !u!114 &566386875156729480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7098397597028750114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c33f4ad327751c41be2a6dc7451bab4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8164288917058255665
 GameObject:
   m_ObjectHideFlags: 0

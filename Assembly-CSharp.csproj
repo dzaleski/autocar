@@ -53,24 +53,46 @@
     <UnityVersion>2019.4.33f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\BlockMove.cs" />
     <Compile Include="Assets\Cube.cs" />
-    <Compile Include="Assets\RaycastController.cs" />
+    <Compile Include="Assets\Enums\Direction.cs" />
+    <Compile Include="Assets\Enums\Scenes.cs" />
+    <Compile Include="Assets\ParkedCar.cs" />
+    <Compile Include="Assets\ParkingController.cs" />
     <Compile Include="Assets\Scripts\Brain.cs" />
-    <Compile Include="Assets\Scripts\Car\Car.cs" />
-    <Compile Include="Assets\Scripts\Car\WheelsController.cs" />
+    <Compile Include="Assets\Scripts\Car.cs" />
     <Compile Include="Assets\Scripts\Distance\Destination.cs" />
     <Compile Include="Assets\Scripts\Distance\DistancesController.cs" />
     <Compile Include="Assets\Scripts\Distance\StartPoint.cs" />
-    <Compile Include="Assets\Scripts\Extensions\FloatRemapExtension.cs" />
+    <Compile Include="Assets\Scripts\Extensions\FloatExtensions.cs" />
     <Compile Include="Assets\Scripts\Managers\GeneticManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TrainingManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\NeuralNetwork\NeuralNetwork.cs" />
-    <Compile Include="Assets\Scripts\NeuralNetwork\Neuron.cs" />
-    <Compile Include="Assets\Scripts\NeuralNetwork\Synapse.cs" />
-    <Compile Include="Assets\Scripts\Sensors\Sensor.cs" />
-    <Compile Include="Assets\Scripts\Sensors\SensorsController.cs" />
     <Compile Include="Assets\Scripts\Wall.cs" />
+    <Compile Include="Assets\Scripts\WheelsController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

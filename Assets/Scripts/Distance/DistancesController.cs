@@ -8,8 +8,14 @@ public class DistancesController: MonoBehaviour
 
     void Awake()
     {
-        Destination = FindObjectOfType<Destination>().transform.position;
-        Start = FindObjectOfType<StartPoint>().transform.position;
+        var destination = FindObjectOfType<Destination>().transform;
+        var destinationPos = new Vector3(destination.position.x, transform.position.y, destination.position.z);
+
+        var start = FindObjectOfType<Destination>().transform;
+        var startPos = new Vector3(start.position.x, transform.position.y, start.position.z);
+
+        Destination = destinationPos;
+        Start = startPos;
     }
 
     public float GetTraveledDistance()
@@ -19,7 +25,13 @@ public class DistancesController: MonoBehaviour
 
     public float GetDistanceFromStartToDestination()
     {
+
         return GetDistanceFromTo(Start, Destination);
+    }
+
+    public float GetDistanceFromBrainToDestination()
+    {
+        return GetDistanceFromTo(transform.position, Destination);
     }
 
     private float GetDistanceFromTo(Vector3 from, Vector3 to)

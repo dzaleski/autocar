@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class NeuralNetwork
 {
+    public float Score { get; set; }
+
     public static int Inputs { get; private set; }
     private static int _hiddenLayers;
     private static int _neuronsPerHiddenLayer;
@@ -82,15 +85,15 @@ public class NeuralNetwork
         return parents[Random.Range(0, parents.Length)].weights;
     }
 
-    public static void Initialise(int inputs, int hiddenLayers, int neuronsPerHiddenLayer, int outputs)
+    public static void Initialise(int hiddenLayers, int neuronsPerHiddenLayer)
     {
-        Inputs = inputs;
+        Inputs = 8; //Raycast from every side and every corner of rectangular collider
         _hiddenLayers = hiddenLayers;
         _neuronsPerHiddenLayer = neuronsPerHiddenLayer;
-        _outputs = outputs;
+        _outputs = 3; //First to move backward and forward, second to turn left and right, third to brake
     }
 
-    public (float, float) Process(double[] inputs)
+    public double[] Process(double[] inputs)
     {
         for (int i = 0; i < inputs.Length; i++)
         {
@@ -121,7 +124,7 @@ public class NeuralNetwork
 
         var outputLayer = neurons.Last();
 
-        return ((float)outputLayer[0], (float)outputLayer[1]);
+        return outputLayer;
     }
     public void Mutate(float mutationProb)
     {
@@ -129,6 +132,7 @@ public class NeuralNetwork
         {
             for (int j = 0; j < weights[i].GetLength(0); j++)
             {
+
                 float randomValueBetween01 = Random.Range(0f, 1f);
 
                 if (randomValueBetween01 > mutationProb)
@@ -136,9 +140,9 @@ public class NeuralNetwork
                     continue;
                 }
 
-                int randomColIndex = Random.Range(0, weights[i].GetLength(1));
+                int randomColumIndex = Random.Range(0, weights[i].GetLength(1));
 
-                weights[i][j, randomColIndex] = Random.Range(-1f, 1f);
+                weights[i][j, randomColumIndex] = Random.Range(-1f, 1f);
             }
         }
     }
