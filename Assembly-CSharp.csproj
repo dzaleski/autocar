@@ -53,22 +53,25 @@
     <UnityVersion>2019.4.33f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\Cube.cs" />
-    <Compile Include="Assets\Enums\Direction.cs" />
-    <Compile Include="Assets\Enums\Scenes.cs" />
     <Compile Include="Assets\ParkedCar.cs" />
     <Compile Include="Assets\ParkingController.cs" />
+    <Compile Include="Assets\Scripts\AutoCar.cs" />
     <Compile Include="Assets\Scripts\Brain.cs" />
     <Compile Include="Assets\Scripts\Car.cs" />
-    <Compile Include="Assets\Scripts\Distance\Destination.cs" />
+    <Compile Include="Assets\Scripts\Distance\DestinationPoint.cs" />
     <Compile Include="Assets\Scripts\Distance\DistancesController.cs" />
     <Compile Include="Assets\Scripts\Distance\StartPoint.cs" />
-    <Compile Include="Assets\Scripts\Extensions\FloatExtensions.cs" />
+    <Compile Include="Assets\Scripts\DontDestroyOnLoad.cs" />
+    <Compile Include="Assets\Scripts\Enums\Direction.cs" />
+    <Compile Include="Assets\Scripts\Enums\Scenes.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Extensions.cs" />
     <Compile Include="Assets\Scripts\Managers\GeneticManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\MenuManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\TestManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TrainingManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
-    <Compile Include="Assets\Scripts\NeuralNetwork\NeuralNetwork.cs" />
-    <Compile Include="Assets\Scripts\Wall.cs" />
+    <Compile Include="Assets\Scripts\NeuralNetwork.cs" />
+    <Compile Include="Assets\Scripts\SensorsController.cs" />
     <Compile Include="Assets\Scripts\WheelsController.cs" />
   </ItemGroup>
   <ItemGroup>

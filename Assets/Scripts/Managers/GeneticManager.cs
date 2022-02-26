@@ -5,69 +5,60 @@ using UnityEngine;
 
 public static class GeneticManager
 {
+    public static NeuralNetwork BestNN { get; private set; }
+
     public static int PopulationSize { get; private set; }
     private static float _mutationProb;
     private static int _parentsCount;
-
-    private static NeuralNetwork bestNN;
-
     public static void Initialise(int populationSize, float mutationProb, int parentsCount)
     {
         PopulationSize = populationSize;
         _mutationProb = mutationProb;
         _parentsCount = parentsCount;
 
-        bestNN = new NeuralNetwork();
-        bestNN.Score = Mathf.NegativeInfinity;
+        BestNN = new NeuralNetwork();
+        BestNN.Score = Mathf.NegativeInfinity;
     }
 
-    public static NeuralNetwork[] GetFirstPopulation()
+    public static IEnumerable<NeuralNetwork> GetInitialNetworks()
     {
-        var firstPopulation = new NeuralNetwork[PopulationSize];
-
         for (int i = 0; i < PopulationSize; i++)
         {
-            firstPopulation[i] = new NeuralNetwork();
+            yield return new NeuralNetwork();
         }
-
-        return firstPopulation;
     }
 
-    public static NeuralNetwork[] Reproduce(NeuralNetwork[] neuralNetworks)
+    public static IEnumerable<NeuralNetwork> Reproduce(IEnumerable<NeuralNetwork> neuralNetworks)
     {
-        var reproducedPopulation = new NeuralNetwork[PopulationSize];
-
+        var networksCount = neuralNetworks.Count();
         var bestFromPopulation = neuralNetworks.OrderByDescending(x => x.Score).First();
 
-        if (bestFromPopulation.Score > bestNN.Score)
+        if (bestFromPopulation.Score > BestNN.Score)
         {
-            bestNN = new NeuralNetwork(bestFromPopulation);
-            bestNN.Score = bestFromPopulation.Score;
+            BestNN = new NeuralNetwork(bestFromPopulation);
         }
 
         var parents = neuralNetworks.OrderByDescending(x => x.Score).Take(_parentsCount).ToArray();
 
-        reproducedPopulation[reproducedPopulation.Length - 1] = new NeuralNetwork(bestNN);
-
-        for (int i = 0; i < reproducedPopulation.Length - 1; i++)
+        for (int i = 0; i < networksCount - 1; i++)
         {
-            if(i < _parentsCount)
-            {
-                reproducedPopulation[i] = new NeuralNetwork(parents[i]);
-            }
-            else
-            {
-                reproducedPopulation[i] = new NeuralNetwork(parents);
-            }
+            yield return new NeuralNetwork(parents);
         }
 
-        return reproducedPopulation;
+        yield return new NeuralNetwork(BestNN);
     }
 
     private static NeuralNetwork[] GetParents(NeuralNetwork[] neuralNetworks)
     {
         var parents = new NeuralNetwork[_parentsCount];
         var genePool = CreateGenePoolFrom(neuralNetworks);
+
+        //var a = genePool.Select(x => new { Score = x.Score, Occurs = genePool.Count(y => x == y) }).Select(x => $"Score: {x.Score} | Occurs: {x.Occurs}");
+
+        //foreach (var item in a)
+        //{
+        //    Debug.Log(item);
+        //}
 
         var parentsIndexes = new List<int>();
 
@@ -109,11 +100,11 @@ public static class GeneticManager
         return genePool;
     }
 
-    public static void Mutate(NeuralNetwork[] population)
+    public static void Mutate(IEnumerable<NeuralNetwork> neuralNetworks)
     {
-        for (int i = 0; i < population.Length - 1; i++)
+        foreach (var network in neuralNetworks)
         {
-            population[i].Mutate(_mutationProb);
+            network.Mutate(_mutationProb);
         }
     }
 }

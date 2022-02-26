@@ -15,7 +15,12 @@
       "ProjectGuid": "4abe4fbc-4912-7c3f-4ca0-163c23e7f2ec",
       "DisplayName": "UnityEngine.UI",
       "ColorIndex": 1
+    },
+    "cc15f5c1-b47f-7602-0107-e33e913098ad": {
+      "ProjectGuid": "cc15f5c1-b47f-7602-0107-e33e913098ad",
+      "DisplayName": "UnityEditor.UI",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }

@@ -8,10 +8,10 @@ public class DistancesController: MonoBehaviour
 
     void Awake()
     {
-        var destination = FindObjectOfType<Destination>().transform;
+        var destination = FindObjectOfType<DestinationPoint>().transform;
         var destinationPos = new Vector3(destination.position.x, transform.position.y, destination.position.z);
 
-        var start = FindObjectOfType<Destination>().transform;
+        var start = FindObjectOfType<StartPoint>().transform;
         var startPos = new Vector3(start.position.x, transform.position.y, start.position.z);
 
         Destination = destinationPos;
@@ -33,7 +33,6 @@ public class DistancesController: MonoBehaviour
     {
         return GetDistanceFromTo(transform.position, Destination);
     }
-
     private float GetDistanceFromTo(Vector3 from, Vector3 to)
     {
         NavMeshPath path = new NavMeshPath();

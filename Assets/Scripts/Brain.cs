@@ -5,11 +5,13 @@ public abstract class Brain : MonoBehaviour
     public bool Disabled { get; set; }
     public NeuralNetwork neuralNetwork { get; set; }
 
-    public void Initialise(NeuralNetwork neuralNetwork, Vector3 startPos)
+    public void Initialise(NeuralNetwork neuralNetwork, Transform startPoint)
     {
         this.neuralNetwork = neuralNetwork;
-        var newPos = new Vector3(startPos.x, transform.position.y, startPos.z);
-        transform.SetPositionAndRotation(newPos, transform.parent.rotation);
+        var newPos = new Vector3(startPoint.transform.position.x, 2.7f, startPoint.transform.position.z);
+        transform.SetPositionAndRotation(newPos, startPoint.transform.rotation);
+
+        OnInitialise();
     }
 
     public void IncreaseScoreBy(float amount)
@@ -28,4 +30,5 @@ public abstract class Brain : MonoBehaviour
         transform.gameObject.SetActive(false);
     }
 
+    public abstract void OnInitialise();
 }
