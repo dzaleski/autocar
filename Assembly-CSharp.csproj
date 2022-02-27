@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Enums\Direction.cs" />
     <Compile Include="Assets\Scripts\Enums\Scenes.cs" />
     <Compile Include="Assets\Scripts\Extensions\Extensions.cs" />
+    <Compile Include="Assets\Scripts\LineDrawer.cs" />
     <Compile Include="Assets\Scripts\Managers\GeneticManager.cs" />
     <Compile Include="Assets\Scripts\Managers\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TestManager.cs" />

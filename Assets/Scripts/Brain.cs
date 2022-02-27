@@ -16,12 +16,12 @@ public abstract class Brain : MonoBehaviour
 
     public void IncreaseScoreBy(float amount)
     {
-        neuralNetwork.Score += amount;
+        neuralNetwork.Fitness += amount;
     }
 
     public void DecreaseScoreBy(float amount)
     {
-        neuralNetwork.Score -= amount;
+        neuralNetwork.Fitness -= amount;
     }
 
     public void SetCarAsDisabled()

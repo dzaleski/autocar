@@ -17,7 +17,7 @@ public static class GeneticManager
         _parentsCount = parentsCount;
 
         BestNN = new NeuralNetwork();
-        BestNN.Score = Mathf.NegativeInfinity;
+        BestNN.Fitness = Mathf.NegativeInfinity;
     }
 
     public static IEnumerable<NeuralNetwork> GetInitialNetworks()
@@ -31,21 +31,22 @@ public static class GeneticManager
     public static IEnumerable<NeuralNetwork> Reproduce(IEnumerable<NeuralNetwork> neuralNetworks)
     {
         var networksCount = neuralNetworks.Count();
-        var bestFromPopulation = neuralNetworks.OrderByDescending(x => x.Score).First();
+        var bestFromPopulation = neuralNetworks.OrderByDescending(x => x.Fitness).First();
 
-        if (bestFromPopulation.Score > BestNN.Score)
-        {
-            BestNN = new NeuralNetwork(bestFromPopulation);
-        }
+        //if (bestFromPopulation.Fitness > BestNN.Fitness)
+        //{
+        //    BestNN = new NeuralNetwork(bestFromPopulation);
+        //}
 
-        var parents = neuralNetworks.OrderByDescending(x => x.Score).Take(_parentsCount).ToArray();
+        //var parents = neuralNetworks.OrderByDescending(x => x.Fitness).Take(_parentsCount).ToArray();
+        var parents = GetParents(neuralNetworks.ToArray());
 
-        for (int i = 0; i < networksCount - 1; i++)
+        for (int i = 0; i < networksCount; i++)
         {
             yield return new NeuralNetwork(parents);
         }
 
-        yield return new NeuralNetwork(BestNN);
+        //yield return new NeuralNetwork(BestNN);
     }
 
     private static NeuralNetwork[] GetParents(NeuralNetwork[] neuralNetworks)
@@ -84,12 +85,12 @@ public static class GeneticManager
     {
         var genePool = new List<NeuralNetwork>();
 
-        float lowestScore = neuralNetworks.Min(x => x.Score);
-        float highestScore = neuralNetworks.Max(x => x.Score);
+        float lowestScore = neuralNetworks.Min(x => x.Fitness);
+        float highestScore = neuralNetworks.Max(x => x.Fitness);
 
         for (int i = 0; i < neuralNetworks.Length; i++)
         {
-            int occursInGenePool = Mathf.RoundToInt(neuralNetworks[i].Score.Map(lowestScore, highestScore, 0f, 1f) * 100);
+            int occursInGenePool = Mathf.RoundToInt(neuralNetworks[i].Fitness.Map(lowestScore, highestScore, 0f, 1f) * 100);
 
             for (int k = 0; k < occursInGenePool; k++)
             {

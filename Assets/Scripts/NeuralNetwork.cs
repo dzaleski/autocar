@@ -6,15 +6,15 @@ using Random = UnityEngine.Random;
 
 public class NeuralNetwork
 {
-    public float Score { get; set; }
+    public float Fitness { get; set; }
 
     private static int _inputs;
     private static int _hiddenLayers;
     private static int _neuronsPerHiddenLayer;
     private static int _outputs;
 
-    private List<double[,]> weights;
-    private List<double[]> neurons;
+    private List<float[,]> weights;
+    private List<float[]> neurons;
 
     private int[] layerSizes;
 
@@ -29,24 +29,24 @@ public class NeuralNetwork
 
     private void InitNeurons()
     {
-        neurons = new List<double[]>();
+        neurons = new List<float[]>();
 
         foreach (var layerSize in layerSizes)
         {
-            var arrayOfNeurons = new double[layerSize];
+            var arrayOfNeurons = new float[layerSize];
             neurons.Add(arrayOfNeurons);
         }
     }
 
     private void InitWeights()
     {
-        weights = new List<double[,]>();
+        weights = new List<float[,]>();
 
         for (int i = 1; i < layerSizes.Length; i++)
         {
             var previousLayerSize = layerSizes[i - 1];
             var currentLayerSize = layerSizes[i];
-            var weightsMatrixBetweenLayers = new double[previousLayerSize, currentLayerSize];
+            var weightsMatrixBetweenLayers = new float[previousLayerSize, currentLayerSize];
 
             weights.Add(weightsMatrixBetweenLayers);
         }
@@ -57,7 +57,7 @@ public class NeuralNetwork
         weights.ForEach(matrix => FillMatrixWithRandomValues(matrix));
     }
 
-    private void FillMatrixWithRandomValues(double[,] array)
+    private void FillMatrixWithRandomValues(float[,] array)
     {
         for (int i = 0; i < array.GetLength(0); i++)
             for (int k = 0; k < array.GetLength(1); k++)
@@ -84,8 +84,8 @@ public class NeuralNetwork
 
     public NeuralNetwork(NeuralNetwork networkToCopy) : this()
     {
-        weights = new List<double[,]>(networkToCopy.weights);
-        Score = networkToCopy.Score;
+        weights = new List<float[,]>(networkToCopy.weights);
+        Fitness = networkToCopy.Fitness;
     }
 
     public static void Initialise(int hiddenLayers, int neuronsPerHiddenLayer)
@@ -96,7 +96,7 @@ public class NeuralNetwork
         _neuronsPerHiddenLayer = neuronsPerHiddenLayer;
     }
 
-    public double[] Process(IEnumerable<double> inputs)
+    public float[] Process(IEnumerable<float> inputs)
     {
         foreach (var (input, index) in inputs.WithIndexes())
         {
@@ -114,14 +114,14 @@ public class NeuralNetwork
 
             for (int i = 0; i < nextLayerSize; i++)
             {
-                double sum = 0;
+                float sum = 0;
 
                 for (int j = 0; j < currLayerSize; j++)
                 {
                     sum += currNeurons[j] * currWeights[j, i];
                 }
 
-                neurons[nextLayerIndex][i] = Math.Tanh(sum);
+                neurons[nextLayerIndex][i] = (float)Math.Tanh(sum);
             }
         }
 
@@ -175,7 +175,7 @@ public class NeuralNetwork
     {
         if (ReferenceEquals(other, null)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Score.Equals(other.Score) && weights.Equals(other.weights);
+        return Fitness.Equals(other.Fitness) && weights.Equals(other.weights);
     }
 
     public override int GetHashCode()
@@ -183,7 +183,7 @@ public class NeuralNetwork
         unchecked
         {
             int hash = 13;
-            hash = (hash * 7) + Score.GetHashCode();
+            hash = (hash * 7) + Fitness.GetHashCode();
             hash = (hash * 7) + weights.GetHashCode();
             return hash;
         }

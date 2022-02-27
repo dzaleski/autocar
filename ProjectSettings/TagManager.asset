@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - Destination
   - AICar
+  - ParkingArea
+  - ParkingSpot
   layers:
   - Default
   - TransparentFX

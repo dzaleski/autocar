@@ -1,20 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SensorsController : MonoBehaviour
 {
     [Header("Raycasts Controls")]
     [SerializeField] private float length = 4f;
-    [SerializeField] private float upOffset = 1.2f;
     [SerializeField] private bool isVisible = true;
     [SerializeField] private LayerMask rayMask;
 
     [Header("References")]
     [SerializeField] private BoxCollider boxCollider;
 
-    public IEnumerable<double> GetInputs()
+    private RaycastInfo[] raycastsInfo;
+
+    private void Start()
     {
-        foreach (var raycastInfo in GetRaycastsInfo())
+        raycastsInfo = new RaycastInfo[8];
+
+        for (int i = 0; i < raycastsInfo.Length; i++)
+        {
+            raycastsInfo[i] = new RaycastInfo(transform);
+        }
+    }
+
+    public IEnumerable<float> GetInputs()
+    {
+        UpdateRaycastsInfo();
+
+        foreach (var raycastInfo in raycastsInfo)
         {
             var distance = GetDistance(raycastInfo);
 
@@ -27,22 +42,23 @@ public class SensorsController : MonoBehaviour
         }
     }
 
-    private IEnumerable<RaycastInfo> GetRaycastsInfo()
+    private void UpdateRaycastsInfo()
     {
         var trans = boxCollider.transform;
         var center = boxCollider.center;
         var min = center - boxCollider.size * 0.5f;
         var max = center + boxCollider.size * 0.5f;
 
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(min.x, max.y, min.z)), Quaternion.AngleAxis(45f, transform.up) * -transform.forward);
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(max.x, max.y, min.z)), Quaternion.AngleAxis(-45f, transform.up) * -transform.forward);
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(max.x, max.y, max.z)), Quaternion.AngleAxis(45f, transform.up) * transform.forward);
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(min.x, max.y, max.z)), Quaternion.AngleAxis(-45f, transform.up) * transform.forward);
 
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(center.x, max.y, max.z)), transform.forward);
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(center.x, max.y, min.z)), -transform.forward);
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(max.x, max.y, center.z)), transform.right);
-        yield return new RaycastInfo(trans.TransformPoint(new Vector3(min.x, max.y, center.z)), -transform.right);
+        raycastsInfo[0].UpdateRay(trans.TransformPoint(new Vector3(min.x, max.y, min.z)), Quaternion.AngleAxis(45f, transform.up) * -transform.forward);
+        raycastsInfo[1].UpdateRay(trans.TransformPoint(new Vector3(max.x, max.y, min.z)), Quaternion.AngleAxis(-45f, transform.up) * -transform.forward);
+        raycastsInfo[2].UpdateRay(trans.TransformPoint(new Vector3(max.x, max.y, max.z)), Quaternion.AngleAxis(45f, transform.up) * transform.forward);
+        raycastsInfo[3].UpdateRay(trans.TransformPoint(new Vector3(min.x, max.y, max.z)), Quaternion.AngleAxis(-45f, transform.up) * transform.forward);
+
+        raycastsInfo[4].UpdateRay(trans.TransformPoint(new Vector3(center.x, max.y, max.z)), transform.forward);
+        raycastsInfo[5].UpdateRay(trans.TransformPoint(new Vector3(center.x, max.y, min.z)), -transform.forward);
+        raycastsInfo[6].UpdateRay(trans.TransformPoint(new Vector3(max.x, max.y, center.z)), transform.right);
+        raycastsInfo[7].UpdateRay(trans.TransformPoint(new Vector3(min.x, max.y, center.z)), -transform.right);
     }
 
     private void DrawRay(RaycastInfo raycastInfo, double distance)
@@ -58,14 +74,14 @@ public class SensorsController : MonoBehaviour
             color = Color.yellow;
         }
 
-        Debug.DrawRay(raycastInfo.Origin, raycastInfo.Direction * length, color);
+        raycastInfo.DrawRay(length, color);
     }
 
-    public double GetDistance(RaycastInfo raycastInfo)
+    public float GetDistance(RaycastInfo raycastInfo)
     {
         RaycastHit hit;
 
-        Physics.Raycast(raycastInfo.Origin, raycastInfo.Direction, out hit, length, rayMask);
+        Physics.Raycast(raycastInfo.Ray, out hit, length, rayMask);
 
         if (hit.collider == null)
         {
@@ -76,14 +92,25 @@ public class SensorsController : MonoBehaviour
     }
 }
 
-public struct RaycastInfo
+public class RaycastInfo
 {
-    public RaycastInfo(Vector3 origin, Vector3 direction)
+    public Ray Ray { get; private set; }
+
+    private LineDrawer lineDrawer;
+
+    public RaycastInfo(Transform transform)
     {
-        Origin = origin;
-        Direction = direction;
+        Ray = new Ray();
+        lineDrawer = new LineDrawer(transform);
     }
 
-    public Vector3 Origin { get; set; }
-    public Vector3 Direction { get; set; }
+    public void UpdateRay(Vector3 origin, Vector3 direction)
+    {
+        Ray = new Ray(origin, direction);
+    }
+
+    public void DrawRay(float length, Color color)
+    {
+        lineDrawer.DrawLineInGameView(Ray.origin, Ray.origin + Ray.direction * length, color);
+    }
 }

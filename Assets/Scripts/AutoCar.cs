@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Assets.Scripts.Extensions;
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(WheelsController))]
@@ -14,9 +16,19 @@ public class AutoCar : MonoBehaviour
     [SerializeField] private float distanceNeedToTravel = 10;
 
     [Header("References")]
-    [SerializeField] private Rigidbody rigidBody;
     [SerializeField] private WheelsController wheelsController;
     [SerializeField] private SensorsController sensorsController;
+    [SerializeField] private BoxCollider carCollider;
+    [SerializeField] private TextMeshProUGUI lossText;
+
+    private BoxCollider parkingSpotCollider;
+
+    private float loss;
+
+    private void Awake()
+    {
+        parkingSpotCollider = GameObject.FindWithTag("ParkingSpot").GetComponentInChildren<BoxCollider>();
+    }
 
     private void Start()
     {
@@ -28,13 +40,15 @@ public class AutoCar : MonoBehaviour
         var inputs = sensorsController.GetInputs();
         var outputs = NeuralNetwork.Process(inputs);
         MoveCar(outputs);
+
+        SetLoss();
     }
 
-    private void MoveCar(double[] outputs)
+    private void MoveCar(float[] outputs)
     {
-        float movingForwardMultiplier = Sigmoid(outputs[0]);
-        float steerMultiplier = (float)outputs[1];
-        float brakeMultiplier = (float)outputs[2];
+        float movingForwardMultiplier = outputs[0];
+        float steerMultiplier = outputs[1];
+        float brakeMultiplier = outputs[2];
 
         wheelsController.Accelerate(movingForwardMultiplier);
         wheelsController.SteerWheels(steerMultiplier);
@@ -51,8 +65,51 @@ public class AutoCar : MonoBehaviour
 
     public void DisableBrain()
     {
-        //Set score
+        NeuralNetwork.Fitness = 1 / (loss + 0.1f);
         SetCarAsDisabled();
+    }
+
+    private void SetLoss()
+    {
+        var carVertices = carCollider.GetVertices();
+        var parkingSportVertices = parkingSpotCollider.GetVertices();
+
+        loss = GetAvgDistanceBetweenVertices(carVertices, parkingSportVertices);
+
+        SetLossText(loss);
+    }
+
+    private float GetAvgDistanceBetweenVertices(Vector3[] fromVertices, Vector3[] toVertices)
+    {
+        float sumDistances = 0;
+        int verticesCount = fromVertices.Length;
+
+        for (int i = 0; i < verticesCount; i++)
+        {
+            sumDistances += Vector3.Distance(fromVertices[i], toVertices[i]);
+        }
+
+        return sumDistances / verticesCount;
+    }
+
+    private void SetLossText(float lossValue)
+    {
+        var roundedLoss = Math.Round(lossValue, 1);
+
+        if (roundedLoss <= 1)
+        {
+            lossText.color = Color.green;
+        }
+        else if (roundedLoss < 3)
+        {
+            lossText.color = Color.yellow;
+        }
+        else
+        {
+            lossText.color = Color.red;
+        }
+
+        lossText.text = $"Loss: {roundedLoss}";
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -62,6 +119,15 @@ public class AutoCar : MonoBehaviour
             DisableBrain();
         }
         else if (collision.collider.CompareTag("Car"))
+        {
+            //DecreaseScoreBy(5f);
+            DisableBrain();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("ParkingArea"))
         {
             DisableBrain();
         }
@@ -84,19 +150,14 @@ public class AutoCar : MonoBehaviour
         }
     }
 
-    private static float Sigmoid(double value)
-    {
-        return 1.0f / (1.0f + (float)Math.Exp(-value));
-    }
-
     private void IncreaseScoreBy(float amount)
     {
-        NeuralNetwork.Score += amount;
+        NeuralNetwork.Fitness += amount;
     }
 
     private void DecreaseScoreBy(float amount)
     {
-        NeuralNetwork.Score -= amount;
+        NeuralNetwork.Fitness -= amount;
     }
 
     private void SetCarAsDisabled()

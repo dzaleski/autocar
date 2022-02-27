@@ -1,5 +1,4 @@
 ﻿using Assets.Enums;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -32,34 +31,29 @@ public class TrainingManager : MonoBehaviour
     {
         GeneticManager.Initialise(populationSize, mutationProb, parentsCount);
         NeuralNetwork.Initialise(hiddenLayers, neuronsPerHiddenLayer);
-        cars = GetBrainsFrom(GeneticManager.GetInitialNetworks());
-    }
-
-    private IEnumerable<AutoCar> GetBrainsFrom(IEnumerable<NeuralNetwork> neuralNetworks)
-    {
-        foreach (var network in neuralNetworks)
-        {
-            yield return CreateBrain(network);
-        }
-    }
-    private AutoCar CreateBrain(NeuralNetwork neuralNetwork)
-    {
-        var car = Instantiate(carPrefab, carsHolder);
-        car.SetNeuralNetwork(neuralNetwork);
-        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
-        return car;
     }
 
     private void Start()
     {
-        StartCoroutine(TrainingCoroutine());
+        CreateInitialPopulation();
     }
 
-    private IEnumerator TrainingCoroutine()
+    private void Update()
     {
-        while (true)
+        Time.timeScale = timeScale;
+
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            yield return new WaitUntil(DidWholePopulationDie);
+            Restart();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            DestroyCars();
+            LoadMainMenu();
+        }
+
+        if(DidWholePopulationDie())
+        {
             CreateNewPopulation();
         }
     }
@@ -74,34 +68,38 @@ public class TrainingManager : MonoBehaviour
     {
         var networks = cars.Select(x => x.NeuralNetwork);
         var reproducedNetworks = GeneticManager.Reproduce(networks);
-
-        DestroyAllBrains();
-
+        DestroyCars();
         GeneticManager.Mutate(reproducedNetworks);
-
-        cars = GetBrainsFrom(reproducedNetworks);
+        cars = GetBrainsFrom(reproducedNetworks).ToList();
     }
 
-    private void DestroyAllBrains()
+    private void CreateInitialPopulation()
     {
-        foreach (var brain in cars)
+        var initNeuralNetworks = GeneticManager.GetInitialNetworks();
+        cars = GetBrainsFrom(initNeuralNetworks).ToList();
+    }
+
+    private IEnumerable<AutoCar> GetBrainsFrom(IEnumerable<NeuralNetwork> neuralNetworks)
+    {
+        foreach (var network in neuralNetworks)
         {
-            Destroy(brain.gameObject);
+            yield return CreateBrain(network);
         }
     }
 
-    private void Update()
+    private AutoCar CreateBrain(NeuralNetwork neuralNetwork)
     {
-        Time.timeScale = timeScale;
+        var car = Instantiate(carPrefab, carsHolder);
+        car.SetNeuralNetwork(neuralNetwork);
+        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
+        return car;
+    }
 
-        if (Input.GetKeyDown(KeyCode.R))
+    private void DestroyCars()
+    {
+        foreach (var car in cars)
         {
-            Restart();
-        }
-        else if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            DestroyAllBrains();
-            LoadMainMenu();
+            Destroy(car.gameObject);
         }
     }
 
@@ -112,7 +110,7 @@ public class TrainingManager : MonoBehaviour
 
     private void Restart()
     {
-        DestroyAllBrains();
+        DestroyCars();
         cars = GetBrainsFrom(GeneticManager.GetInitialNetworks());
     }
 }
