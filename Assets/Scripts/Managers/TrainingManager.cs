@@ -1,61 +1,51 @@
-﻿using Assets.Enums;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TrainingManager : MonoBehaviour
 {
-    [Header("GA Controls")]
+    [Header("Genetic Algorithm")]
     public int populationSize = 85;
     public float mutationProb = 0.055f;
-    public int parentsCount = 2;
+    [Range(0, 1)] public float percentOfTheBestPass = 0.1f;
 
-    [Header("NN Controls")]
-    public int hiddenLayers = 1;
-    public int neuronsPerHiddenLayer = 6;
+    [Header("Neural Network")]
+    public int hiddenLayers = 2;
+    public int neuronsPerHiddenLayer = 12;
 
     [Header("Transforms")]
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform carsHolder;
+    [SerializeField] private Transform parkedCarsParent;
 
     [Header("Prefabs")]
     [SerializeField] private AutoCar carPrefab;
 
     [Header("Time Controls")]
-    [SerializeField] private int timeScale = 1;
+    [SerializeField] private int timeScale = 4;
 
-    private IEnumerable<AutoCar> cars;
+    private AutoCar[] cars;
+    private ParkedCar[] parkedCars;
 
     private void Awake()
     {
-        GeneticManager.Initialise(populationSize, mutationProb, parentsCount);
+        GeneticManager.Initialise(populationSize, mutationProb, percentOfTheBestPass);
         NeuralNetwork.Initialise(hiddenLayers, neuronsPerHiddenLayer);
     }
 
     private void Start()
     {
+        parkedCars = parkedCarsParent.GetComponentsInChildren<ParkedCar>();
         CreateInitialPopulation();
     }
 
     private void Update()
     {
-        Time.timeScale = timeScale;
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Restart();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            DestroyCars();
-            LoadMainMenu();
-        }
-
-        if(DidWholePopulationDie())
+        if (DidWholePopulationDie())
         {
             CreateNewPopulation();
         }
+
+        Time.timeScale = timeScale;
     }
 
     private bool DidWholePopulationDie()
@@ -66,25 +56,35 @@ public class TrainingManager : MonoBehaviour
 
     private void CreateNewPopulation()
     {
-        var networks = cars.Select(x => x.NeuralNetwork);
+        var networks = cars.Select(x => x.NeuralNetwork).ToArray();
+
         var reproducedNetworks = GeneticManager.Reproduce(networks);
-        DestroyCars();
+
         GeneticManager.Mutate(reproducedNetworks);
-        cars = GetBrainsFrom(reproducedNetworks).ToList();
+
+        DestroyCars();
+
+        cars = GetBrainsFrom(reproducedNetworks);
+
+        RestartParkedCars();
     }
 
     private void CreateInitialPopulation()
     {
         var initNeuralNetworks = GeneticManager.GetInitialNetworks();
-        cars = GetBrainsFrom(initNeuralNetworks).ToList();
+        cars = GetBrainsFrom(initNeuralNetworks);
     }
 
-    private IEnumerable<AutoCar> GetBrainsFrom(IEnumerable<NeuralNetwork> neuralNetworks)
+    private AutoCar[] GetBrainsFrom(NeuralNetwork[] neuralNetworks)
     {
-        foreach (var network in neuralNetworks)
+        var cars = new AutoCar[neuralNetworks.Length];
+
+        for (int i = 0; i < cars.Length; i++)
         {
-            yield return CreateBrain(network);
+            cars[i] = CreateBrain(neuralNetworks[i]);
         }
+
+        return cars;
     }
 
     private AutoCar CreateBrain(NeuralNetwork neuralNetwork)
@@ -97,20 +97,18 @@ public class TrainingManager : MonoBehaviour
 
     private void DestroyCars()
     {
-        foreach (var car in cars)
+        for (int i = 0; i < cars.Length; i++)
         {
-            Destroy(car.gameObject);
+            Destroy(cars[i].gameObject);
         }
     }
 
-    private static void LoadMainMenu()
+    private void RestartParkedCars()
     {
-        SceneManager.LoadScene((int)Scenes.MainMenu);
+        foreach (var car in parkedCars)
+        {
+            car.RestartPosition();
+        }
     }
 
-    private void Restart()
-    {
-        DestroyCars();
-        cars = GetBrainsFrom(GeneticManager.GetInitialNetworks());
-    }
 }

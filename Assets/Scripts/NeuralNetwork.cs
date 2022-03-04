@@ -13,7 +13,7 @@ public class NeuralNetwork
     private static int _neuronsPerHiddenLayer;
     private static int _outputs;
 
-    private List<float[,]> weights;
+    private List<float[,]> layersWeights;
     private List<float[]> neurons;
 
     private int[] layerSizes;
@@ -25,6 +25,24 @@ public class NeuralNetwork
         InitNeurons();
         InitWeights();
         FillWeightsWithRandomValues();
+    }
+
+    public NeuralNetwork(params NeuralNetwork[] parents) : this()
+    {
+        for (int i = 0; i < layersWeights.Count; i++)
+        {
+            var currWeights = layersWeights[i];
+
+            for (int j = 0; j < currWeights.GetLength(0); j++)
+            {
+                for (int k = 0; k < currWeights.GetLength(1); k++)
+                {
+                    var randomParent = parents[Random.Range(0, parents.Length)];
+                    var weightsFromRandomParent = randomParent.layersWeights[i];
+                    currWeights[j, k] = weightsFromRandomParent[j, k];
+                }
+            }
+        }
     }
 
     private void InitNeurons()
@@ -40,7 +58,7 @@ public class NeuralNetwork
 
     private void InitWeights()
     {
-        weights = new List<float[,]>();
+        layersWeights = new List<float[,]>();
 
         for (int i = 1; i < layerSizes.Length; i++)
         {
@@ -48,13 +66,13 @@ public class NeuralNetwork
             var currentLayerSize = layerSizes[i];
             var weightsMatrixBetweenLayers = new float[previousLayerSize, currentLayerSize];
 
-            weights.Add(weightsMatrixBetweenLayers);
+            layersWeights.Add(weightsMatrixBetweenLayers);
         }
     }
 
     private void FillWeightsWithRandomValues()
     {
-        weights.ForEach(matrix => FillMatrixWithRandomValues(matrix));
+        layersWeights.ForEach(matrix => FillMatrixWithRandomValues(matrix));
     }
 
     private void FillMatrixWithRandomValues(float[,] array)
@@ -64,50 +82,33 @@ public class NeuralNetwork
                 array[i, k] = GetRandomValue();
     }
 
-    public NeuralNetwork(IEnumerable<NeuralNetwork> parents) : this()
-    {
-        for (int i = 0; i < weights.Count; i++)
-        {
-            var currWeights = weights[i];
 
-            for (int j = 0; j < currWeights.GetLength(0); j++)
-            {
-                for (int k = 0; k < currWeights.GetLength(1); k++)
-                {
-                    var randomParent = parents.GetRandomElement();
-                    var weightsFromParent = randomParent.weights[i];
-                    currWeights[j, k] = weightsFromParent[j, k];
-                }
-            }
-        }
-    }
 
     public NeuralNetwork(NeuralNetwork networkToCopy) : this()
     {
-        weights = new List<float[,]>(networkToCopy.weights);
-        Fitness = networkToCopy.Fitness;
+        layersWeights = new List<float[,]>(networkToCopy.layersWeights);
     }
 
     public static void Initialise(int hiddenLayers, int neuronsPerHiddenLayer)
     {
         _inputs = 8; //Raycasts for all sides and all corners of car
-        _outputs = 3; //To move forward nad backward, steer and brake
+        _outputs = 2; //To move forward nad backward, steer and brake
         _hiddenLayers = hiddenLayers;
         _neuronsPerHiddenLayer = neuronsPerHiddenLayer;
     }
 
-    public float[] Process(IEnumerable<float> inputs)
+    public float[] Process(float[] inputs)
     {
-        foreach (var (input, index) in inputs.WithIndexes())
+        for (int i = 0; i < inputs.Length; i++)
         {
-            neurons[0][index] = input;
+            neurons[0][i] = inputs[i]; //Fill first layer values with inputs
         }
 
         for (int currentLayer = 0; currentLayer < neurons.Count - 1; currentLayer++)
         {
             int currLayerSize = neurons[currentLayer].Length;
             var currNeurons = neurons[currentLayer];
-            var currWeights = weights[currentLayer];
+            var currWeights = layersWeights[currentLayer];
 
             int nextLayerIndex = currentLayer + 1;
             int nextLayerSize = neurons[nextLayerIndex].Length;
@@ -126,20 +127,20 @@ public class NeuralNetwork
         }
 
         var outputLayer = neurons.Last();
-
         return outputLayer;
     }
+
     public void Mutate(float mutationProb)
     {
-        for (int i = 0; i < weights.Count; i++)
+        for (int i = 0; i < layersWeights.Count; i++)
         {
-            for (int j = 0; j < weights[i].GetLength(0); j++)
+            for (int j = 0; j < layersWeights[i].GetLength(0); j++)
             {
                 if (!ShouldMutate(mutationProb))
                     continue;
 
-                int randomCol = GetRandomValue(0, weights[i].GetLength(1));
-                weights[i][j, randomCol] = GetRandomValue();
+                int randomCol = GetRandomValue(0, layersWeights[i].GetLength(1));
+                layersWeights[i][j, randomCol] = GetRandomValue();
             }
         }
     }
@@ -148,7 +149,7 @@ public class NeuralNetwork
     {
         float randomValueBetween01 = GetRandomValue(0f, 1f);
 
-        if (randomValueBetween01 > mutationProb)
+        if (randomValueBetween01 < mutationProb)
         {
             return true;
         }
@@ -171,11 +172,17 @@ public class NeuralNetwork
         return Random.Range(-1f, 1f);
     }
 
+    private float ActivationFunction(float value)
+    {
+        //return (float)Math.Tanh(value);
+        return value.Sigmoid();
+    }
+
     public bool Equals(NeuralNetwork other)
     {
         if (ReferenceEquals(other, null)) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Fitness.Equals(other.Fitness) && weights.Equals(other.weights);
+        return Fitness.Equals(other.Fitness) && layersWeights.Equals(other.layersWeights);
     }
 
     public override int GetHashCode()
@@ -184,7 +191,7 @@ public class NeuralNetwork
         {
             int hash = 13;
             hash = (hash * 7) + Fitness.GetHashCode();
-            hash = (hash * 7) + weights.GetHashCode();
+            hash = (hash * 7) + layersWeights.GetHashCode();
             return hash;
         }
     }

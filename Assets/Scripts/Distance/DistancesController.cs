@@ -3,41 +3,17 @@ using UnityEngine.AI;
 
 public class DistancesController: MonoBehaviour
 {
-    public Vector3 Destination { get; private set; }
-    public Vector3 Start { get; private set; }
+    private Transform _transform;
 
     void Awake()
     {
-        var destination = FindObjectOfType<DestinationPoint>().transform;
-        var destinationPos = new Vector3(destination.position.x, transform.position.y, destination.position.z);
-
-        var start = FindObjectOfType<StartPoint>().transform;
-        var startPos = new Vector3(start.position.x, transform.position.y, start.position.z);
-
-        Destination = destinationPos;
-        Start = startPos;
+        _transform = transform;
     }
-
-    public float GetTraveledDistance()
-    {
-        return GetDistanceFromTo(Start, transform.position);
-    }
-
-    public float GetDistanceFromStartToDestination()
-    {
-
-        return GetDistanceFromTo(Start, Destination);
-    }
-
-    public float GetDistanceFromBrainToDestination()
-    {
-        return GetDistanceFromTo(transform.position, Destination);
-    }
-    private float GetDistanceFromTo(Vector3 from, Vector3 to)
+    public float GetDistanceTo(Vector3 destination)
     {
         NavMeshPath path = new NavMeshPath();
 
-        NavMesh.CalculatePath(from, to, NavMesh.AllAreas, path);
+        NavMesh.CalculatePath(_transform.position, destination, NavMesh.AllAreas, path);
 
         float wholeDistance = 0f;
 

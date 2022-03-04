@@ -6,17 +6,20 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    [Header("References")]
     [SerializeField] private WheelsController wheelsController;
     [SerializeField] private SensorsController sensorsController;
+    [SerializeField] private DistancesController distancesController;
     [SerializeField] private BoxCollider carCollider;
     [SerializeField] private TextMeshProUGUI lossText;
 
     private BoxCollider parkingSpotCollider;
+    private Transform parkingSpotTransform;
 
     private void Awake()
     {
-        parkingSpotCollider = GameObject.FindWithTag("ParkingSpot").GetComponentInChildren<BoxCollider>();
+        var parkingSpotObject = GameObject.FindWithTag("ParkingSpot");
+        parkingSpotCollider = parkingSpotObject.GetComponentInChildren<BoxCollider>();
+        parkingSpotTransform = parkingSpotObject.transform;
     }
 
     private void Update()
@@ -60,7 +63,11 @@ public class Car : MonoBehaviour
             lossText.color = Color.red;
         }
 
-        lossText.text = $"Loss: {roundedLoss}";
+        var distanceLeft = distancesController.GetDistanceTo(parkingSpotTransform.position) * 10f;
+
+        var clampedLoss = Mathf.Clamp(400 - lossValue - distanceLeft, 0, 400);
+
+        lossText.text = $"{Math.Round(clampedLoss, 1)}";
     }
 
     private float GetAvgDistanceBetweenVertices(Vector3[] fromVertices, Vector3[] toVertices)
@@ -70,7 +77,7 @@ public class Car : MonoBehaviour
 
         for (int i = 0; i < verticesCount; i++)
         {
-            sumDistances += Vector2.Distance(fromVertices[i].ToVector2XZ(), toVertices[i].ToVector2XZ());
+            sumDistances += Vector2.Distance(fromVertices[i].ToVector2XZ(), toVertices[i].ToVector2XZ()) * 10f;
         }
 
         return sumDistances / verticesCount;

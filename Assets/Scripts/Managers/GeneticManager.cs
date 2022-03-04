@@ -1,111 +1,151 @@
-﻿using Assets.Scripts.Extensions;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using UnityEngine;
+using Random = UnityEngine.Random;
+using Mathf = UnityEngine.Mathf;
 
 public static class GeneticManager
 {
-    public static NeuralNetwork BestNN { get; private set; }
-
-    public static int PopulationSize { get; private set; }
+    private static int _populationSize;
     private static float _mutationProb;
-    private static int _parentsCount;
-    public static void Initialise(int populationSize, float mutationProb, int parentsCount)
+    private static float _percentOfTheBestPass;
+    private static int parentsCount;
+
+    public static void Initialise(int populationSize, float mutationProb, float percentOfTheBestPass)
     {
-        PopulationSize = populationSize;
+        _populationSize = populationSize;
         _mutationProb = mutationProb;
-        _parentsCount = parentsCount;
-
-        BestNN = new NeuralNetwork();
-        BestNN.Fitness = Mathf.NegativeInfinity;
+        _percentOfTheBestPass = percentOfTheBestPass;
     }
 
-    public static IEnumerable<NeuralNetwork> GetInitialNetworks()
+    public static NeuralNetwork[] GetInitialNetworks()
     {
-        for (int i = 0; i < PopulationSize; i++)
+        var initialNetworks = new NeuralNetwork[_populationSize];
+
+        for (int i = 0; i < initialNetworks.Length; i++)
         {
-            yield return new NeuralNetwork();
-        }
-    }
-
-    public static IEnumerable<NeuralNetwork> Reproduce(IEnumerable<NeuralNetwork> neuralNetworks)
-    {
-        var networksCount = neuralNetworks.Count();
-        var bestFromPopulation = neuralNetworks.OrderByDescending(x => x.Fitness).First();
-
-        //if (bestFromPopulation.Fitness > BestNN.Fitness)
-        //{
-        //    BestNN = new NeuralNetwork(bestFromPopulation);
-        //}
-
-        //var parents = neuralNetworks.OrderByDescending(x => x.Fitness).Take(_parentsCount).ToArray();
-        var parents = GetParents(neuralNetworks.ToArray());
-
-        for (int i = 0; i < networksCount; i++)
-        {
-            yield return new NeuralNetwork(parents);
+            initialNetworks[i] = new NeuralNetwork();
         }
 
-        //yield return new NeuralNetwork(BestNN);
+        return initialNetworks;
     }
 
-    private static NeuralNetwork[] GetParents(NeuralNetwork[] neuralNetworks)
+    public static NeuralNetwork[] Reproduce(NeuralNetwork[] neuralNetworks)
     {
-        var parents = new NeuralNetwork[_parentsCount];
-        var genePool = CreateGenePoolFrom(neuralNetworks);
+        var oldPopulation = new NeuralNetwork[_populationSize];
+        var newPopulation = new NeuralNetwork[_populationSize];
 
-        //var a = genePool.Select(x => new { Score = x.Score, Occurs = genePool.Count(y => x == y) }).Select(x => $"Score: {x.Score} | Occurs: {x.Occurs}");
+        Array.Copy(neuralNetworks, oldPopulation, neuralNetworks.Length);
 
-        //foreach (var item in a)
+        var orderedNetworks = neuralNetworks.OrderByDescending(x => x.Fitness).ToArray(); //First network has best fitness
+
+        var best = orderedNetworks.First().Fitness;
+
+        int index = 0;
+
+        parentsCount = Mathf.FloorToInt(_percentOfTheBestPass * neuralNetworks.Length);
+
+        while (index < parentsCount)
+        {
+            newPopulation[index] = new NeuralNetwork(orderedNetworks[index]);
+            newPopulation[index].Fitness = orderedNetworks[index].Fitness;
+            index++;
+        }
+
+        //var firstParent = orderedNetworks[0];
+        //var secondParent = orderedNetworks[1];
+
+        //while (index < _populationSize)
         //{
-        //    Debug.Log(item);
+        //    newPopulation[index] = new NeuralNetwork(firstParent, secondParent);
+        //    index++;
         //}
 
-        var parentsIndexes = new List<int>();
-
-        for (int i = 0; i < parents.Length; i++)
+        while (index < _populationSize)
         {
-            while (true)
+            int firstParentIndex = -1;
+            NeuralNetwork firstParent = null;
+
+            int secondParentIndex = -1;
+            NeuralNetwork secondParent = null;
+
+            while (firstParentIndex == secondParentIndex)
             {
-                int parentIndex = Random.Range(0, genePool.Count);
+                (firstParent, firstParentIndex) = GetWeightedRandomNetwork(orderedNetworks);
+                (secondParent, secondParentIndex) = GetWeightedRandomNetwork(orderedNetworks);
+            }
 
-                if (!parentsIndexes.Contains(parentIndex))
-                {
-                    parentsIndexes.Add(parentIndex);
-                    parents[i] = genePool[parentIndex];
-                    break;
-                }
+            var firstChildren = new NeuralNetwork(firstParent, secondParent);
+            var secondChildren = new NeuralNetwork(firstParent, secondParent);
+
+            newPopulation[index] = firstChildren;
+            index++;
+
+            if (index < _populationSize)
+            {
+                newPopulation[index] = secondChildren;
+                index++;
             }
         }
 
-        return parents;
+        return newPopulation;
     }
 
-    private static List<NeuralNetwork> CreateGenePoolFrom(NeuralNetwork[] neuralNetworks)
+    //private static (NeuralNetwork, int) GetWeightedRandomNetwork(NeuralNetwork[] orderedNetworks)
+    //{
+    //    var sumOfAllWeights = orderedNetworks.Sum(x => x.Fitness);
+
+    //    var rand = Random.Range(0, sumOfAllWeights);
+
+    //    for (int index = 0; index < orderedNetworks.Length; index++)
+    //    {
+    //        var networkFitness = orderedNetworks[index].Fitness;
+
+    //        if(rand < networkFitness)
+    //        {
+    //            return (orderedNetworks[index], index);
+    //        }
+
+    //        rand -= networkFitness;
+    //    }
+
+    //    return (null, -1); //Should never get here
+    //}
+
+    private static (NeuralNetwork, int) GetWeightedRandomNetwork(NeuralNetwork[] orderedNetworks)
     {
-        var genePool = new List<NeuralNetwork>();
-
-        float lowestScore = neuralNetworks.Min(x => x.Fitness);
-        float highestScore = neuralNetworks.Max(x => x.Fitness);
-
-        for (int i = 0; i < neuralNetworks.Length; i++)
+        // - weights = [1, 4, 3]
+        // - cumulativeWeights = [1, 5, 8]
+        var cumulativeWeights = new float[orderedNetworks.Length];
+        for (int i = 0; i < orderedNetworks.Length; i += 1)
         {
-            int occursInGenePool = Mathf.RoundToInt(neuralNetworks[i].Fitness.Map(lowestScore, highestScore, 0f, 1f) * 100);
+            cumulativeWeights[i] = orderedNetworks[i].Fitness + (i != 0 ? cumulativeWeights[i - 1] : 0);
+        }
 
-            for (int k = 0; k < occursInGenePool; k++)
+        // Getting the random number in a range [0...sum(weights)]
+        // For example:
+        // - weights = [1, 4, 3]
+        // - maxCumulativeWeight = 8
+        // - range for the random number is [0...8]
+        var maxCumulativeWeight = cumulativeWeights[cumulativeWeights.Length - 1];
+        var randomNumber = Random.Range(0, maxCumulativeWeight);
+
+        // Picking the random item based on its weight.
+        // The items with higher weight will be picked more often.
+        for (int i = 0; i < orderedNetworks.Length; i += 1)
+        {
+            if (cumulativeWeights[i] >= randomNumber)
             {
-                genePool.Add(neuralNetworks[i]);
+                return (orderedNetworks[i], i);
             }
         }
 
-        return genePool;
+        return (orderedNetworks[orderedNetworks.Length - 1], orderedNetworks.Length - 1);
     }
-
-    public static void Mutate(IEnumerable<NeuralNetwork> neuralNetworks)
+    public static void Mutate(NeuralNetwork[] neuralNetworks)
     {
-        foreach (var network in neuralNetworks)
+        for (int i = parentsCount; i < neuralNetworks.Length; i++)
         {
-            network.Mutate(_mutationProb);
+            neuralNetworks[i].Mutate(_mutationProb);
         }
     }
 }

@@ -29,7 +29,6 @@ public class TestManager : MonoBehaviour
     private AutoCar InstantiatneCarFromBestNN()
     {
         var car = Instantiate(carPrefab);
-        car.SetNeuralNetwork(GeneticManager.BestNN);
         car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation); 
         return car;
     }

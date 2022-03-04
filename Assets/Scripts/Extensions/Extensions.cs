@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,10 +8,11 @@ namespace Assets.Scripts.Extensions
 {
     public static class Extensions
     {
-        public static float Map(this float value, float oldFrom, float oldTo, float newFrom, float newTo) =>
-            (value - oldFrom) / (oldTo - oldFrom) * (newTo - newFrom) + newFrom;
+        public static float Sigmoid(this float value) => 1.0f / (1.0f + (float) Math.Exp(-value));
+
         public static IEnumerable<(T value, int index)> WithIndexes<T>(this IEnumerable<T> values) =>
             values.Select((value, index) => (value, index));
+
         public static T GetRandomElement<T>(this IEnumerable<T> values) =>
             values.ElementAt(Random.Range(0, values.Count()));
 

@@ -11,17 +11,18 @@ public class AutoCar : MonoBehaviour
     [HideInInspector] public bool Disabled;
     [HideInInspector] public NeuralNetwork NeuralNetwork;
 
-    [Header("Idle Controls")]
+    [SerializeField] private bool isLossVisible;
     [SerializeField] private float secondsUntilCheck = 3;
     [SerializeField] private float distanceNeedToTravel = 10;
 
-    [Header("References")]
     [SerializeField] private WheelsController wheelsController;
     [SerializeField] private SensorsController sensorsController;
+    [SerializeField] private DistancesController distancesController;
     [SerializeField] private BoxCollider carCollider;
     [SerializeField] private TextMeshProUGUI lossText;
 
     private BoxCollider parkingSpotCollider;
+    private int startPoints = 700;
 
     private float loss;
 
@@ -37,35 +38,26 @@ public class AutoCar : MonoBehaviour
 
     private void Update()
     {
+        SetLoss();
         var inputs = sensorsController.GetInputs();
         var outputs = NeuralNetwork.Process(inputs);
         MoveCar(outputs);
-
-        SetLoss();
-    }
+}
 
     private void MoveCar(float[] outputs)
     {
         float movingForwardMultiplier = outputs[0];
         float steerMultiplier = outputs[1];
-        float brakeMultiplier = outputs[2];
+        //float brakeMultiplier = outputs[2] <= 0f ? 1f : 0f;
 
         wheelsController.Accelerate(movingForwardMultiplier);
         wheelsController.SteerWheels(steerMultiplier);
-
-        if (brakeMultiplier >= 0)
-        {
-            wheelsController.Brake(1f);
-        }
-        else
-        {
-            wheelsController.Brake(0f);
-        }
+        //wheelsController.Brake(brakeMultiplier);
     }
 
     public void DisableBrain()
     {
-        NeuralNetwork.Fitness = 1 / (loss + 0.1f);
+        NeuralNetwork.Fitness = 1 / (loss + 1f);
         SetCarAsDisabled();
     }
 
@@ -74,7 +66,10 @@ public class AutoCar : MonoBehaviour
         var carVertices = carCollider.GetVertices();
         var parkingSportVertices = parkingSpotCollider.GetVertices();
 
-        loss = GetAvgDistanceBetweenVertices(carVertices, parkingSportVertices);
+        var fitSpot = GetAvgDistanceBetweenVertices(carVertices, parkingSportVertices);
+        var leftDistance = distancesController.GetDistanceTo(parkingSpotCollider.transform.position);
+
+        loss = leftDistance;
 
         SetLossText(loss);
     }
@@ -86,7 +81,7 @@ public class AutoCar : MonoBehaviour
 
         for (int i = 0; i < verticesCount; i++)
         {
-            sumDistances += Vector3.Distance(fromVertices[i], toVertices[i]);
+            sumDistances += Vector2.Distance(fromVertices[i].ToVector2XZ(), toVertices[i].ToVector2XZ());
         }
 
         return sumDistances / verticesCount;
@@ -109,7 +104,7 @@ public class AutoCar : MonoBehaviour
             lossText.color = Color.red;
         }
 
-        lossText.text = $"Loss: {roundedLoss}";
+        lossText.text = $"{roundedLoss}";
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -120,7 +115,7 @@ public class AutoCar : MonoBehaviour
         }
         else if (collision.collider.CompareTag("Car"))
         {
-            //DecreaseScoreBy(5f);
+            //DecreaseScoreBy(100);
             DisableBrain();
         }
     }

@@ -1205,7 +1205,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &462517093
 GameObject:
@@ -1744,7 +1744,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 60, y: -30, z: 0}
 --- !u!1 &721423641
 GameObject:
@@ -1788,7 +1788,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &754622187
 GameObject:
@@ -1823,7 +1823,7 @@ Transform:
   - {fileID: 1015065550}
   - {fileID: 250986350}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &792750239
 GameObject:
@@ -2039,7 +2039,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &827076715
 GameObject:
@@ -4707,6 +4707,75 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1702728965}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1720384270
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 78.76895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.534813
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620398, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_Name
+      value: ParkingSpot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f25dbf1eeee79974d8245ad57724b9d1, type: 3}
 --- !u!1 &1729259461
 GameObject:
   m_ObjectHideFlags: 0
@@ -5029,13 +5098,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   populationSize: 50
   mutationProb: 0.055
-  parentsCount: 2
+  percentOfTheBestPass: 0.1
   hiddenLayers: 2
   neuronsPerHiddenLayer: 60
   startPoint: {fileID: 23783809}
-  brainsHolder: {fileID: 803512725}
-  brainPrefab: {fileID: 4650641916670048386, guid: 5dc0f4d225ad98e4e901d5603d7e520b,
-    type: 3}
+  carsHolder: {fileID: 0}
+  carPrefab: {fileID: 0}
   timeScale: 6
 --- !u!4 &1924522431
 Transform:
@@ -5049,7 +5117,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2015190279
 GameObject:
