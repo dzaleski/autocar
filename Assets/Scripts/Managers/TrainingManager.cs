@@ -7,6 +7,7 @@ public class TrainingManager : MonoBehaviour
     public int populationSize = 85;
     public float mutationProb = 0.055f;
     [Range(0, 1)] public float percentOfTheBestPass = 0.1f;
+    [Range(0, .5f)] public float percentOfRandom = 0.05f;
 
     [Header("Neural Network")]
     public int hiddenLayers = 2;
@@ -28,7 +29,7 @@ public class TrainingManager : MonoBehaviour
 
     private void Awake()
     {
-        GeneticManager.Initialise(populationSize, mutationProb, percentOfTheBestPass);
+        GeneticManager.Initialise(populationSize, mutationProb, percentOfTheBestPass, percentOfRandom);
         NeuralNetwork.Initialise(hiddenLayers, neuronsPerHiddenLayer);
     }
 

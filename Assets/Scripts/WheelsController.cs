@@ -1,83 +1,115 @@
 ﻿using UnityEngine;
 
+internal enum CarDriveType
+{
+    FrontWheelDrive,
+    RearWheelDrive,
+    FourWheelDrive
+}
+
+internal enum SpeedType
+{
+    MPH,
+    KPH
+}
+
 public class WheelsController : MonoBehaviour
 {
-    [SerializeField] private WheelCollider frontDriverW;
-    [SerializeField] private WheelCollider frontPassengerW;
-    [SerializeField] private WheelCollider backDriverW;
-    [SerializeField] private WheelCollider backPassengerW;
+    [SerializeField] private CarDriveType carDriveType;
+    [SerializeField] private WheelCollider[] wheelColliders = new WheelCollider[4];
+    [SerializeField] private GameObject[] wheelMeshes = new GameObject[4];
+    [SerializeField] private Vector3 centerOfMass;
+    [SerializeField] private float steerAngle;
+    [SerializeField] private float driveTorque = 400;
+    [SerializeField] private float brakeTorque = 400;
+    [SerializeField] private float downForce = 100f;
+    [SerializeField] private SpeedType speedType;
+    [SerializeField] private float topSpeed = 200;
 
-    [SerializeField] private Transform frontDriverT;
-    [SerializeField] private Transform frontPassengerT;
-    [SerializeField] private Transform backDriverT;
-    [SerializeField] private Transform backPassengerT;
+    private Rigidbody rb;
 
-    [SerializeField] private float maxSteerAngle = 45;
-    [SerializeField] private float maxDriveForce = 400;
+    public float CurrentSpeed { get { return rb.velocity.magnitude * 2.23693629f; } }
 
-    private float _steer;
-    private float _acceleration;
-    private float _brakeValue;
+    public float MaxSpeed { get { return topSpeed; } }
 
-    public void SteerWheels(float horizontalValue)
+    private void Start()
     {
-        _steer = horizontalValue;
+        rb = GetComponent<Rigidbody>();
+        wheelColliders[0].attachedRigidbody.centerOfMass = centerOfMass;
     }
-
-    public void Accelerate(float accelerationMultiplier)
+    public void Move(float acceleration, float steering, float braking)
     {
-        _acceleration = accelerationMultiplier;
+        for (int i = 0; i < 4; i++)
+        {
+            Quaternion quat;
+            Vector3 position;
+            wheelColliders[i].GetWorldPose(out position, out quat);
+            wheelMeshes[i].transform.position = position;
+            wheelMeshes[i].transform.rotation = quat;
+        }
+
+        braking = Mathf.Clamp(braking, 0f, 1f);
+
+        var brake = braking * brakeTorque;
+        wheelColliders[0].brakeTorque = brake;
+        wheelColliders[1].brakeTorque = brake;
+
+        steering = Mathf.Clamp(steering, -1, 1);
+
+        var steerAngle = steering * this.steerAngle;
+        wheelColliders[0].steerAngle = steerAngle;
+        wheelColliders[1].steerAngle = steerAngle;
+
+        acceleration = Mathf.Clamp(acceleration, -1, 1);
+
+        ApplyDrive(acceleration);
+        AddDownForce();
+        CapSpeed();
     }
-
-    public void Brake(float brakeValue)
+    private void ApplyDrive(float accel)
     {
-        _brakeValue = brakeValue;
+        float thrustTorque;
+        switch (carDriveType)
+        {
+            case CarDriveType.FourWheelDrive:
+                thrustTorque = accel * (driveTorque / 4f);
+                for (int i = 0; i < 4; i++)
+                {
+                    wheelColliders[i].motorTorque = thrustTorque;
+                }
+                break;
+
+            case CarDriveType.FrontWheelDrive:
+                thrustTorque = accel * (driveTorque / 2f);
+                wheelColliders[0].motorTorque = wheelColliders[1].motorTorque = thrustTorque;
+                break;
+
+            case CarDriveType.RearWheelDrive:
+                thrustTorque = accel * (driveTorque / 2f);
+                wheelColliders[2].motorTorque = wheelColliders[3].motorTorque = thrustTorque;
+                break;
+        }
     }
-
-    private void FixedUpdate()
+    private void AddDownForce()
     {
-        Steer();
-        Accelerate();
-        Brake();
-        UpdateWheels();
+        wheelColliders[0].attachedRigidbody.AddForce(-transform.up * downForce * wheelColliders[0].attachedRigidbody.velocity.magnitude);
     }
-
-    private void Steer()
+    private void CapSpeed()
     {
-        frontDriverW.steerAngle = maxSteerAngle * _steer;
-        frontPassengerW.steerAngle = maxSteerAngle * _steer;
-    }
+        float speed = rb.velocity.magnitude;
+        switch (speedType)
+        {
+            case SpeedType.MPH:
+                speed *= 2.23693629f;
+                if (speed > topSpeed)
+                    rb.velocity = (topSpeed / 2.23693629f) * rb.velocity.normalized;
+                break;
 
-    private void Accelerate()
-    {
-        frontDriverW.motorTorque = maxDriveForce * _acceleration;
-        frontPassengerW.motorTorque = maxDriveForce * _acceleration;
-    }
-
-    private void Brake()
-    {
-        frontDriverW.brakeTorque = maxDriveForce * _brakeValue;
-        frontPassengerW.brakeTorque = maxDriveForce * _brakeValue;
-        backDriverW.brakeTorque = maxDriveForce * _brakeValue;
-        backPassengerW.brakeTorque = maxDriveForce * _brakeValue;
-    }
-
-    private void UpdateWheels()
-    {
-        UpdateWheel(backDriverW, backDriverT);
-        UpdateWheel(backPassengerW, backPassengerT);
-        UpdateWheel(frontDriverW, frontDriverT);
-        UpdateWheel(frontPassengerW, frontPassengerT);
-    }
-
-    private void UpdateWheel(WheelCollider wheelCollider, Transform wheelTransform)
-    {
-        Vector3 pos;
-        Quaternion quat;
-
-        wheelCollider.GetWorldPose(out pos, out quat);
-
-        wheelTransform.position = pos;
-        wheelTransform.rotation = quat;
+            case SpeedType.KPH:
+                speed *= 3.6f;
+                if (speed > topSpeed)
+                    rb.velocity = (topSpeed / 3.6f) * rb.velocity.normalized;
+                break;
+        }
     }
 }

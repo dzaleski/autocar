@@ -27,7 +27,7 @@ public class SensorsController : MonoBehaviour
 
     public float[] GetInputs()
     {
-        return GetDistances().ToArray();
+        return GetDistances2().ToArray();
     }
 
     private IEnumerable<float> GetDistances()

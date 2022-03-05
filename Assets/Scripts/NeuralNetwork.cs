@@ -92,7 +92,7 @@ public class NeuralNetwork
     public static void Initialise(int hiddenLayers, int neuronsPerHiddenLayer)
     {
         _inputs = 8; //Raycasts for all sides and all corners of car
-        _outputs = 2; //To move forward nad backward, steer and brake
+        _outputs = 3; //To move forward nad backward, steer and brake
         _hiddenLayers = hiddenLayers;
         _neuronsPerHiddenLayer = neuronsPerHiddenLayer;
     }

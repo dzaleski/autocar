@@ -29,11 +29,9 @@ public class Car : MonoBehaviour
         SetLoss();
     }
 
-    private void MoveCar()
-    {
-        wheelsController.SteerWheels(Input.GetAxis("Horizontal"));
-        wheelsController.Accelerate(Input.GetAxis("Vertical"));
-        wheelsController.Brake(Input.GetKey(KeyCode.Space) ? 1 : 0);
+    private void MoveCar() 
+    { 
+        wheelsController.Move(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"), Input.GetKey(KeyCode.Space) ? 1f : 0f);
     }
 
     private void SetLoss()

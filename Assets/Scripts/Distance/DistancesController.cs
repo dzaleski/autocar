@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Extensions;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class DistancesController: MonoBehaviour
@@ -23,6 +24,22 @@ public class DistancesController: MonoBehaviour
         }
 
         return wholeDistance;
+    }
+
+    public float GetAvgDistanceBetweenVertices(BoxCollider from, BoxCollider to)
+    {
+        var fromVertices = from.GetVertices();
+        var toVertices = to.GetVertices();
+
+        float sumDistances = 0;
+        int verticesCount = fromVertices.Length;
+
+        for (int i = 0; i < verticesCount; i++)
+        {
+            sumDistances += Vector2.Distance(fromVertices[i].ToVector2XZ(), toVertices[i].ToVector2XZ());
+        }
+
+        return sumDistances / verticesCount;
     }
 
 }

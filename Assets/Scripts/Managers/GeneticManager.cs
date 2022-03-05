@@ -8,13 +8,15 @@ public static class GeneticManager
     private static int _populationSize;
     private static float _mutationProb;
     private static float _percentOfTheBestPass;
-    private static int parentsCount;
+    private static int _parentsCount;
+    private static float _percentOfRandom;
 
-    public static void Initialise(int populationSize, float mutationProb, float percentOfTheBestPass)
+    public static void Initialise(int populationSize, float mutationProb, float percentOfTheBestPass, float percentOfRandom)
     {
         _populationSize = populationSize;
         _mutationProb = mutationProb;
         _percentOfTheBestPass = percentOfTheBestPass;
+        _percentOfRandom = percentOfRandom;
     }
 
     public static NeuralNetwork[] GetInitialNetworks()
@@ -42,23 +44,21 @@ public static class GeneticManager
 
         int index = 0;
 
-        parentsCount = Mathf.FloorToInt(_percentOfTheBestPass * neuralNetworks.Length);
+        _parentsCount = Mathf.FloorToInt(_percentOfTheBestPass * neuralNetworks.Length);
 
-        while (index < parentsCount)
+        while (index < _parentsCount)
         {
             newPopulation[index] = new NeuralNetwork(orderedNetworks[index]);
-            newPopulation[index].Fitness = orderedNetworks[index].Fitness;
             index++;
         }
 
-        //var firstParent = orderedNetworks[0];
-        //var secondParent = orderedNetworks[1];
+        var randomCount = Mathf.FloorToInt(_percentOfRandom * neuralNetworks.Length);
 
-        //while (index < _populationSize)
-        //{
-        //    newPopulation[index] = new NeuralNetwork(firstParent, secondParent);
-        //    index++;
-        //}
+        while (index - _parentsCount < randomCount)
+        {
+            newPopulation[index] = new NeuralNetwork(orderedNetworks[index]);
+            index++;
+        }
 
         while (index < _populationSize)
         {
@@ -143,7 +143,7 @@ public static class GeneticManager
     }
     public static void Mutate(NeuralNetwork[] neuralNetworks)
     {
-        for (int i = parentsCount; i < neuralNetworks.Length; i++)
+        for (int i = _parentsCount; i < neuralNetworks.Length; i++)
         {
             neuralNetworks[i].Mutate(_mutationProb);
         }

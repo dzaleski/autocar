@@ -498,7 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Disabled: 0
   isLossVisible: 1
-  secondsUntilCheck: 15
+  secondsUntilCheck: 5
   distanceNeedToTravel: 2
   wheelsController: {fileID: 2623718873107856015}
   sensorsController: {fileID: 6769274726692034199}
@@ -517,16 +517,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1711fb913d619ae43846d37322f4682b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontDriverW: {fileID: 3638218669476749639}
-  frontPassengerW: {fileID: 536908120618808122}
-  backDriverW: {fileID: 8549245769833064220}
-  backPassengerW: {fileID: 9003778514507126832}
-  frontDriverT: {fileID: 7845691461899767162}
-  frontPassengerT: {fileID: 6719970890671622888}
-  backDriverT: {fileID: 2660026238123038383}
-  backPassengerT: {fileID: 7584307081695794777}
-  maxSteerAngle: 55
-  maxDriveForce: 100
+  carDriveType: 2
+  wheelColliders:
+  - {fileID: 3638218669476749639}
+  - {fileID: 536908120618808122}
+  - {fileID: 8549245769833064220}
+  - {fileID: 9003778514507126832}
+  wheelMeshes:
+  - {fileID: 63218078635568268}
+  - {fileID: 1105341282741076047}
+  - {fileID: 4483081910902344064}
+  - {fileID: 7523624738713413117}
+  centerOfMass: {x: 0, y: 0, z: 0}
+  steerAngle: 45
+  driveTorque: 600
+  brakeTorque: 600
+  downForce: 100
+  speedType: 1
+  topSpeed: 2.5
 --- !u!114 &6769274726692034199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -539,7 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd6daa3459085a44a559315b271a4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 6
+  length: 7
   rayMask:
     serializedVersion: 2
     m_Bits: 1024
