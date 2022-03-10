@@ -1691,7 +1691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1652621624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1704,20 +1704,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bae5ebf7d938a4397f6b30d0e46f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationSize: 200
+  populationSize: 60
   mutationProb: 0.055
   groupSize: 20
   percentOfTheBestPass: 0.02
   percentOfRandom: 0.1
   hiddenLayers: 2
   neuronsPerHiddenLayer: 12
-  startPoint: {fileID: 0}
-  carsHolder: {fileID: 684281863}
-  parkedCarsParent: {fileID: 0}
-  boardGroup: {fileID: 0}
+  boardGroup: {fileID: 173207416}
   carPrefab: {fileID: 6097305871347139369, guid: 809584909ccee7447a4b7c6ab570dd52,
     type: 3}
-  timeScale: 12
+  timeScale: 21
   mapsCount: 4
 --- !u!4 &1652621625
 Transform:

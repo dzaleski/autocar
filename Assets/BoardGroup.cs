@@ -15,6 +15,11 @@ public class BoardGroup : MonoBehaviour
         boards.Add(board);
     }
 
+    public AutoCar InstantiateCarAtBoard(NeuralNetwork network, int boardIndex)
+    {
+        return boards[boardIndex].InstantiateCar(network);
+    }
+
     public void OnBoardPointerExit(Board board)
     {
 

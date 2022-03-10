@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
+    [HideInInspector] public Transform ParkingSpot { get; set; }
+
     [Header("References")]
     [SerializeField] protected WheelsController wheelsController;
     [SerializeField] protected SensorsController sensorsController;
@@ -13,22 +15,20 @@ public class Car : MonoBehaviour
     [SerializeField] private bool isFitnessDistance;
 
     protected BoxCollider parkingSpotCollider;
-    protected Transform parkingSportTransform;
 
     protected float loss;
     protected float startLossValue;
 
-    private void Awake()
+    private void Start()
     {
-        parkingSpotCollider = GameObject.FindWithTag("ParkingSpot").GetComponentInChildren<BoxCollider>();
-        parkingSportTransform = parkingSpotCollider.transform;
+        parkingSpotCollider = ParkingSpot.GetComponentInChildren<BoxCollider>();
     }
 
     protected float GetLoss()
     {
         if (isFitnessDistance)
         {
-            return distancesController.GetDistanceTo(parkingSportTransform.position);
+            return distancesController.GetDistanceTo(ParkingSpot.position);
         }
 
         return distancesController.GetAvgDistanceBetweenVertices(carCollider, parkingSpotCollider);

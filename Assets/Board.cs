@@ -9,6 +9,7 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform carsHolder;
     [SerializeField] private Transform parkedCarsParent;
+    [SerializeField] private Transform parkingSpot;
 
     [Header("Prefabs")]
     [SerializeField] private AutoCar carPrefab;
@@ -39,5 +40,14 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
     public void OnPointerExit(PointerEventData eventData)
     {
         boardGroup.OnBoardPointerExit(this);
+    }
+
+    public AutoCar InstantiateCar(NeuralNetwork neuralNetwork)
+    {
+        var car = Instantiate(carPrefab, carsHolder);
+        car.SetNeuralNetwork(neuralNetwork);
+        car.ParkingSpot = parkingSpot;
+        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
+        return car;
     }
 }

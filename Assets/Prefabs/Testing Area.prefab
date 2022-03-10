@@ -1812,7 +1812,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7320629684999970407
 Transform:
@@ -2587,6 +2587,7 @@ MonoBehaviour:
   startPoint: {fileID: 7378354485591733498}
   carsHolder: {fileID: 7432600305879590219}
   parkedCarsParent: {fileID: 7320629686232124583}
+  parkingSpot: {fileID: 2497491670937802571}
   carPrefab: {fileID: 6097305871347139369, guid: 809584909ccee7447a4b7c6ab570dd52,
     type: 3}
 --- !u!114 &7752744201698144449

@@ -7,6 +7,7 @@ public class AutoCar : Car
 {
     [HideInInspector] public bool Disabled { get; set; }
     [HideInInspector] public NeuralNetwork NeuralNetwork { get; set; }
+
     [SerializeField] private float secondsUntilCheck = 3;
     [SerializeField] private float distanceNeedToTravel = 10;
 

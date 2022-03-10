@@ -15,9 +15,6 @@ public class TrainingManager : MonoBehaviour
     public int neuronsPerHiddenLayer = 12;
 
     [Header("Transforms")]
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform carsHolder;
-    [SerializeField] private Transform parkedCarsParent;
     [SerializeField] private BoardGroup boardGroup;
 
     [Header("Prefabs")]
@@ -26,8 +23,6 @@ public class TrainingManager : MonoBehaviour
     [Header("Controls")]
     [SerializeField] private int timeScale = 4;
     [SerializeField] private int mapsCount = 4;
-
-    private ParkedCar[] parkedCars;
 
     private NeuralNetwork[][] neuralNetworksGroups;
     private AutoCar[] carsOfCurrentGroup;
@@ -42,7 +37,6 @@ public class TrainingManager : MonoBehaviour
 
     private void Start()
     {
-        parkedCars = parkedCarsParent.GetComponentsInChildren<ParkedCar>();
         var countOfGroups = populationSize / groupSize;
         neuralNetworksGroups = new NeuralNetwork[countOfGroups][];
 
@@ -70,8 +64,6 @@ public class TrainingManager : MonoBehaviour
         Debug.Log($"Current population: {currentPopulation}");
 
         DestroyCurrentGroupCars();
-
-        RestartParkedCars();
 
         if(currentGroupIndex >= neuralNetworksGroups.GetLength(0))
         {
@@ -105,19 +97,10 @@ public class TrainingManager : MonoBehaviour
 
         for (int i = 0; i < carsOfCurrentGroup.Length; i++)
         {
-            carsOfCurrentGroup[i] = CreateBrain(currentGroupNetworks[i]);
-
+            carsOfCurrentGroup[i] = boardGroup.InstantiateCarAtBoard(currentGroupNetworks[i], i);
         }
 
         currentGroupIndex++;
-    }
-
-    private AutoCar CreateBrain(NeuralNetwork neuralNetwork)
-    {
-        var car = Instantiate(carPrefab, carsHolder);
-        car.SetNeuralNetwork(neuralNetwork);
-        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
-        return car;
     }
 
     private void DestroyCurrentGroupCars()
@@ -125,14 +108,6 @@ public class TrainingManager : MonoBehaviour
         for (int i = 0; i < carsOfCurrentGroup.Length; i++)
         {
             Destroy(carsOfCurrentGroup[i].gameObject);
-        }
-    }
-
-    private void RestartParkedCars()
-    {
-        foreach (var car in parkedCars)
-        {
-            car.RestartPosition();
         }
     }
 }
