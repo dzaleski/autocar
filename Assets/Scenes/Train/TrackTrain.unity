@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 2f115265c40feb34184b0dfaca92bcf7, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: fada6e5b66f2b06498741fccec70941c, type: 2}
 --- !u!1 &22906260
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,9 +133,9 @@ GameObject:
   - component: {fileID: 22906263}
   - component: {fileID: 22906262}
   - component: {fileID: 22906261}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (41)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -226,9 +226,9 @@ GameObject:
   - component: {fileID: 76276517}
   - component: {fileID: 76276516}
   - component: {fileID: 76276515}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (21)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -319,9 +319,9 @@ GameObject:
   - component: {fileID: 135953421}
   - component: {fileID: 135953420}
   - component: {fileID: 135953419}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (57)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -506,9 +506,9 @@ GameObject:
   - component: {fileID: 152368523}
   - component: {fileID: 152368522}
   - component: {fileID: 152368521}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (17)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -599,9 +599,9 @@ GameObject:
   - component: {fileID: 152957408}
   - component: {fileID: 152957407}
   - component: {fileID: 152957406}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (1)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -784,9 +784,9 @@ GameObject:
   - component: {fileID: 218668190}
   - component: {fileID: 218668189}
   - component: {fileID: 218668188}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (24)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -877,9 +877,9 @@ GameObject:
   - component: {fileID: 231367029}
   - component: {fileID: 231367028}
   - component: {fileID: 231367027}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (22)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -970,9 +970,9 @@ GameObject:
   - component: {fileID: 246692875}
   - component: {fileID: 246692874}
   - component: {fileID: 246692873}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (28)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1063,9 +1063,9 @@ GameObject:
   - component: {fileID: 260853235}
   - component: {fileID: 260853234}
   - component: {fileID: 260853233}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (10)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1222,9 +1222,9 @@ GameObject:
   - component: {fileID: 303708393}
   - component: {fileID: 303708392}
   - component: {fileID: 303708391}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (48)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1315,9 +1315,9 @@ GameObject:
   - component: {fileID: 334823955}
   - component: {fileID: 334823954}
   - component: {fileID: 334823953}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (4)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1408,9 +1408,9 @@ GameObject:
   - component: {fileID: 353918760}
   - component: {fileID: 353918759}
   - component: {fileID: 353918758}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (16)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1631,9 +1631,9 @@ GameObject:
   - component: {fileID: 430332844}
   - component: {fileID: 430332843}
   - component: {fileID: 430332842}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (18)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1742,9 +1742,9 @@ GameObject:
   - component: {fileID: 505282879}
   - component: {fileID: 505282878}
   - component: {fileID: 505282877}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (15)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1835,9 +1835,9 @@ GameObject:
   - component: {fileID: 523406856}
   - component: {fileID: 523406855}
   - component: {fileID: 523406854}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (56)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1928,9 +1928,9 @@ GameObject:
   - component: {fileID: 593900361}
   - component: {fileID: 593900360}
   - component: {fileID: 593900359}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (47)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2021,9 +2021,9 @@ GameObject:
   - component: {fileID: 594791072}
   - component: {fileID: 594791071}
   - component: {fileID: 594791070}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (43)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2114,9 +2114,9 @@ GameObject:
   - component: {fileID: 614937828}
   - component: {fileID: 614937827}
   - component: {fileID: 614937826}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (27)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2207,9 +2207,9 @@ GameObject:
   - component: {fileID: 684488735}
   - component: {fileID: 684488734}
   - component: {fileID: 684488733}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (13)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2300,9 +2300,9 @@ GameObject:
   - component: {fileID: 797667254}
   - component: {fileID: 797667253}
   - component: {fileID: 797667252}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (39)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2381,81 +2381,6 @@ Transform:
   m_Father: {fileID: 152036401}
   m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 75, z: 0}
---- !u!1001 &823754005
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 38.926033
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -33.13257
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071072
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7071064
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -90.00001
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 287447139446351351, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-        type: 3}
-      propertyPath: m_Name
-      value: Start Pos
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cf7104613eae66a4ca1c21d0f15d7ff4, type: 3}
---- !u!4 &823754006 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 287447139446351350, guid: cf7104613eae66a4ca1c21d0f15d7ff4,
-    type: 3}
-  m_PrefabInstance: {fileID: 823754005}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &893314543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2468,9 +2393,9 @@ GameObject:
   - component: {fileID: 893314546}
   - component: {fileID: 893314545}
   - component: {fileID: 893314544}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (46)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2561,9 +2486,9 @@ GameObject:
   - component: {fileID: 907891425}
   - component: {fileID: 907891424}
   - component: {fileID: 907891423}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (14)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2654,9 +2579,9 @@ GameObject:
   - component: {fileID: 920551646}
   - component: {fileID: 920551645}
   - component: {fileID: 920551644}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (50)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2764,17 +2689,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bae5ebf7d938a4397f6b30d0e46f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationSize: 2
-  mutationProb: 0.055
-  parentsCount: 3
-  hiddenLayers: 1
-  neuronsPerHiddenLayer: 6
-  startPoint: {fileID: 823754006}
-  destinationPoint: {fileID: 0}
-  brainsHolder: {fileID: 962076776}
-  brainPrefab: {fileID: 4650641916670048386, guid: 5dc0f4d225ad98e4e901d5603d7e520b,
+  populationSize: 10
+  mutationProb: 0.035
+  percentOfTheBestPass: 0.1
+  percentOfRandom: 0.05
+  hiddenLayers: 2
+  neuronsPerHiddenLayer: 12
+  startPoint: {fileID: 1558064080}
+  carsHolder: {fileID: 962076776}
+  parkedCarsParent: {fileID: 1558064080}
+  carPrefab: {fileID: 6097305871347139369, guid: 809584909ccee7447a4b7c6ab570dd52,
     type: 3}
-  timeScale: 4
+  timeScale: 5
 --- !u!4 &940283427
 Transform:
   m_ObjectHideFlags: 0
@@ -2799,7 +2725,7 @@ GameObject:
   m_Component:
   - component: {fileID: 962076776}
   m_Layer: 0
-  m_Name: Brains Holder
+  m_Name: Cars Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2831,9 +2757,9 @@ GameObject:
   - component: {fileID: 969496469}
   - component: {fileID: 969496468}
   - component: {fileID: 969496467}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (5)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2924,9 +2850,9 @@ GameObject:
   - component: {fileID: 1006197697}
   - component: {fileID: 1006197696}
   - component: {fileID: 1006197695}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (35)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3017,9 +2943,9 @@ GameObject:
   - component: {fileID: 1025643499}
   - component: {fileID: 1025643498}
   - component: {fileID: 1025643497}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (31)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3110,9 +3036,9 @@ GameObject:
   - component: {fileID: 1042551044}
   - component: {fileID: 1042551043}
   - component: {fileID: 1042551042}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (19)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3203,9 +3129,9 @@ GameObject:
   - component: {fileID: 1043722197}
   - component: {fileID: 1043722196}
   - component: {fileID: 1043722195}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (53)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3296,9 +3222,9 @@ GameObject:
   - component: {fileID: 1103337443}
   - component: {fileID: 1103337442}
   - component: {fileID: 1103337441}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3389,9 +3315,9 @@ GameObject:
   - component: {fileID: 1114496564}
   - component: {fileID: 1114496563}
   - component: {fileID: 1114496562}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (40)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3482,9 +3408,9 @@ GameObject:
   - component: {fileID: 1180897241}
   - component: {fileID: 1180897240}
   - component: {fileID: 1180897239}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (44)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3575,9 +3501,9 @@ GameObject:
   - component: {fileID: 1184265598}
   - component: {fileID: 1184265597}
   - component: {fileID: 1184265596}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (51)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3668,9 +3594,9 @@ GameObject:
   - component: {fileID: 1249534794}
   - component: {fileID: 1249534793}
   - component: {fileID: 1249534792}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (34)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3761,9 +3687,9 @@ GameObject:
   - component: {fileID: 1271543990}
   - component: {fileID: 1271543989}
   - component: {fileID: 1271543988}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (12)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -3954,9 +3880,9 @@ GameObject:
   - component: {fileID: 1330751224}
   - component: {fileID: 1330751223}
   - component: {fileID: 1330751222}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (2)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4047,9 +3973,9 @@ GameObject:
   - component: {fileID: 1341575357}
   - component: {fileID: 1341575356}
   - component: {fileID: 1341575355}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (8)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4273,9 +4199,9 @@ GameObject:
   - component: {fileID: 1374718853}
   - component: {fileID: 1374718852}
   - component: {fileID: 1374718851}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (33)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4449,9 +4375,9 @@ GameObject:
   - component: {fileID: 1470962045}
   - component: {fileID: 1470962044}
   - component: {fileID: 1470962043}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (59)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4540,7 +4466,7 @@ PrefabInstance:
     - target: {fileID: 4648783082227881937, guid: f0ac4b658e15451449305e10854fdc4a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4648783082227881937, guid: f0ac4b658e15451449305e10854fdc4a,
         type: 3}
@@ -4600,6 +4526,105 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4648783082227881936, guid: f0ac4b658e15451449305e10854fdc4a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f0ac4b658e15451449305e10854fdc4a, type: 3}
+--- !u!1 &1558064079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558064080}
+  m_Layer: 0
+  m_Name: Start Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1558064080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558064079}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 33, y: 0, z: -34}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1001 &1574372895
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -36.479115
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 37.829388
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620392, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5129818335729620398, guid: f25dbf1eeee79974d8245ad57724b9d1,
+        type: 3}
+      propertyPath: m_Name
+      value: ParkingSpot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f25dbf1eeee79974d8245ad57724b9d1, type: 3}
 --- !u!1 &1599914206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4612,9 +4637,9 @@ GameObject:
   - component: {fileID: 1599914209}
   - component: {fileID: 1599914208}
   - component: {fileID: 1599914207}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (63)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4705,9 +4730,9 @@ GameObject:
   - component: {fileID: 1603564092}
   - component: {fileID: 1603564091}
   - component: {fileID: 1603564090}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (36)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4798,9 +4823,9 @@ GameObject:
   - component: {fileID: 1618091122}
   - component: {fileID: 1618091121}
   - component: {fileID: 1618091120}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (32)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -4891,9 +4916,9 @@ GameObject:
   - component: {fileID: 1623782174}
   - component: {fileID: 1623782173}
   - component: {fileID: 1623782172}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (20)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5117,9 +5142,9 @@ GameObject:
   - component: {fileID: 1688462113}
   - component: {fileID: 1688462112}
   - component: {fileID: 1688462111}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (7)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5210,9 +5235,9 @@ GameObject:
   - component: {fileID: 1699978106}
   - component: {fileID: 1699978105}
   - component: {fileID: 1699978104}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (26)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5303,9 +5328,9 @@ GameObject:
   - component: {fileID: 1784842950}
   - component: {fileID: 1784842949}
   - component: {fileID: 1784842948}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (11)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5396,9 +5421,9 @@ GameObject:
   - component: {fileID: 1799802316}
   - component: {fileID: 1799802315}
   - component: {fileID: 1799802314}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (54)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5489,9 +5514,9 @@ GameObject:
   - component: {fileID: 1831473927}
   - component: {fileID: 1831473926}
   - component: {fileID: 1831473925}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (30)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5582,9 +5607,9 @@ GameObject:
   - component: {fileID: 1833501102}
   - component: {fileID: 1833501101}
   - component: {fileID: 1833501100}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (3)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5675,9 +5700,9 @@ GameObject:
   - component: {fileID: 1834183050}
   - component: {fileID: 1834183049}
   - component: {fileID: 1834183048}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (55)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5768,9 +5793,9 @@ GameObject:
   - component: {fileID: 1864796788}
   - component: {fileID: 1864796787}
   - component: {fileID: 1864796786}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (62)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5861,9 +5886,9 @@ GameObject:
   - component: {fileID: 1897891355}
   - component: {fileID: 1897891354}
   - component: {fileID: 1897891353}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (29)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5954,9 +5979,9 @@ GameObject:
   - component: {fileID: 1934010082}
   - component: {fileID: 1934010081}
   - component: {fileID: 1934010080}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (61)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6047,9 +6072,9 @@ GameObject:
   - component: {fileID: 1938902278}
   - component: {fileID: 1938902277}
   - component: {fileID: 1938902276}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (45)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6140,9 +6165,9 @@ GameObject:
   - component: {fileID: 1970395393}
   - component: {fileID: 1970395392}
   - component: {fileID: 1970395391}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (60)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6233,9 +6258,9 @@ GameObject:
   - component: {fileID: 1972105980}
   - component: {fileID: 1972105979}
   - component: {fileID: 1972105978}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (37)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6326,9 +6351,9 @@ GameObject:
   - component: {fileID: 1983262776}
   - component: {fileID: 1983262775}
   - component: {fileID: 1983262774}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (49)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6419,9 +6444,9 @@ GameObject:
   - component: {fileID: 2017009410}
   - component: {fileID: 2017009409}
   - component: {fileID: 2017009408}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (9)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6512,9 +6537,9 @@ GameObject:
   - component: {fileID: 2028083314}
   - component: {fileID: 2028083313}
   - component: {fileID: 2028083312}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (6)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6605,9 +6630,9 @@ GameObject:
   - component: {fileID: 2036454504}
   - component: {fileID: 2036454503}
   - component: {fileID: 2036454502}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (23)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6698,9 +6723,9 @@ GameObject:
   - component: {fileID: 2055197363}
   - component: {fileID: 2055197362}
   - component: {fileID: 2055197361}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (38)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6791,9 +6816,9 @@ GameObject:
   - component: {fileID: 2063440066}
   - component: {fileID: 2063440065}
   - component: {fileID: 2063440064}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (52)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -6884,9 +6909,9 @@ GameObject:
   - component: {fileID: 2064434800}
   - component: {fileID: 2064434799}
   - component: {fileID: 2064434798}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (25)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -7021,9 +7046,9 @@ GameObject:
   - component: {fileID: 2107228883}
   - component: {fileID: 2107228882}
   - component: {fileID: 2107228881}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (42)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -7114,9 +7139,9 @@ GameObject:
   - component: {fileID: 2134772238}
   - component: {fileID: 2134772237}
   - component: {fileID: 2134772236}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Cube (58)
-  m_TagString: Wall
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

@@ -459,7 +459,7 @@ Transform:
   m_GameObject: {fileID: 6769274726692034198}
   m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 6.25, y: 0.5, z: -0.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 253525875169829487}
   - {fileID: 7850605993000340528}
@@ -496,15 +496,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebd2d560e352834491787e1b30e74d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Disabled: 0
-  isLossVisible: 1
-  secondsUntilCheck: 5
-  distanceNeedToTravel: 2
   wheelsController: {fileID: 2623718873107856015}
   sensorsController: {fileID: 6769274726692034199}
   distancesController: {fileID: 8362457758587901854}
   carCollider: {fileID: 8962497632285684810}
   lossText: {fileID: 7746385324673118589}
+  isLossVisible: 1
+  isFitnessDistance: 1
+  secondsUntilCheck: 5
+  distanceNeedToTravel: 2
 --- !u!114 &2623718873107856015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
   - {fileID: 4483081910902344064}
   - {fileID: 7523624738713413117}
   centerOfMass: {x: 0, y: 0, z: 0}
-  steerAngle: 45
+  steerAngle: 50
   driveTorque: 600
   brakeTorque: 600
   downForce: 100
@@ -547,11 +547,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd6daa3459085a44a559315b271a4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 7
+  length: 6
   rayMask:
     serializedVersion: 2
-    m_Bits: 1024
-  isVisible: 0
+    m_Bits: 1536
+  isVisible: 1
   boxCollider: {fileID: 8962497632285684810}
 --- !u!114 &8362457758587901854
 MonoBehaviour:

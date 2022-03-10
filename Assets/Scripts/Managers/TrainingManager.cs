@@ -4,10 +4,11 @@ using UnityEngine;
 public class TrainingManager : MonoBehaviour
 {
     [Header("Genetic Algorithm")]
-    public int populationSize = 85;
+    public int populationSize = 64;
     public float mutationProb = 0.055f;
+    [Range(0, 20)] public int groupSize = 4;
     [Range(0, 1)] public float percentOfTheBestPass = 0.1f;
-    [Range(0, .5f)] public float percentOfRandom = 0.05f;
+    [Range(0, 1f)] public float percentOfRandom = 0.1f;
 
     [Header("Neural Network")]
     public int hiddenLayers = 2;
@@ -17,15 +18,21 @@ public class TrainingManager : MonoBehaviour
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform carsHolder;
     [SerializeField] private Transform parkedCarsParent;
+    [SerializeField] private BoardGroup boardGroup;
 
     [Header("Prefabs")]
     [SerializeField] private AutoCar carPrefab;
 
-    [Header("Time Controls")]
+    [Header("Controls")]
     [SerializeField] private int timeScale = 4;
+    [SerializeField] private int mapsCount = 4;
 
-    private AutoCar[] cars;
     private ParkedCar[] parkedCars;
+
+    private NeuralNetwork[][] neuralNetworksGroups;
+    private AutoCar[] carsOfCurrentGroup;
+    private int currentGroupIndex;
+    private int currentPopulation;
 
     private void Awake()
     {
@@ -36,56 +43,73 @@ public class TrainingManager : MonoBehaviour
     private void Start()
     {
         parkedCars = parkedCarsParent.GetComponentsInChildren<ParkedCar>();
-        CreateInitialPopulation();
+        var countOfGroups = populationSize / groupSize;
+        neuralNetworksGroups = new NeuralNetwork[countOfGroups][];
+
+        var initNeuralNetworks = GeneticManager.GetInitialNetworks();
+
+        FillNeuralNetworkGroupsFrom(initNeuralNetworks);
+        InstantiateNextCarsGroup();
+    }
+
+    private void FillNeuralNetworkGroupsFrom(NeuralNetwork[] neuralNetworks)
+    {
+        for (int i = 0; i < neuralNetworksGroups.GetLength(0); i++)
+        {
+            neuralNetworksGroups[i] = neuralNetworks.Skip(i * groupSize).Take(groupSize).ToArray();
+        }
     }
 
     private void Update()
     {
-        if (DidWholePopulationDie())
+        Time.timeScale = timeScale;
+
+        if (!DidCurrentGroupDie()) return;
+
+        Debug.Log($"Current group: {currentGroupIndex}");
+        Debug.Log($"Current population: {currentPopulation}");
+
+        DestroyCurrentGroupCars();
+
+        RestartParkedCars();
+
+        if(currentGroupIndex >= neuralNetworksGroups.GetLength(0))
         {
             CreateNewPopulation();
+            currentGroupIndex = 0;
+            currentPopulation++;
         }
 
-        Time.timeScale = timeScale;
+        InstantiateNextCarsGroup();
     }
 
-    private bool DidWholePopulationDie()
+    private bool DidCurrentGroupDie()
     {
-        int diedBrainsCount = cars.Count(x => x.Disabled);
-        return diedBrainsCount >= populationSize;
+        int diedBrainsCount = carsOfCurrentGroup.Count(x => x.Disabled);
+        return diedBrainsCount == groupSize;
     }
 
     private void CreateNewPopulation()
     {
-        var networks = cars.Select(x => x.NeuralNetwork).ToArray();
-
+        var networks = neuralNetworksGroups.SelectMany(x => x).ToArray();
         var reproducedNetworks = GeneticManager.Reproduce(networks);
-
         GeneticManager.Mutate(reproducedNetworks);
-
-        DestroyCars();
-
-        cars = GetBrainsFrom(reproducedNetworks);
-
-        RestartParkedCars();
+        FillNeuralNetworkGroupsFrom(reproducedNetworks);
     }
 
-    private void CreateInitialPopulation()
+    private void InstantiateNextCarsGroup()
     {
-        var initNeuralNetworks = GeneticManager.GetInitialNetworks();
-        cars = GetBrainsFrom(initNeuralNetworks);
-    }
+        var currentGroupNetworks = neuralNetworksGroups[currentGroupIndex];
 
-    private AutoCar[] GetBrainsFrom(NeuralNetwork[] neuralNetworks)
-    {
-        var cars = new AutoCar[neuralNetworks.Length];
+        carsOfCurrentGroup = new AutoCar[currentGroupNetworks.Length];
 
-        for (int i = 0; i < cars.Length; i++)
+        for (int i = 0; i < carsOfCurrentGroup.Length; i++)
         {
-            cars[i] = CreateBrain(neuralNetworks[i]);
+            carsOfCurrentGroup[i] = CreateBrain(currentGroupNetworks[i]);
+
         }
 
-        return cars;
+        currentGroupIndex++;
     }
 
     private AutoCar CreateBrain(NeuralNetwork neuralNetwork)
@@ -96,11 +120,11 @@ public class TrainingManager : MonoBehaviour
         return car;
     }
 
-    private void DestroyCars()
+    private void DestroyCurrentGroupCars()
     {
-        for (int i = 0; i < cars.Length; i++)
+        for (int i = 0; i < carsOfCurrentGroup.Length; i++)
         {
-            Destroy(cars[i].gameObject);
+            Destroy(carsOfCurrentGroup[i].gameObject);
         }
     }
 
@@ -111,5 +135,4 @@ public class TrainingManager : MonoBehaviour
             car.RestartPosition();
         }
     }
-
 }

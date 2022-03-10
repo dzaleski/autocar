@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ public class SensorsController : MonoBehaviour
 
     public float[] GetInputs()
     {
-        return GetDistances2().ToArray();
+        return GetDistances().ToArray();
     }
 
     private IEnumerable<float> GetDistances()
@@ -38,12 +37,12 @@ public class SensorsController : MonoBehaviour
         var max = center + boxCollider.size * 0.5f;
 
         yield return sensors[0].GetDistance(trans.TransformPoint(new Vector3(min.x, max.y, min.z)), Quaternion.AngleAxis(45f, transform.up) * -transform.forward);
-        yield return sensors[1].GetDistance(trans.TransformPoint(new Vector3(max.x, max.y, min.z)), Quaternion.AngleAxis(-45f, transform.up) * -transform.forward);
-        yield return sensors[2].GetDistance(trans.TransformPoint(new Vector3(max.x, max.y, max.z)), Quaternion.AngleAxis(45f, transform.up) * transform.forward);
-        yield return sensors[3].GetDistance(trans.TransformPoint(new Vector3(min.x, max.y, max.z)), Quaternion.AngleAxis(-45f, transform.up) * transform.forward);
-        yield return sensors[4].GetDistance(trans.TransformPoint(new Vector3(center.x, max.y, max.z)), transform.forward);
-        yield return sensors[5].GetDistance(trans.TransformPoint(new Vector3(center.x, max.y, min.z)), -transform.forward);
-        yield return sensors[6].GetDistance(trans.TransformPoint(new Vector3(max.x, max.y, center.z)), transform.right);
+        yield return sensors[1].GetDistance(trans.TransformPoint(new Vector3(center.x, max.y, min.z)), -transform.forward);
+        yield return sensors[2].GetDistance(trans.TransformPoint(new Vector3(max.x, max.y, min.z)), Quaternion.AngleAxis(-45f, transform.up) * -transform.forward);
+        yield return sensors[3].GetDistance(trans.TransformPoint(new Vector3(max.x, max.y, center.z)), transform.right);
+        yield return sensors[4].GetDistance(trans.TransformPoint(new Vector3(max.x, max.y, max.z)), Quaternion.AngleAxis(45f, transform.up) * transform.forward);
+        yield return sensors[5].GetDistance(trans.TransformPoint(new Vector3(center.x, max.y, max.z)), transform.forward);
+        yield return sensors[6].GetDistance(trans.TransformPoint(new Vector3(min.x, max.y, max.z)), Quaternion.AngleAxis(-45f, transform.up) * transform.forward);
         yield return sensors[7].GetDistance(trans.TransformPoint(new Vector3(min.x, max.y, center.z)), -transform.right);
     }
 
@@ -51,7 +50,7 @@ public class SensorsController : MonoBehaviour
     {
         for (int i = 0; i < sensors.Length; i++)
         {
-            yield return sensors[i].GetDistance(new Vector3(transform.position.x, 1.5f, transform.position.z), Quaternion.AngleAxis(45f * i, Vector3.up) * transform.forward);
+            yield return sensors[i].GetDistance(new Vector3(transform.position.x, transform.position.y * 2f, transform.position.z), Quaternion.AngleAxis(45f * i, Vector3.up) * transform.forward);
         }
     }
 }

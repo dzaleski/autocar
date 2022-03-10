@@ -1,83 +1,49 @@
-﻿using Assets.Scripts.Extensions;
-using System;
-using System.Linq;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    [SerializeField] private WheelsController wheelsController;
-    [SerializeField] private SensorsController sensorsController;
-    [SerializeField] private DistancesController distancesController;
-    [SerializeField] private BoxCollider carCollider;
-    [SerializeField] private TextMeshProUGUI lossText;
+    [Header("References")]
+    [SerializeField] protected WheelsController wheelsController;
+    [SerializeField] protected SensorsController sensorsController;
+    [SerializeField] protected DistancesController distancesController;
+    [SerializeField] protected BoxCollider carCollider;
+    [SerializeField] protected TextMeshProUGUI lossText;
+    [SerializeField] protected bool isLossVisible;
+    [SerializeField] private bool isFitnessDistance;
 
-    private BoxCollider parkingSpotCollider;
-    private Transform parkingSpotTransform;
+    protected BoxCollider parkingSpotCollider;
+    protected Transform parkingSportTransform;
+
+    protected float loss;
+    protected float startLossValue;
 
     private void Awake()
     {
-        var parkingSpotObject = GameObject.FindWithTag("ParkingSpot");
-        parkingSpotCollider = parkingSpotObject.GetComponentInChildren<BoxCollider>();
-        parkingSpotTransform = parkingSpotObject.transform;
+        parkingSpotCollider = GameObject.FindWithTag("ParkingSpot").GetComponentInChildren<BoxCollider>();
+        parkingSportTransform = parkingSpotCollider.transform;
     }
 
-    private void Update()
+    protected float GetLoss()
     {
-        sensorsController.GetInputs().ToList(); //In order to see raycasts
-        MoveCar();
-        SetLoss();
-    }
-
-    private void MoveCar() 
-    { 
-        wheelsController.Move(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"), Input.GetKey(KeyCode.Space) ? 1f : 0f);
-    }
-
-    private void SetLoss()
-    {
-        var carVertices = carCollider.GetVertices();
-        var parkingSportVertices = parkingSpotCollider.GetVertices();
-
-        float distancesAvg = GetAvgDistanceBetweenVertices(carVertices, parkingSportVertices);
-
-        SetLossText(distancesAvg);
-    }
-
-    private void SetLossText(float lossValue)
-    {
-        var roundedLoss = Math.Round(lossValue, 1);
-
-        if(roundedLoss <= 1)
+        if (isFitnessDistance)
         {
-            lossText.color = Color.green;
-        }
-        else if(roundedLoss < 3)
-        {
-            lossText.color = Color.yellow;
-        }
-        else
-        {
-            lossText.color = Color.red;
+            return distancesController.GetDistanceTo(parkingSportTransform.position);
         }
 
-        var distanceLeft = distancesController.GetDistanceTo(parkingSpotTransform.position) * 10f;
-
-        var clampedLoss = Mathf.Clamp(400 - lossValue - distanceLeft, 0, 400);
-
-        lossText.text = $"{Math.Round(clampedLoss, 1)}";
+        return distancesController.GetAvgDistanceBetweenVertices(carCollider, parkingSpotCollider);
     }
 
-    private float GetAvgDistanceBetweenVertices(Vector3[] fromVertices, Vector3[] toVertices)
+    protected void SetLossText()
     {
-        float sumDistances = 0;
-        int verticesCount = fromVertices.Length;
+        lossText.color = GetLossTextColor();
+        lossText.text = loss.ToString("#0.0");
+    }
 
-        for (int i = 0; i < verticesCount; i++)
-        {
-            sumDistances += Vector2.Distance(fromVertices[i].ToVector2XZ(), toVertices[i].ToVector2XZ()) * 10f;
-        }
-
-        return sumDistances / verticesCount;
+    private Color GetLossTextColor()
+    {
+        if (loss <= startLossValue * 0.1f) return Color.green;
+        if (loss <= startLossValue * 0.4f) return Color.yellow;
+        return Color.red;
     }
 }
