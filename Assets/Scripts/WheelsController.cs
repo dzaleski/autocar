@@ -9,8 +9,8 @@ internal enum CarDriveType
 
 internal enum SpeedType
 {
-    MPH,
-    KPH
+    KPH,
+    MPH
 }
 
 public class WheelsController : MonoBehaviour
@@ -19,12 +19,12 @@ public class WheelsController : MonoBehaviour
     [SerializeField] private WheelCollider[] wheelColliders = new WheelCollider[4];
     [SerializeField] private GameObject[] wheelMeshes = new GameObject[4];
     [SerializeField] private Vector3 centerOfMass;
-    [SerializeField] private float steerAngle;
-    [SerializeField] private float driveTorque = 400;
-    [SerializeField] private float brakeTorque = 400;
+    [SerializeField] private float steerAngle = 50f;
+    [SerializeField] private float driveTorque = 700;
+    [SerializeField] private float brakeTorque = 700;
     [SerializeField] private float downForce = 100f;
     [SerializeField] private SpeedType speedType;
-    [SerializeField] private float topSpeed = 200;
+    [SerializeField] private float topSpeed = 20;
 
     private Rigidbody rb;
 
@@ -51,8 +51,10 @@ public class WheelsController : MonoBehaviour
         braking = Mathf.Clamp(braking, 0f, 1f);
 
         var brake = braking * brakeTorque;
-        wheelColliders[0].brakeTorque = brake;
-        wheelColliders[1].brakeTorque = brake;
+        foreach (var collider in wheelColliders)
+        {
+            collider.brakeTorque = brake;
+        }
 
         steering = Mathf.Clamp(steering, -1, 1);
 
@@ -77,6 +79,7 @@ public class WheelsController : MonoBehaviour
                 {
                     wheelColliders[i].motorTorque = thrustTorque;
                 }
+                
                 break;
 
             case CarDriveType.FrontWheelDrive:
@@ -89,6 +92,7 @@ public class WheelsController : MonoBehaviour
                 wheelColliders[2].motorTorque = wheelColliders[3].motorTorque = thrustTorque;
                 break;
         }
+        rb.AddForce(transform.forward * 2f * driveTorque * accel);
     }
     private void AddDownForce()
     {

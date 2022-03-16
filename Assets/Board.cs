@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
     public BoardGroup boardGroup;
+    public bool IsCarDisabled => boardCar.Disabled;
 
     [Header("Transforms")]
     [SerializeField] private Transform startPoint;
@@ -14,17 +15,21 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
     [Header("Prefabs")]
     [SerializeField] private AutoCar carPrefab;
 
+    private AutoCar boardCar;
+    private ParkedCar[] parkedCars;
+
     private void Awake()
     {
         boardGroup.Subscribe(this);
+        parkedCars = parkedCarsParent.GetComponentsInChildren<ParkedCar>();
     }
 
-    public AutoCar CreateBrain(NeuralNetwork neuralNetwork)
+    public void RestartParkedCars()
     {
-        var car = Instantiate(carPrefab, carsHolder);
-        car.SetNeuralNetwork(neuralNetwork);
-        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
-        return car;
+        foreach (var car in parkedCars)
+        {
+            car.RestartPosition();
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -42,12 +47,22 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
         boardGroup.OnBoardPointerExit(this);
     }
 
-    public AutoCar InstantiateCar(NeuralNetwork neuralNetwork)
+    public void InstantiateCar(NeuralNetwork neuralNetwork)
     {
         var car = Instantiate(carPrefab, carsHolder);
         car.SetNeuralNetwork(neuralNetwork);
         car.ParkingSpot = parkingSpot;
         car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
-        return car;
+        boardCar = car;
+    }
+
+    public void DisableCar()
+    {
+        boardCar.Disable();
+    }
+
+    public void DestroyCar()
+    {
+        Destroy(boardCar);
     }
 }

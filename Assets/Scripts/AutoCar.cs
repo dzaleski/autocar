@@ -7,10 +7,14 @@ public class AutoCar : Car
 {
     [HideInInspector] public bool Disabled { get; set; }
     [HideInInspector] public NeuralNetwork NeuralNetwork { get; set; }
+    [HideInInspector] public Transform ParkingSpot { get; set; }
 
     [SerializeField] private float secondsUntilCheck = 3;
     [SerializeField] private float distanceNeedToTravel = 10;
 
+    private BoxCollider parkingSpotCollider;
+    private float loss;
+    private float startLossValue;
 
     private void Start()
     {
@@ -20,6 +24,8 @@ public class AutoCar : Car
 
     private void Update()
     {
+        if(Disabled) return;
+
         loss = GetLoss();
         SetLossText();
 
@@ -34,7 +40,7 @@ public class AutoCar : Car
         float steerMultiplier = outputs[1];
         float brakeMultiplier = 0f;
 
-        if (loss <= startLossValue * 0.12f)
+        if (loss <= 4f)
         {
             brakeMultiplier = 1f;
         }
@@ -42,17 +48,18 @@ public class AutoCar : Car
         wheelsController.Move(accelerateMultiplier, steerMultiplier, brakeMultiplier);
     }
 
-    public void DisableBrain()
+    public void Disable()
     {
         NeuralNetwork.Fitness = 1 / loss;
-        SetCarAsDisabled();
+        Disabled = true;
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Car"))
         {
-            DisableBrain();
+            Disable();
         }
     }
 
@@ -60,7 +67,7 @@ public class AutoCar : Car
     {
         if (other.CompareTag("ParkingArea"))
         {
-            DisableBrain();
+            Disable();
         }
     }
 
@@ -76,19 +83,36 @@ public class AutoCar : Car
 
             if (Vector3.Distance(prevPosition, currPosition) < distanceNeedToTravel)
             {
-                DisableBrain();
+                Disable();
             }
         }
-    }
-
-    private void SetCarAsDisabled()
-    {
-        Disabled = true;
-        transform.gameObject.SetActive(false);
     }
 
     public void SetNeuralNetwork(NeuralNetwork neuralNetwork)
     {
         NeuralNetwork = neuralNetwork;
+    }
+
+    protected void SetLossText()
+    {
+        lossText.color = GetLossTextColor();
+        lossText.text = loss.ToString("#0.0");
+    }
+
+    private Color GetLossTextColor()
+    {
+        if (loss <= startLossValue * 0.1f) return Color.green;
+        if (loss <= startLossValue * 0.4f) return Color.yellow;
+        return Color.red;
+    }
+
+    public float GetLoss()
+    {
+        if (isFitnessDistance)
+        {
+            return distancesController.GetDistanceTo(ParkingSpot.position);
+        }
+
+        return distancesController.GetAvgDistanceBetweenVertices(carCollider, parkingSpotCollider);
     }
 }

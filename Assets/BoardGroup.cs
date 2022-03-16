@@ -3,21 +3,16 @@ using UnityEngine;
 
 public class BoardGroup : MonoBehaviour
 {
-    private List<Board> boards;
+    [HideInInspector] public List<Board> Boards { get; private set; }
 
     public void Subscribe(Board board)
     {
-        if (boards == null)
+        if (Boards == null)
         {
-            boards = new List<Board>();
+            Boards = new List<Board>();
         }
 
-        boards.Add(board);
-    }
-
-    public AutoCar InstantiateCarAtBoard(NeuralNetwork network, int boardIndex)
-    {
-        return boards[boardIndex].InstantiateCar(network);
+        Boards.Add(board);
     }
 
     public void OnBoardPointerExit(Board board)

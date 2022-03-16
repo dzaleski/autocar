@@ -5,7 +5,7 @@ public class LineDrawer
     private LineRenderer _lineRenderer;
     private float _lineSize;
 
-    public LineDrawer(Transform parent, float lineSize = 0.03f)
+    public LineDrawer(Transform parent, float lineSize = 0.5f)
     {
         var lineObj = new GameObject("Sensor");
         lineObj.transform.parent = parent;

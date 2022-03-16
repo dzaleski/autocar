@@ -45,12 +45,4 @@ public class SensorsController : MonoBehaviour
         yield return sensors[6].GetDistance(trans.TransformPoint(new Vector3(min.x, max.y, max.z)), Quaternion.AngleAxis(-45f, transform.up) * transform.forward);
         yield return sensors[7].GetDistance(trans.TransformPoint(new Vector3(min.x, max.y, center.z)), -transform.right);
     }
-
-    private IEnumerable<float> GetDistances2()
-    {
-        for (int i = 0; i < sensors.Length; i++)
-        {
-            yield return sensors[i].GetDistance(new Vector3(transform.position.x, transform.position.y * 2f, transform.position.z), Quaternion.AngleAxis(45f * i, Vector3.up) * transform.forward);
-        }
-    }
 }

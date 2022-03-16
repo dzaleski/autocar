@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Train/SinusTrain.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Test/SinusTest.unity
+    path: Assets/Scenes/Training.unity
     guid: bbb0fe8587db9664ba30d9e4356739b4
   - enabled: 1
     path: Assets/Scenes/Train/TrackTrain.unity

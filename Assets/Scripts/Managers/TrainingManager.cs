@@ -4,7 +4,7 @@ using UnityEngine;
 public class TrainingManager : MonoBehaviour
 {
     [Header("Genetic Algorithm")]
-    public int populationSize = 64;
+    public int populationSize = 63;
     public float mutationProb = 0.055f;
     [Range(0, 20)] public int groupSize = 4;
     [Range(0, 1)] public float percentOfTheBestPass = 0.1f;
@@ -25,7 +25,6 @@ public class TrainingManager : MonoBehaviour
     [SerializeField] private int mapsCount = 4;
 
     private NeuralNetwork[][] neuralNetworksGroups;
-    private AutoCar[] carsOfCurrentGroup;
     private int currentGroupIndex;
     private int currentPopulation;
 
@@ -33,6 +32,7 @@ public class TrainingManager : MonoBehaviour
     {
         GeneticManager.Initialise(populationSize, mutationProb, percentOfTheBestPass, percentOfRandom);
         NeuralNetwork.Initialise(hiddenLayers, neuronsPerHiddenLayer);
+        groupSize = boardGroup.Boards.Count;
     }
 
     private void Start()
@@ -77,8 +77,8 @@ public class TrainingManager : MonoBehaviour
 
     private bool DidCurrentGroupDie()
     {
-        int diedBrainsCount = carsOfCurrentGroup.Count(x => x.Disabled);
-        return diedBrainsCount == groupSize;
+        int diedCarsCount = boardGroup.Boards.Count(x => x.IsCarDisabled);
+        return diedCarsCount == groupSize;
     }
 
     private void CreateNewPopulation()
@@ -93,11 +93,10 @@ public class TrainingManager : MonoBehaviour
     {
         var currentGroupNetworks = neuralNetworksGroups[currentGroupIndex];
 
-        carsOfCurrentGroup = new AutoCar[currentGroupNetworks.Length];
-
-        for (int i = 0; i < carsOfCurrentGroup.Length; i++)
+        for (int i = 0; i < currentGroupNetworks.Length; i++)
         {
-            carsOfCurrentGroup[i] = boardGroup.InstantiateCarAtBoard(currentGroupNetworks[i], i);
+            boardGroup.Boards[i].RestartParkedCars();
+            boardGroup.Boards[i].InstantiateCar(currentGroupNetworks[i]);
         }
 
         currentGroupIndex++;
@@ -105,9 +104,9 @@ public class TrainingManager : MonoBehaviour
 
     private void DestroyCurrentGroupCars()
     {
-        for (int i = 0; i < carsOfCurrentGroup.Length; i++)
+        foreach (var board in boardGroup.Boards)
         {
-            Destroy(carsOfCurrentGroup[i].gameObject);
+            board.DestroyCar();
         }
     }
 }
