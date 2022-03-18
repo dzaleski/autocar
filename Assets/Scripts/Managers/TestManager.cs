@@ -1,45 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TestManager : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private AutoCar carPrefab;
-    [SerializeField] private Transform startPoint;
+    [SerializeField] private Board testingBoard;
 
-    private AutoCar currentCar;
-
-    private void Update()
+    private void Awake()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            currentCar = InstantiatneCarFromBestNN();
-        }
-        else if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            LoadMainMenu();
-        }
-        else if(Input.GetKeyDown(KeyCode.R))
-        {
-            RestartCar();
-        }
-    }
-
-    private AutoCar InstantiatneCarFromBestNN()
-    {
-        var car = Instantiate(carPrefab);
-        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation); 
-        return car;
-    }
-
-    private void RestartCar()
-    {
-        Destroy(currentCar);
-        currentCar = InstantiatneCarFromBestNN();
-    }
-
-    private void LoadMainMenu()
-    {
-        SceneManager.LoadScene(Scenes.Menu);
+        testingBoard.InstantiateCar(SaveData.LoadedNetwork);
     }
 }

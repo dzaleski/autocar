@@ -4,62 +4,40 @@ using UnityEngine;
 
 public class TrainingManager : MonoBehaviour
 {
-    [Header("Genetic Algorithm")]
-    [SerializeField] private float mutationProb = 0.055f;
-    [SerializeField] private int groupSize = 4;
-    [SerializeField] private int groupsCount = 4;
-    [SerializeField] private float percentOfTheBestPass = 0.1f;
-    [SerializeField] private float percentOfRandom = 0.1f;
+    public int CurrentGroup => currentGroupIndex + 1;
+    public int CurrentPopulation => currentPopulation + 1;
+    public NeuralNetwork BestNetwork { get; private set; }
 
-    [Header("Neural Network")]
-    [SerializeField] private int inputs = 8;
-    [SerializeField] private int hiddenLayers = 2;
-    [SerializeField] private int neuronsPerHiddenLayer = 12;
-    [SerializeField] private int outputs = 2;
+    private static TrainingManager instance;
+    public static TrainingManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<TrainingManager>();
+            }
 
-    [Header("Sensors")]
-    [SerializeField] private int length = 12;
-    [SerializeField] private LayerMask rayMask;
-    [SerializeField] private bool isVisible = true;
+            return instance;
+        }
+    }
 
     [Header("Other")]
     [SerializeField] private int timeScale = 4;
     [SerializeField] private BoardGroup boardGroup;
     [SerializeField] private Board boardPrefab;
 
-    private static TrainingManager _instance;
-    public static TrainingManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<TrainingManager>();
-            }
-            return _instance;
-        }
-    }
-
     private NeuralNetwork[][] neuralNetworksGroups;
     private int currentGroupIndex;
     private int currentPopulation;
-    private int populationSize;
-
-    public int CurrentGroup => currentGroupIndex + 1;
-    public int CurrentPopulation => currentPopulation + 1;
-    public int PopulationSize => groupsCount * groupSize;
-    public NeuralNetwork BestNetwork => GetBestNetwork();
-
-    private void Awake()
-    {
-        populationSize = groupsCount * groupSize;
-        GeneticManager.Initialise(populationSize, mutationProb, percentOfTheBestPass, percentOfRandom);
-        NeuralNetwork.Initialise(inputs, hiddenLayers, neuronsPerHiddenLayer, outputs);
-        SensorsController.Initialise(inputs, length, rayMask, isVisible);
-    }
+    private int groupSize;
+    private int groupsCount;
 
     private void Start()
     {
+        groupSize = Initializator.Instance.GroupSize;
+        groupsCount = Initializator.Instance.GroupSize;
+
         float columns = Mathf.Ceil(Mathf.Sqrt(groupSize));
         float rows = Mathf.Ceil(groupSize / columns);
 
@@ -87,7 +65,7 @@ public class TrainingManager : MonoBehaviour
 
     private (float width, Vector3 gridCenter) GetGridWidthAndCenter(float rows, float columns)
     {
-        var singleBoardSize = boardGroup.Boards.First().GetBoardSize();
+        var singleBoardSize = boardGroup.Items.First().GetBoardSize();
 
         var verticalSize = singleBoardSize.vertical * (rows - 2);
         var horizontalSize = singleBoardSize.horizontal * columns;
@@ -136,7 +114,7 @@ public class TrainingManager : MonoBehaviour
 
         DestroyCurrentGroupCars();
 
-        if(currentGroupIndex >= neuralNetworksGroups.GetLength(0))
+        if (currentGroupIndex >= neuralNetworksGroups.GetLength(0))
         {
             CreateNewPopulation();
             currentGroupIndex = 0;
@@ -148,15 +126,20 @@ public class TrainingManager : MonoBehaviour
 
     private bool DidCurrentGroupDie()
     {
-        int diedCarsCount = boardGroup.Boards.Count(x => x.IsCarDisabled);
+        int diedCarsCount = boardGroup.Items.Count(x => x.IsCarDisabled);
         return diedCarsCount == groupSize;
     }
 
     private void CreateNewPopulation()
     {
         var networks = neuralNetworksGroups.SelectMany(x => x).ToArray();
+
+        BestNetwork = networks.OrderByDescending(x => x.Fitness).First();
+
         var reproducedNetworks = GeneticManager.Reproduce(networks);
+
         GeneticManager.Mutate(reproducedNetworks);
+
         FillNeuralNetworkGroupsFrom(reproducedNetworks);
     }
 
@@ -166,7 +149,7 @@ public class TrainingManager : MonoBehaviour
 
         for (int i = 0; i < currentGroupNetworks.Length; i++)
         {
-            boardGroup.Boards[i].InstantiateCar(currentGroupNetworks[i]);
+            boardGroup.Items[i].InstantiateCar(currentGroupNetworks[i]);
         }
 
         currentGroupIndex++;
@@ -174,7 +157,7 @@ public class TrainingManager : MonoBehaviour
 
     private void DestroyCurrentGroupCars()
     {
-        foreach (var board in boardGroup.Boards)
+        foreach (var board in boardGroup.Items)
         {
             board.DestroyCar();
         }
@@ -183,11 +166,6 @@ public class TrainingManager : MonoBehaviour
     public List<NeuralNetwork> GetCurrentNetworks()
     {
         return neuralNetworksGroups.SelectMany(x => x).ToList();
-    }
-
-    public NeuralNetwork GetBestNetwork()
-    {
-        return neuralNetworksGroups.SelectMany(x => x).OrderByDescending(x => x.Fitness).First();
     }
 
     public void SetTimeScale(int scale)

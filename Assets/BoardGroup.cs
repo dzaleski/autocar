@@ -1,32 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-public class BoardGroup : MonoBehaviour
+﻿public class BoardGroup : Group<Board>
 {
-    [HideInInspector] public List<Board> Boards { get; private set; }
-
-    public void Subscribe(Board board)
+    public override void OnBoardPointerExit(Board item)
     {
-        if (Boards == null)
-        {
-            Boards = new List<Board>();
-        }
-
-        Boards.Add(board);
     }
 
-    public void OnBoardPointerExit(Board board)
+    public override void OnBoardPointerEnter(Board item)
     {
-
     }
 
-    public void OnBoardPointerEnter(Board board)
+    public override void OnBoardPointerClick(Board item)
     {
-
-    }
-
-    public void OnBoardPointerClick(Board board)
-    {
-
     }
 }

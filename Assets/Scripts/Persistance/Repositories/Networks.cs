@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Persistance.Models;
 using System;
+using UnityEngine;
+using Network = Assets.Scripts.Persistance.Models.Network;
 
 namespace Assets.Scripts.Persistance.Repositories
 {

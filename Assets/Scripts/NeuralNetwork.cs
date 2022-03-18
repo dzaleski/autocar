@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Persistance.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,11 @@ public class NeuralNetwork
                 }
             }
         }
+    }
+
+    public NeuralNetwork(Network network) : this()
+    {
+        weightsBetweenTheLayers = new List<float[,]>(network.WeightsBetweenTheLayers);
     }
 
     private void InitNeurons()

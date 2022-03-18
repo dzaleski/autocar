@@ -6,11 +6,13 @@ namespace Assets.Scripts.Persistance.Models
     [Serializable]
     public class Network : Base
     {
-        public Network(List<float[,]> weightsBetweenTheLayers) : base()
+        public Network(List<float[,]> weightsBetweenTheLayers, float fitness) : base()
         {
-            this.weightsBetweenTheLayers = weightsBetweenTheLayers;
+            WeightsBetweenTheLayers = weightsBetweenTheLayers;
+            Fitness = fitness;
         }
 
-        public List<float[,]> weightsBetweenTheLayers { get; set; }
+        public List<float[,]> WeightsBetweenTheLayers { get; set; }
+        public float Fitness { get; set; }
     }
 }

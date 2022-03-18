@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour
 
         foreach (var network in currentNetworks)
         {
-            networksToSave.Add(new Network(network.weightsBetweenTheLayers));
+            networksToSave.Add(new Network(network.weightsBetweenTheLayers, network.Fitness));
         }
 
         trainings.Add(new Training(networksToSave));
@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     public void SaveBestNetwork()
     {
         var bestNetwork = TrainingManager.Instance.BestNetwork;
-        networks.Add(new Network(bestNetwork.weightsBetweenTheLayers));
+        networks.Add(new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness));
         networks.Save();
     }
 }
