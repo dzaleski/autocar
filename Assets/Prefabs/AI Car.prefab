@@ -496,11 +496,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebd2d560e352834491787e1b30e74d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLossVisible: 1
-  isFitnessDistance: 1
-  lossText: {fileID: 7746385324673118589}
+  percentAccuaryToStop: 0.02
   secondsUntilCheck: 5
   distanceNeedToTravel: 2
+  drivingByPlayer: 0
+  lossText: {fileID: 7746385324673118589}
 --- !u!114 &2623718873107856015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -543,11 +543,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd6daa3459085a44a559315b271a4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 21
-  rayMask:
-    serializedVersion: 2
-    m_Bits: 1536
-  isVisible: 1
   boxCollider: {fileID: 8962497632285684810}
 --- !u!114 &8362457758587901854
 MonoBehaviour:

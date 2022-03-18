@@ -1,5 +1,4 @@
-﻿using Assets.Enums;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TestManager : MonoBehaviour
@@ -41,6 +40,6 @@ public class TestManager : MonoBehaviour
 
     private void LoadMainMenu()
     {
-        SceneManager.LoadScene((int)Scenes.MainMenu);
+        SceneManager.LoadScene(Scenes.Menu);
     }
 }

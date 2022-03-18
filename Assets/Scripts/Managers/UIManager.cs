@@ -1,40 +1,33 @@
-﻿using Assets.Enums;
-using TMPro;
+﻿using Assets.Scripts.Persistance.Models;
+using Assets.Scripts.Persistance.Repositories;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Network = Assets.Scripts.Persistance.Models.Network;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI currGenerationText;
+    [SerializeField] private Trainings trainings;
+    [SerializeField] private Networks networks;
 
-    private int currentGeneration = 1;
-
-    private void Update()
+    public void SaveTraining()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        var currentNetworks = TrainingManager.Instance.GetCurrentNetworks();
+
+        var networksToSave = new List<Network>();
+
+        foreach (var network in currentNetworks)
         {
-            LoadMainMenu();
+            networksToSave.Add(new Network(network.weightsBetweenTheLayers));
         }
+
+        trainings.Add(new Training(networksToSave));
+        trainings.Save();
     }
 
-    public void UpdateCurrentGenerationText()
+    public void SaveBestNetwork()
     {
-        //currentGeneration++;
-        //currGenerationText.SetText($"Current generation: <color=green>{currentGeneration}</color>");
-    }
-
-    public void LoadParkingScene()
-    {
-        SceneManager.LoadScene((int)Scenes.TrainParking);
-    }
-
-    public void LoadTrackScene()
-    {
-        SceneManager.LoadScene((int)Scenes.Track);
-    }
-
-    public void LoadMainMenu()
-    {
-        SceneManager.LoadScene((int)Scenes.MainMenu);
+        var bestNetwork = TrainingManager.Instance.BestNetwork;
+        networks.Add(new Network(bestNetwork.weightsBetweenTheLayers));
+        networks.Save();
     }
 }

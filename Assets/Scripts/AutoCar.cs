@@ -1,46 +1,70 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(WheelsController))]
+[RequireComponent(typeof(SensorsController))]
+[RequireComponent(typeof(DistancesController))]
 [RequireComponent(typeof(Rigidbody))]
-public class AutoCar : Car
+public class AutoCar : MonoBehaviour
 {
-    [HideInInspector] public bool Disabled { get; set; }
-    [HideInInspector] public NeuralNetwork NeuralNetwork { get; set; }
-    [HideInInspector] public Transform ParkingSpot { get; set; }
-
+    [SerializeField] private float percentAccuaryToStop = 0.02f;
     [SerializeField] private float secondsUntilCheck = 3;
     [SerializeField] private float distanceNeedToTravel = 10;
+    [SerializeField] private bool drivingByPlayer;
+    [SerializeField] protected TextMeshProUGUI lossText;
 
-    private BoxCollider parkingSpotCollider;
+    public bool IsDisabled => disabled;
+
+    private WheelsController wheelsController;
+    private SensorsController sensorsController;
+    private DistancesController distancesController;
+    private Transform parkingSpot;
+    private NeuralNetwork neuralNetwork;
     private float loss;
     private float startLossValue;
+    private bool disabled;
+    private bool isIdling;
+
+    private void Awake()
+    {
+        wheelsController = GetComponent<WheelsController>();
+        sensorsController = GetComponent<SensorsController>();
+        distancesController = GetComponent<DistancesController>();
+    }
 
     private void Start()
     {
         startLossValue = GetLoss();
-        StartCoroutine(KillIfIdleCoroutine());
+        if(!drivingByPlayer) StartCoroutine(KillIfIdleCoroutine());
     }
 
     private void Update()
     {
-        if(Disabled) return;
+        if (disabled) return;
+        if (isIdling) Disable();
 
         loss = GetLoss();
         SetLossText();
 
         var inputs = sensorsController.GetInputs();
-        var outputs = NeuralNetwork.Process(inputs);
+        var outputs = neuralNetwork.Process(inputs);
         MoveCar(outputs);
     }
 
     private void MoveCar(float[] outputs)
     {
+        if (drivingByPlayer)
+        {
+            wheelsController.Move(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"), Input.GetKey(KeyCode.Space) ? 1f : 0f);
+            return;
+        }
+
         float accelerateMultiplier = outputs[0];
         float steerMultiplier = outputs[1];
         float brakeMultiplier = 0f;
 
-        if (loss <= 4f)
+        if (loss <= startLossValue * percentAccuaryToStop)
         {
             brakeMultiplier = 1f;
         }
@@ -50,8 +74,8 @@ public class AutoCar : Car
 
     public void Disable()
     {
-        NeuralNetwork.Fitness = 1 / loss;
-        Disabled = true;
+        neuralNetwork.Fitness = 1 / loss;
+        disabled = true;
         Destroy(gameObject);
     }
 
@@ -76,21 +100,20 @@ public class AutoCar : Car
         while (true)
         {
             var prevPosition = transform.position;
-
             yield return new WaitForSeconds(secondsUntilCheck);
-
             var currPosition = transform.position;
-
-            if (Vector3.Distance(prevPosition, currPosition) < distanceNeedToTravel)
-            {
-                Disable();
-            }
+            isIdling = Vector3.Distance(prevPosition, currPosition) < distanceNeedToTravel;
         }
     }
 
-    public void SetNeuralNetwork(NeuralNetwork neuralNetwork)
+    public void SetNeuralNetwork(NeuralNetwork network)
     {
-        NeuralNetwork = neuralNetwork;
+        neuralNetwork = network;
+    }
+
+    public void SetParkingSpot(Transform spot)
+    {
+        parkingSpot = spot;
     }
 
     protected void SetLossText()
@@ -108,11 +131,6 @@ public class AutoCar : Car
 
     public float GetLoss()
     {
-        if (isFitnessDistance)
-        {
-            return distancesController.GetDistanceTo(ParkingSpot.position);
-        }
-
-        return distancesController.GetAvgDistanceBetweenVertices(carCollider, parkingSpotCollider);
+        return distancesController.GetDistanceTo(parkingSpot.position);
     }
 }
