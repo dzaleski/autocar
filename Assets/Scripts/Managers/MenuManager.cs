@@ -1,17 +1,31 @@
-﻿using Assets.Scripts.Persistance.Repositories;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    [Header("Repositories")]
-    [SerializeField] private Trainings trainings;
+    public static MenuManager Instance { get; private set; }
 
-    [Header("Parents")]
-    [SerializeField] private Transform loadedNetworksPanel;
+    private void Awake()
+    {
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     public void LoadTrainScene()
     {
         SceneManager.LoadScene(Scenes.Training);
+    }
+
+    public void LoadTestSceneWithNetwork(NeuralNetwork network)
+    {
+        SaveManager.ChoosenNetwork = network;
+        SceneManager.LoadScene(Scenes.Testing);
     }
 }

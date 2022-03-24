@@ -1,11 +1,8 @@
-using Assets.Scripts.Persistance.Repositories;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LoadButtonsGroup : Group<LoadButton>
 {
     [SerializeField] private LoadButton loadNetworkButton;
-    [SerializeField] private Networks networks;
 
     private void Awake()
     {
@@ -14,22 +11,20 @@ public class LoadButtonsGroup : Group<LoadButton>
 
     private void LoadNetworks()
     {
-        var loadedNetworks = networks.GetAll();
+        if (SaveManager.BestNetworks == null) return;
 
-        foreach (var network in loadedNetworks)
+        foreach (var network in SaveManager.BestNetworks)
         {
             var button = Instantiate(loadNetworkButton, transform);
             button.SetCreatedDate(network.CreatedDate);
-            button.SetNetworkId(network.Id);
+            button.SetNN(new NeuralNetwork(network));
             button.SetFitnessText(network.Fitness);
         }
     }
 
     public override void OnBoardPointerClick(LoadButton item)
     {
-        var loadedNetwork = networks.GetById(item.NetworkId);
-        SaveData.LoadedNetwork = new NeuralNetwork(loadedNetwork);
-        SceneManager.LoadScene(Scenes.Testing);
+        MenuManager.Instance.LoadTestSceneWithNetwork(item.Network);
     }
 
     public override void OnBoardPointerEnter(LoadButton item)

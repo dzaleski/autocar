@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class LoadButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    [HideInInspector] public string NetworkId { get; set; }
+    [HideInInspector] public NeuralNetwork Network { get; set; }
 
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI fitnessText;
@@ -22,17 +22,16 @@ public class LoadButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
     public void SetCreatedDate(DateTime date)
     {
         createdDateText.text = date.ToString();
-        
     }
 
     public void SetFitnessText(float fitness)
     {
-        fitnessText.text = $"Fitness: {fitness}";
+        fitnessText.text = $"Score: {fitness.ToString("#0.0")}";
     }
 
-    public void SetNetworkId(string networkId)
+    public void SetNN(NeuralNetwork network)
     {
-        NetworkId = networkId;
+        Network = network;
     }
 
     public void OnPointerExit(PointerEventData eventData)

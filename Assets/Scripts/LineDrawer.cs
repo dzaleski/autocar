@@ -35,4 +35,9 @@ public class LineDrawer
             Object.Destroy(_lineRenderer.gameObject);
         }
     }
+
+    public void Hide()
+    {
+        _lineRenderer.gameObject.SetActive(false);
+    }
 }

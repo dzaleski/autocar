@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ public class AutoCar : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI lossText;
 
     public bool IsDisabled => disabled;
+
+    public Action OnDisable;
 
     private WheelsController wheelsController;
     private SensorsController sensorsController;
@@ -74,9 +77,15 @@ public class AutoCar : MonoBehaviour
 
     public void Disable()
     {
-        neuralNetwork.Fitness = 1 / loss;
+        neuralNetwork.Fitness = 2 / loss;
         disabled = true;
-        Destroy(gameObject);
+        sensorsController.HideSensors();
+        GetComponentInChildren<Rigidbody>().isKinematic = true;
+
+        if(OnDisable != null)
+        {
+            OnDisable();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -119,7 +128,7 @@ public class AutoCar : MonoBehaviour
     protected void SetLossText()
     {
         lossText.color = GetLossTextColor();
-        lossText.text = loss.ToString("#0.0");
+        lossText.text = GetLoss().ToString("#0.0");
     }
 
     private Color GetLossTextColor()
@@ -132,5 +141,10 @@ public class AutoCar : MonoBehaviour
     public float GetLoss()
     {
         return distancesController.GetDistanceTo(parkingSpot.position);
+    }
+
+    public float GetFitness()
+    {
+        return Mathf.Clamp(startLossValue - loss, 0f, startLossValue); ;
     }
 }

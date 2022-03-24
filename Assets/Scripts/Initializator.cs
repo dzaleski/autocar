@@ -25,8 +25,6 @@ public class Initializator : MonoBehaviour
 
     private void Awake()
     {
-        // If there is an instance, and it's not me, delete myself.
-
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -40,5 +38,20 @@ public class Initializator : MonoBehaviour
         GeneticManager.Initialise(PopulationSize, MutationProb, PercentOfTheBestPass, PercentOfRandom);
         NeuralNetwork.Initialise(Inputs, HiddenLayers, NeuronsPerHiddenLayer, Outputs);
         SensorsController.Initialise(Inputs, Length, RayMask, IsVisible);
+    }
+
+    public void SetGroupSize(float value)
+    {
+        GroupSize = (int)value;
+    }
+
+    public void SetGroupsCount(float value)
+    {
+        GroupsCount = (int)value;
+    }
+
+    public void SetIsVisible(bool isVisible)
+    {
+        IsVisible = isVisible;
     }
 }

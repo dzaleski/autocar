@@ -3,9 +3,10 @@
 public class TestManager : MonoBehaviour
 {
     [SerializeField] private Board testingBoard;
+    [SerializeField] private float timeScale;
 
     private void Awake()
     {
-        testingBoard.InstantiateCar(SaveData.LoadedNetwork);
+        testingBoard.SpawnCar(SaveManager.ChoosenNetwork);
     }
 }

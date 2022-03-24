@@ -401,6 +401,7 @@
 -r:"C:/Program Files/Unity 2021.2.16f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.dll"
 -r:"C:/Program Files/Unity 2021.2.16f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.Linq.dll"
 -r:"C:/Program Files/Unity 2021.2.16f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.Serialization.dll"
+-r:"C:/Users/gaa84/OneDrive/Dokumenty/autocar/Library/PackageCache/com.unity.cinemachine@2.8.4/Runtime/ThirdParty/clipper_library.dll"
 -r:"C:/Users/gaa84/OneDrive/Dokumenty/autocar/Library/PackageCache/com.unity.collab-proxy@1.15.13/Lib/Editor/PlasticSCM/log4netPlastic.dll"
 -r:"C:/Users/gaa84/OneDrive/Dokumenty/autocar/Library/PackageCache/com.unity.collab-proxy@1.15.13/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll"
 -r:"C:/Users/gaa84/OneDrive/Dokumenty/autocar/Library/PackageCache/com.unity.collab-proxy@1.15.13/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll"

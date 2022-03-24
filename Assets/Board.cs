@@ -1,29 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
 
-public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
+public class Board : MonoBehaviour
 {
-    public bool IsCarDisabled => car.IsDisabled;
+    public bool IsDisabled => car != null && car.IsDisabled;
+    public bool IsHidden => isHidden;
 
     [Header("Transforms")]
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform carsHolder;
     [SerializeField] private Transform parkingSpot;
+    [SerializeField] private Transform greyCube;
 
     [Header("Prefabs")]
     [SerializeField] private AutoCar carPrefab;
     [SerializeField] private NavMeshData m_NavMeshData;
+
+    public AnimationCurve animationCurve;
 
     private BoardGroup boardGroup;
     private AutoCar car;
     private BoxCollider boxCollider;
     private NavMeshDataInstance navMeshDataInstance;
 
+    private Vector3 startPos;
+    private Vector3 disablePos;
+
+    private float hideBoardTime = 2f;
+    private bool isHidden = false;
+
     private void Awake()
     {
         boardGroup = transform.parent.GetComponent<BoardGroup>();
-        boardGroup.Subscribe(this);
         boxCollider = GetComponent<BoxCollider>();
     }
 
@@ -37,40 +45,29 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
         navMeshDataInstance = NavMesh.AddNavMeshData(m_NavMeshData, transform.position, Quaternion.identity);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void SpawnCar(NeuralNetwork neuralNetwork)
     {
-        boardGroup.OnBoardPointerClick(this);
+        car = Instantiate(carPrefab, carsHolder);
+
+        car.SetNeuralNetwork(neuralNetwork);
+        car.SetParkingSpot(parkingSpot);
+        car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
+        car.OnDisable = TurnOffBoard;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public static Board InstantiateBoard(Board boardPrefab, BoardGroup boardGroup)
     {
-        boardGroup.OnBoardPointerEnter(this);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        boardGroup.OnBoardPointerExit(this);
-    }
-
-    public void InstantiateCar(NeuralNetwork neuralNetwork)
-    {
-        var instantiatedCar = Instantiate(carPrefab, carsHolder);
-
-        instantiatedCar.SetNeuralNetwork(neuralNetwork);
-        instantiatedCar.SetParkingSpot(parkingSpot);
-        instantiatedCar.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
-
-        car = instantiatedCar;
-    }
-
-    public void DisableCar()
-    {
-        car.Disable();
+        var board = Instantiate(boardPrefab, boardGroup.transform);
+        boardGroup.Subscribe(board);
+        return board;
     }
 
     public void DestroyCar()
     {
-        Destroy(car);
+        if (car == null) return;
+
+        Destroy(car.gameObject);
+        car = null;
     }
 
     public void PlaceBoardOnGrid(int row, int column)
@@ -80,6 +77,8 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
         var leftShift = -transform.forward * boardSize.vertical * row;
 
         transform.position += rightShift + leftShift;
+        startPos = transform.position;
+        disablePos = startPos - transform.up * 78f;
     }
 
     public (float horizontal, float vertical) GetBoardSize()
@@ -89,5 +88,40 @@ public class Board : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, 
         float horizontal = boxCollider.bounds.size.x + spaceBetweenMaps;
         float vertical = boxCollider.bounds.size.z + spaceBetweenMaps;
         return (horizontal, vertical);
+    }
+
+    private void OnMouseDown()
+    {
+        boardGroup.OnBoardPointerClick(this);
+    }
+
+    private void OnMouseEnter()
+    {
+        boardGroup.OnBoardPointerEnter(this);
+    }
+
+    private void OnMouseExit()
+    {
+        boardGroup.OnBoardPointerExit(this);
+    }
+
+    public Vector3 GetBoardCenter()
+    {
+        return boxCollider.bounds.center;
+    }
+
+    public void TurnOffBoard()
+    {
+        if (!GameManager.Instance.HideBoards) return;
+
+        isHidden = true;
+
+        LeanTween.move(gameObject, disablePos, hideBoardTime).setEase(animationCurve);
+    }
+
+    public void TurnOnBoard()
+    {
+        isHidden = false;
+        LeanTween.move(gameObject, startPos, hideBoardTime).setEase(animationCurve);
     }
 }

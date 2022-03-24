@@ -4,28 +4,12 @@ using UnityEngine;
 
 public class TrainingManager : MonoBehaviour
 {
+    [SerializeField] private BoardGroup boardGroup;
+
     public int CurrentGroup => currentGroupIndex + 1;
     public int CurrentPopulation => currentPopulation + 1;
     public NeuralNetwork BestNetwork { get; private set; }
-
-    private static TrainingManager instance;
-    public static TrainingManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<TrainingManager>();
-            }
-
-            return instance;
-        }
-    }
-
-    [Header("Other")]
-    [SerializeField] private int timeScale = 4;
-    [SerializeField] private BoardGroup boardGroup;
-    [SerializeField] private Board boardPrefab;
+    public static TrainingManager Instance { get; private set; }
 
     private NeuralNetwork[][] neuralNetworksGroups;
     private int currentGroupIndex;
@@ -33,69 +17,28 @@ public class TrainingManager : MonoBehaviour
     private int groupSize;
     private int groupsCount;
 
-    private void Start()
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        Instance = this;
+
         groupSize = Initializator.Instance.GroupSize;
-        groupsCount = Initializator.Instance.GroupSize;
-
-        float columns = Mathf.Ceil(Mathf.Sqrt(groupSize));
-        float rows = Mathf.Ceil(groupSize / columns);
-
-        InstantiateMaps(columns);
-        AdjustCameraPosition(rows, columns);
+        groupsCount = Initializator.Instance.GroupsCount;
 
         neuralNetworksGroups = new NeuralNetwork[groupsCount][];
+    }
 
+    public void StartTraining()
+    {
         var initNeuralNetworks = GeneticManager.GetInitialNetworks();
 
         FillNeuralNetworkGroupsFrom(initNeuralNetworks);
         InstantiateNextCarsGroup();
-    }
-
-    private void AdjustCameraPosition(float rows, float columns)
-    {
-        var (width, center) = GetGridWidthAndCenter(rows, columns);
-
-        const float margin = 1.1f;
-        float maxExtent = width / 4;
-        float minDistance = (maxExtent * margin) / Mathf.Sin(Mathf.Deg2Rad * Camera.main.fieldOfView / 2.0f);
-        Camera.main.transform.position = center - Camera.main.transform.forward * minDistance;
-        Camera.main.nearClipPlane = minDistance - maxExtent;
-    }
-
-    private (float width, Vector3 gridCenter) GetGridWidthAndCenter(float rows, float columns)
-    {
-        var singleBoardSize = boardGroup.Items.First().GetBoardSize();
-
-        var verticalSize = singleBoardSize.vertical * (rows - 2);
-        var horizontalSize = singleBoardSize.horizontal * columns;
-
-        var horizontalShift = Vector3.right * (horizontalSize / 2);
-        var verticalShift = Vector3.forward * (verticalSize / 2);
-
-        var gridCenter = boardGroup.transform.position + horizontalShift - verticalShift;
-
-        return (horizontalSize, gridCenter);
-    }
-
-    private void InstantiateMaps(float columns)
-    {
-        int currentRow = 0;
-        int currentColumn = 0;
-
-        for (int i = 1; i <= groupSize; i++)
-        {
-            var board = Instantiate(boardPrefab, boardGroup.transform);
-            board.PlaceBoardOnGrid(currentRow, currentColumn);
-
-            currentColumn++;
-
-            if (i % columns == 0)
-            {
-                currentRow++;
-                currentColumn = 0;
-            }
-        }
     }
 
     private void FillNeuralNetworkGroupsFrom(NeuralNetwork[] neuralNetworks)
@@ -108,11 +51,13 @@ public class TrainingManager : MonoBehaviour
 
     private void Update()
     {
-        Time.timeScale = timeScale;
-
         if (!DidCurrentGroupDie()) return;
 
+        var isAnyBoardHidden = boardGroup.IsAnyBoardHidden();
+
         DestroyCurrentGroupCars();
+        boardGroup.ResetBoards();
+
 
         if (currentGroupIndex >= neuralNetworksGroups.GetLength(0))
         {
@@ -121,13 +66,19 @@ public class TrainingManager : MonoBehaviour
             currentPopulation++;
         }
 
-        InstantiateNextCarsGroup();
+        if (GameManager.Instance.HideBoards || isAnyBoardHidden)
+        {
+            LeanTween.delayedCall(2.1f, () => InstantiateNextCarsGroup());
+        } 
+        else
+        {
+            InstantiateNextCarsGroup();
+        }
     }
 
     private bool DidCurrentGroupDie()
     {
-        int diedCarsCount = boardGroup.Items.Count(x => x.IsCarDisabled);
-        return diedCarsCount == groupSize;
+        return boardGroup.AreBoardsDisabled();
     }
 
     private void CreateNewPopulation()
@@ -135,6 +86,12 @@ public class TrainingManager : MonoBehaviour
         var networks = neuralNetworksGroups.SelectMany(x => x).ToArray();
 
         BestNetwork = networks.OrderByDescending(x => x.Fitness).First();
+
+        Debug.Log(groupSize);
+        Debug.Log(groupsCount);
+
+        Debug.Log($"Current pop: {currentPopulation}");
+        Debug.Log($"Best: {BestNetwork.Fitness}");
 
         var reproducedNetworks = GeneticManager.Reproduce(networks);
 
@@ -149,27 +106,20 @@ public class TrainingManager : MonoBehaviour
 
         for (int i = 0; i < currentGroupNetworks.Length; i++)
         {
-            boardGroup.Items[i].InstantiateCar(currentGroupNetworks[i]);
+            boardGroup.Items[i].SpawnCar(currentGroupNetworks[i]);
         }
 
         currentGroupIndex++;
+        Debug.Log($"Current gr: {currentGroupIndex}");
     }
 
     private void DestroyCurrentGroupCars()
     {
-        foreach (var board in boardGroup.Items)
-        {
-            board.DestroyCar();
-        }
+        boardGroup.DestroyCars();
     }
 
     public List<NeuralNetwork> GetCurrentNetworks()
     {
         return neuralNetworksGroups.SelectMany(x => x).ToList();
-    }
-
-    public void SetTimeScale(int scale)
-    {
-        timeScale = scale;
     }
 }

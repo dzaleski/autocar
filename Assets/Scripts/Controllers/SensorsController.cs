@@ -99,4 +99,12 @@ public class SensorsController : MonoBehaviour
 
         lineDrawers[index].DrawLineInGameView(origin, origin + direction * _length, color);
     }
+
+    public void HideSensors()
+    {
+        foreach (var line in lineDrawers)
+        {
+            line.Hide();
+        }
+    }
 }

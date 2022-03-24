@@ -56,45 +56,77 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Persistance\Repositories\Repository.cs" />
     <Compile Include="Assets\Thirdparty\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\ParkedCar.cs" />
     <Compile Include="Assets\Board.cs" />
     <Compile Include="Assets\Scripts\NeuralNetwork.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LeanTween.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\LogoCinematic.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralCameraShake.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LTDescr.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LeanTweenExt.cs" />
+    <Compile Include="Assets\Scripts\DontDestroyOnLoad.cs" />
     <Compile Include="Assets\Scripts\Scenes.cs" />
-    <Compile Include="Assets\Scripts\Persistance\Repositories\Trainings.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\TestingUnitTests.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Archived\TestingPunch.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LTSeq.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralUISpace.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LeanAudio.cs" />
+    <Compile Include="Assets\Scripts\Group.cs" />
     <Compile Include="Assets\Scripts\Managers\TrainingManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\DistancesController.cs" />
-    <Compile Include="Assets\Scripts\Persistance\Models\Network.cs" />
-    <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Models\Network.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralSimpleUI.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathSplineEndless.cs" />
     <Compile Include="Assets\ParkingController.cs" />
-    <Compile Include="Assets\Scripts\SaveData.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathBezier.cs" />
+    <Compile Include="Assets\Scripts\LoadButtonsGroup.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathSpline.cs" />
     <Compile Include="Assets\Scripts\Controllers\SensorsController.cs" />
     <Compile Include="Assets\Scripts\LineDrawer.cs" />
     <Compile Include="Assets\Scripts\Brain.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralAdvancedTechniques.cs" />
     <Compile Include="Assets\Scripts\Managers\GeneticManager.cs" />
-    <Compile Include="Assets\Scripts\Persistance\JsonDataContext.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LeanSmooth.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralBasics2d.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathSplines.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralEventsListeners.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathSplineTrack.cs" />
     <Compile Include="Assets\Scripts\Managers\MenuManager.cs" />
-    <Compile Include="Assets\Scripts\Persistance\Models\Training.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LeanTest.cs" />
+    <Compile Include="Assets\Scripts\Managers\SaveManager.cs" />
     <Compile Include="Assets\Scripts\AutoCar.cs" />
-    <Compile Include="Assets\Scripts\Persistance\Repositories\Networks.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\TestingZLegacy.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathSpline2d.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\TestingZLegacyExt.cs" />
+    <Compile Include="Assets\Scripts\LoadButton.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathSplinePerformance.cs" />
     <Compile Include="Assets\BoardGroup.cs" />
-    <Compile Include="Assets\Scripts\Persistance\Models\Base.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\PathBezier2d.cs" />
+    <Compile Include="Assets\Scripts\Models\Base.cs" />
+    <Compile Include="Assets\Scripts\Initializator.cs" />
+    <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Extensions.cs" />
     <Compile Include="Assets\Scripts\Controllers\WheelsController.cs" />
-    <Compile Include="Assets\Scripts\Persistance\DataContext.cs" />
-    <Compile Include="Assets\Scripts\Persistance\GameData.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Framework\LTDescrOptional.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralEasingTypes.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralSequencer.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Archived\OldGUIExamplesCS.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\GeneralBasic.cs" />
+    <Compile Include="Assets\SliderInput.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Archived\TestingRigidbodyCS.cs" />
+    <Compile Include="Assets\Thirdparty\LeanTween\Examples\Scripts\Following.cs" />
     <Compile Include="Assets\Scripts\Managers\TestManager.cs" />
-    <Compile Include="Assets\Scripts\LoadButtonsGroup.cs" />
-    <Compile Include="Assets\Scripts\Group.cs" />
-    <Compile Include="Assets\Scripts\LoadButton.cs" />
-    <Compile Include="Assets\Scripts\Initializator.cs" />
+    <Compile Include="Assets\PopulationSize.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\Thirdparty\LeanTween\ReadMe.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\Thirdparty\LeanTween\License.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Thirdparty\QuickOutline\Resources\Shaders\OutlineMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
@@ -108,6 +140,7 @@
     <None Include="Assets\Thirdparty\QuickOutline\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Thirdparty\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
@@ -362,6 +395,9 @@
     </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>Assets\Plugins\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="clipper_library">
+      <HintPath>Library\PackageCache\com.unity.cinemachine@2.8.4\Runtime\ThirdParty\clipper_library.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity 2021.2.16f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -729,8 +765,14 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:\Program Files\Unity 2021.2.16f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
