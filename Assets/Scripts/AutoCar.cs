@@ -9,21 +9,25 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class AutoCar : MonoBehaviour
 {
-    [SerializeField] private float percentAccuaryToStop = 0.02f;
+    [SerializeField] private float accuaryToStop = 1.5f;
     [SerializeField] private float secondsUntilCheck = 3;
     [SerializeField] private float distanceNeedToTravel = 10;
     [SerializeField] private bool drivingByPlayer;
     [SerializeField] protected TextMeshProUGUI lossText;
 
     public bool IsDisabled => disabled;
+    public bool IsTesting;
 
     public Action OnDisable;
 
     private WheelsController wheelsController;
     private SensorsController sensorsController;
     private DistancesController distancesController;
+
     private Transform parkingSpot;
+    private BoxCollider parkingSpotCollider;
     private NeuralNetwork neuralNetwork;
+
     private float loss;
     private float startLossValue;
     private bool disabled;
@@ -38,8 +42,10 @@ public class AutoCar : MonoBehaviour
 
     private void Start()
     {
-        startLossValue = GetLoss();
-        if(!drivingByPlayer) StartCoroutine(KillIfIdleCoroutine());
+        if (!drivingByPlayer || IsTesting)
+        {
+            StartCoroutine(KillIfIdleCoroutine());
+        }
     }
 
     private void Update()
@@ -65,19 +71,14 @@ public class AutoCar : MonoBehaviour
 
         float accelerateMultiplier = outputs[0];
         float steerMultiplier = outputs[1];
-        float brakeMultiplier = 0f;
-
-        if (loss <= startLossValue * percentAccuaryToStop)
-        {
-            brakeMultiplier = 1f;
-        }
+        float brakeMultiplier = outputs[2] <= 0f ? 0f : 1f;
 
         wheelsController.Move(accelerateMultiplier, steerMultiplier, brakeMultiplier);
     }
 
     public void Disable()
     {
-        neuralNetwork.Fitness = 2 / loss;
+        neuralNetwork.Fitness = 3 * (1 / loss);
         disabled = true;
         sensorsController.HideSensors();
         GetComponentInChildren<Rigidbody>().isKinematic = true;
@@ -122,7 +123,12 @@ public class AutoCar : MonoBehaviour
 
     public void SetParkingSpot(Transform spot)
     {
-        parkingSpot = spot;
+        distancesController.SetParkingSpotAndItsCollider(spot);
+    }
+
+    public void SetStartLossValue()
+    {
+        startLossValue = GetLoss();
     }
 
     protected void SetLossText()
@@ -140,7 +146,10 @@ public class AutoCar : MonoBehaviour
 
     public float GetLoss()
     {
-        return distancesController.GetDistanceTo(parkingSpot.position);
+        var distanceLeft = distancesController.GetDistanceToParkingSpot();
+        var fitIntoSpot = distancesController.GetFitIntoParkingSpot();
+
+        return distanceLeft + fitIntoSpot;
     }
 
     public float GetFitness()

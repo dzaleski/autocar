@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     private Camera camera;
 
     private Board currentBoard;
+    public float leftMenuPadding = 80f;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class CameraController : MonoBehaviour
         Instance = this;
 
         groupSize = Initializator.Instance.GroupSize;
-        camera = Camera.main;
+        camera = GetComponent<Camera>();
     }
 
     private void Update()
@@ -40,6 +41,7 @@ public class CameraController : MonoBehaviour
         float columns = Mathf.Ceil(Mathf.Sqrt(groupSize));
         float rows = Mathf.Ceil(groupSize / columns);
         var (width, center) = boardGroup.GetGridWidthAndCenter(rows, columns);
+        center -= transform.right * leftMenuPadding;
         SetCameraPos(width, center);
     }
 

@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebd2d560e352834491787e1b30e74d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  percentAccuaryToStop: 0.006
+  accuaryToStop: 6
   secondsUntilCheck: 5
   distanceNeedToTravel: 2
   drivingByPlayer: 0

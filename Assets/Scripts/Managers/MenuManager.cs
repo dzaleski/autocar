@@ -26,6 +26,17 @@ public class MenuManager : MonoBehaviour
     public void LoadTestSceneWithNetwork(NeuralNetwork network)
     {
         SaveManager.ChoosenNetwork = network;
+        LoadTestScene();
+    }
+
+    public void LoadTestSceneWithPretrainedNetwork()
+    {
+        SaveManager.ChoosenNetwork = new NeuralNetwork(SaveManager.Pretrained);
+        LoadTestScene();
+    }
+
+    private static void LoadTestScene()
+    {
         SceneManager.LoadScene(Scenes.Testing);
     }
 }

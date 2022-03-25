@@ -4,17 +4,21 @@ using UnityEngine.AI;
 
 public class DistancesController: MonoBehaviour
 {
-    private Transform _transform;
+    private Transform carTransform;
+    private BoxCollider boxCollider;
+    private Transform parkingSpot;
+    private BoxCollider parkingSpotCollider;
 
     void Awake()
     {
-        _transform = transform;
+        carTransform = transform;
+        boxCollider = GetComponentInChildren<BoxCollider>();
     }
-    public float GetDistanceTo(Vector3 destination)
+    public float GetDistanceToParkingSpot()
     {
         NavMeshPath path = new NavMeshPath();
 
-        NavMesh.CalculatePath(_transform.position, destination, NavMesh.AllAreas, path);
+        NavMesh.CalculatePath(carTransform.position, parkingSpot.position, NavMesh.AllAreas, path);
 
         float wholeDistance = 0f;
 
@@ -26,10 +30,10 @@ public class DistancesController: MonoBehaviour
         return wholeDistance;
     }
 
-    public float GetAvgDistanceBetweenVertices(BoxCollider from, BoxCollider to)
+    public float GetFitIntoParkingSpot()
     {
-        var fromVertices = from.GetVertices();
-        var toVertices = to.GetVertices();
+        var fromVertices = boxCollider.GetVertices();
+        var toVertices = parkingSpotCollider.GetVertices();
 
         float sumDistances = 0;
         int verticesCount = fromVertices.Length;
@@ -42,5 +46,10 @@ public class DistancesController: MonoBehaviour
         return sumDistances / verticesCount;
     }
 
+    public void SetParkingSpotAndItsCollider(Transform spot)
+    {
+        parkingSpot = spot;
+        parkingSpotCollider = spot.GetComponent<BoxCollider>();
+    }
 }
 

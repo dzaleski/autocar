@@ -10,7 +10,6 @@ public class Board : MonoBehaviour
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform carsHolder;
     [SerializeField] private Transform parkingSpot;
-    [SerializeField] private Transform greyCube;
 
     [Header("Prefabs")]
     [SerializeField] private AutoCar carPrefab;
@@ -45,12 +44,13 @@ public class Board : MonoBehaviour
         navMeshDataInstance = NavMesh.AddNavMeshData(m_NavMeshData, transform.position, Quaternion.identity);
     }
 
-    public void SpawnCar(NeuralNetwork neuralNetwork)
+    public void SpawnCar(NeuralNetwork neuralNetwork, bool test = false)
     {
         car = Instantiate(carPrefab, carsHolder);
-
+        car.IsTesting = test;
         car.SetNeuralNetwork(neuralNetwork);
         car.SetParkingSpot(parkingSpot);
+        car.SetStartLossValue();
         car.transform.SetPositionAndRotation(startPoint.position, startPoint.rotation);
         car.OnDisable = TurnOffBoard;
     }

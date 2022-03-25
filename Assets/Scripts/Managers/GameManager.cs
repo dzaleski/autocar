@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using Network = Assets.Scripts.Persistance.Models.Network;
 
 public class GameManager : MonoBehaviour
 {
-    public bool HideBoards = true;
+    public static GameManager Instance { get; private set; }
+    public bool HideBoards => hideBoards;
+
     [SerializeField] private int timeScale = 4;
     [SerializeField] private BoardGroup boardGroup;
 
-    public static GameManager Instance { get; private set; }
+    private bool hideBoards = true;
 
     private void Awake()
     {
@@ -16,18 +19,9 @@ public class GameManager : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(this);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
-    }
-
-    public void SaveBestNetwork()
-    {
-        var bestNetwork = TrainingManager.Instance.BestNetwork;
-        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness);
-        SaveManager.Instance.Save(networkToSave);
+        Instance = this;
     }
 
     private void Start()
@@ -43,7 +37,26 @@ public class GameManager : MonoBehaviour
         {
             CameraController.Instance.SetCameraToStartPosition();
         }
+    }
+    public void SaveBestNetwork()
+    {
+        var bestNetwork = TrainingManager.Instance.BestNetwork;
+        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness);
+        SaveManager.Instance.Save(networkToSave);
+    }
 
+    public void SetHideBoards(bool isVisible)
+    {
+        hideBoards = isVisible;
+    }
+
+    public void SetTimeScale(float timeScale)
+    {
         Time.timeScale = timeScale;
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(Scenes.Menu);
     }
 }

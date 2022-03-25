@@ -39,6 +39,8 @@ public class TrainingManager : MonoBehaviour
 
         FillNeuralNetworkGroupsFrom(initNeuralNetworks);
         InstantiateNextCarsGroup();
+
+        StatisticsManager.Instance.UpdateCurrentPopulationText(currentPopulation + 1);
     }
 
     private void FillNeuralNetworkGroupsFrom(NeuralNetwork[] neuralNetworks)
@@ -57,19 +59,23 @@ public class TrainingManager : MonoBehaviour
 
         DestroyCurrentGroupCars();
         boardGroup.ResetBoards();
-
-
-        if (currentGroupIndex >= neuralNetworksGroups.GetLength(0))
+        var a = neuralNetworksGroups.GetLength(0);
+        if (currentGroupIndex == neuralNetworksGroups.GetLength(0))
         {
             CreateNewPopulation();
+
             currentGroupIndex = 0;
             currentPopulation++;
+
+            StatisticsManager.Instance.UpdateCurrentPopulationText(currentPopulation + 1);
+            StatisticsManager.Instance.UpdateBestScoreText(BestNetwork.Fitness);
         }
+
 
         if (GameManager.Instance.HideBoards || isAnyBoardHidden)
         {
             LeanTween.delayedCall(2.1f, () => InstantiateNextCarsGroup());
-        } 
+        }
         else
         {
             InstantiateNextCarsGroup();
@@ -87,12 +93,6 @@ public class TrainingManager : MonoBehaviour
 
         BestNetwork = networks.OrderByDescending(x => x.Fitness).First();
 
-        Debug.Log(groupSize);
-        Debug.Log(groupsCount);
-
-        Debug.Log($"Current pop: {currentPopulation}");
-        Debug.Log($"Best: {BestNetwork.Fitness}");
-
         var reproducedNetworks = GeneticManager.Reproduce(networks);
 
         GeneticManager.Mutate(reproducedNetworks);
@@ -109,8 +109,8 @@ public class TrainingManager : MonoBehaviour
             boardGroup.Items[i].SpawnCar(currentGroupNetworks[i]);
         }
 
+        StatisticsManager.Instance.UpdateCurrentGroupText(currentGroupIndex + 1, groupsCount);
         currentGroupIndex++;
-        Debug.Log($"Current gr: {currentGroupIndex}");
     }
 
     private void DestroyCurrentGroupCars()

@@ -359,6 +359,7 @@
 "Assets/Scripts/NeuralNetwork.cs"
 "Assets/Scripts/Scenes.cs"
 "Assets/SliderInput.cs"
+"Assets/StatisticsManager.cs"
 "Assets/Thirdparty/LeanTween/Examples/Archived/OldGUIExamplesCS.cs"
 "Assets/Thirdparty/LeanTween/Examples/Archived/TestingPunch.cs"
 "Assets/Thirdparty/LeanTween/Examples/Archived/TestingRigidbodyCS.cs"
