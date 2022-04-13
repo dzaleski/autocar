@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.Extensions;
-using Assets.Scripts.Persistance.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+using Assets.Scripts.Persistance.Models;
+using MathNet.Numerics.LinearAlgebra;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -11,91 +11,150 @@ public class NeuralNetwork
     public float Fitness { get; set; }
     public int HiddenLayers => _hiddenLayers;
     public int NeuronsPerHiddenLayer => _neuronsPerHiddenLayer;
+    public List<Matrix<float>> MatrixesOfWeights => new List<Matrix<float>>(_matrixesOfWeights);
+    public List<Matrix<float>> ValuesOfBiases => new List<Matrix<float>>(_valuesOfBiases);
 
     private static int _inputs;
     private static int _hiddenLayers;
     private static int _neuronsPerHiddenLayer;
     private static int _outputs;
 
-    public List<float[,]> weightsBetweenTheLayers;
-    private List<float[]> valuesOfNeurons;
-
-    private int[] layerSizes;
+    private List<Matrix<float>> _matrixesOfWeights;
+    private List<Matrix<float>> _valuesOfNeurons;
+    private List<Matrix<float>> _valuesOfBiases;
 
     public NeuralNetwork()
     {
-        layerSizes = new int[] { _inputs, _hiddenLayers, _neuronsPerHiddenLayer, _outputs };
-
-        InitNeurons();
-        InitWeights();
-        FillWeightsWithRandomValues();
+        _valuesOfNeurons = GetMatrixesOfNeuronValues().ToList();
+        _valuesOfBiases = GetMatrixesOfBiases().ToList();
+        _matrixesOfWeights = GetMatrixesOfWeights().ToList();
     }
 
     public NeuralNetwork(params NeuralNetwork[] parents) : this()
     {
-        for (int i = 0; i < weightsBetweenTheLayers.Count; i++)
-        {
-            var currWeights = weightsBetweenTheLayers[i];
+        ApplyWeightsFromParents(parents);
+        ApplyBiasesFromParents(parents);
+    }
 
-            for (int j = 0; j < currWeights.GetLength(0); j++)
+    private void ApplyWeightsFromParents(NeuralNetwork[] parents)
+    {
+        for (int i = 0; i < _matrixesOfWeights.Count; i++)
+        {
+            for (int j = 0; j < _matrixesOfWeights[i].RowCount; j++)
             {
-                for (int k = 0; k < currWeights.GetLength(1); k++)
+                for (int k = 0; k < _matrixesOfWeights[i].ColumnCount; k++)
                 {
                     var randomParent = parents[Random.Range(0, parents.Length)];
-                    var weightsFromRandomParent = randomParent.weightsBetweenTheLayers[i];
-                    currWeights[j, k] = weightsFromRandomParent[j, k];
+                    var weightsFromRandomParent = randomParent.MatrixesOfWeights[i];
+                    _matrixesOfWeights[i][j, k] = weightsFromRandomParent[j, k];
                 }
             }
         }
     }
 
-    public NeuralNetwork(Network network) : this()
+    private void ApplyBiasesFromParents(NeuralNetwork[] parents)
     {
-        weightsBetweenTheLayers = new List<float[,]>(network.WeightsBetweenTheLayers);
-    }
-
-    private void InitNeurons()
-    {
-        valuesOfNeurons = new List<float[]>();
-
-        foreach (var layerSize in layerSizes)
+        for (int i = 0; i < _valuesOfBiases.Count; i++)
         {
-            var layerNeurons = new float[layerSize];
-            valuesOfNeurons.Add(layerNeurons);
+            for (int j = 0; j < _valuesOfBiases[i].RowCount; j++)
+            {
+                for (int k = 0; k < _valuesOfBiases[i].ColumnCount; k++)
+                {
+                    var randomParent = parents[Random.Range(0, parents.Length)];
+                    var biasesFromRandomParent = randomParent.ValuesOfBiases[i];
+                    _valuesOfBiases[i][j, k] = biasesFromRandomParent[j, k];
+                }
+            }
         }
     }
-
-    private void InitWeights()
-    {
-        weightsBetweenTheLayers = new List<float[,]>();
-
-        for (int i = 1; i < layerSizes.Length; i++)
-        {
-            var previousLayerSize = layerSizes[i - 1];
-            var currentLayerSize = layerSizes[i];
-            var weightsMatrixBetweenLayers = new float[previousLayerSize, currentLayerSize];
-
-            weightsBetweenTheLayers.Add(weightsMatrixBetweenLayers);
-        }
-    }
-
-    private void FillWeightsWithRandomValues()
-    {
-        weightsBetweenTheLayers.ForEach(matrix => FillMatrixWithRandomValues(matrix));
-    }
-
-    private void FillMatrixWithRandomValues(float[,] array)
-    {
-        for (int i = 0; i < array.GetLength(0); i++)
-            for (int k = 0; k < array.GetLength(1); k++)
-                array[i, k] = GetRandomValue();
-    }
-
-
 
     public NeuralNetwork(NeuralNetwork networkToCopy) : this()
     {
-        weightsBetweenTheLayers = new List<float[,]>(networkToCopy.weightsBetweenTheLayers);
+        CopyWeightsFromTo(networkToCopy, this);
+        CopyBiasesFromTo(networkToCopy, this);
+    }
+
+    public void CopyWeightsFromTo(NeuralNetwork from, NeuralNetwork to)
+    {
+        _matrixesOfWeights.Clear();
+        foreach (var weightMatrix in from._matrixesOfWeights)
+        {
+            to._matrixesOfWeights.Add(weightMatrix);
+        }
+    }
+
+    public void CopyBiasesFromTo(NeuralNetwork from, NeuralNetwork to)
+    {
+        _valuesOfBiases.Clear();
+        foreach (var weightMatrix in from._valuesOfBiases)
+        {
+            to._valuesOfBiases.Add(weightMatrix);
+        }
+    }
+
+    public NeuralNetwork(Network network) : this()
+    {
+        _matrixesOfWeights.Clear();
+        _valuesOfBiases.Clear();
+
+        //Copy weights from saved network
+        foreach (var weightMatrix in network.MatrixesOfWeights)
+        {
+            _matrixesOfWeights.Add(weightMatrix);
+        }
+
+        //Copy bias from saved network
+        foreach (var bias in network.ValuesOfBiases)
+        {
+            _valuesOfBiases.Add(bias);
+        }
+
+        //Debug.Log("First column" + string.Join(", ", _matrixesOfWeights[0].Column(0)));
+        //Debug.Log("Second column" + string.Join(", ", _matrixesOfWeights[0].Column(1)));
+        //Debug.Log("Third column" + string.Join(", ", _matrixesOfWeights[0].Column(2)));
+    }
+
+    private IEnumerable<Matrix<float>> GetMatrixesOfNeuronValues()
+    {
+        // If _inputs = 8, matrix will have 8 x 1 size, so its just a vector
+        yield return Matrix<float>.Build.Dense(_inputs, 1);
+
+        for (int i = 0; i < _hiddenLayers; i++)
+        {
+            yield return Matrix<float>.Build.Dense(_neuronsPerHiddenLayer, 1);
+        }
+
+        yield return Matrix<float>.Build.Dense(_outputs, 1);
+    }
+
+    private IEnumerable<Matrix<float>> GetMatrixesOfBiases()
+    {
+        // If _inputs = 8, matrix will have 8 x 1 size, so its just a vector
+        yield return GetMatrixFilledWithRandomValues(_inputs, 1);
+
+        for (int i = 0; i < _hiddenLayers; i++)
+        {
+            yield return GetMatrixFilledWithRandomValues(_neuronsPerHiddenLayer, 1);
+        }
+
+        yield return GetMatrixFilledWithRandomValues(_outputs, 1);
+    }
+
+    public Matrix<float> GetMatrixFilledWithRandomValues(int rows, int columns)
+    {
+        return Matrix<float>.Build.Dense(rows, columns, (_, _) => Random.Range(-1f, 1f));
+    }
+
+    private IEnumerable<Matrix<float>> GetMatrixesOfWeights()
+    {
+        yield return GetMatrixFilledWithRandomValues(_neuronsPerHiddenLayer, _inputs);
+
+        for (int i = 0; i < _hiddenLayers - 1; i++)
+        {
+            yield return GetMatrixFilledWithRandomValues(_neuronsPerHiddenLayer, _neuronsPerHiddenLayer);
+        }
+
+        yield return GetMatrixFilledWithRandomValues(_outputs, _neuronsPerHiddenLayer);
     }
 
     public static void Initialise(int inputs, int hiddenLayers, int neuronsPerHiddenLayer, int outputs)
@@ -108,55 +167,57 @@ public class NeuralNetwork
 
     public float[] Process(float[] inputs)
     {
-        for (int i = 0; i < inputs.Length; i++)
+        for (int i = 0; i < _inputs; i++)
         {
-            valuesOfNeurons[0][i] = inputs[i]; //Fill first layer values with inputs
+            //Fill first vector with input values
+            _valuesOfNeurons[0][i, 0] = inputs[i];
         }
 
-        for (int currentLayer = 0; currentLayer < valuesOfNeurons.Count - 1; currentLayer++)
+        for (int i = 1; i < _valuesOfNeurons.Count; i++)
         {
-            int currLayerSize = valuesOfNeurons[currentLayer].Length;
-            var currNeurons = valuesOfNeurons[currentLayer];
-            var currWeights = weightsBetweenTheLayers[currentLayer];
-
-            int nextLayerIndex = currentLayer + 1;
-            int nextLayerSize = valuesOfNeurons[nextLayerIndex].Length;
-
-            for (int i = 0; i < nextLayerSize; i++)
-            {
-                float sum = 0;
-
-                for (int j = 0; j < currLayerSize; j++)
-                {
-                    sum += currNeurons[j] * currWeights[j, i];
-                }
-
-                valuesOfNeurons[nextLayerIndex][i] = (float)Math.Tanh(sum);
-            }
+            _valuesOfNeurons[i] = _matrixesOfWeights[i - 1] * _valuesOfNeurons[i - 1] + _valuesOfBiases[i];
+            _valuesOfNeurons[i] = _valuesOfNeurons[i].PointwiseTanh();
         }
 
-        var outputLayer = valuesOfNeurons.Last();
-        return outputLayer;
+        //Matrix of size _output x 1, so we are getting first column
+        var outputLayer = _valuesOfNeurons.Last().Column(0);
+
+        return outputLayer.ToArray();
     }
 
     public void Mutate(float mutationProb)
     {
-        for (int i = 0; i < weightsBetweenTheLayers.Count; i++)
+        for (int i = 0; i < _matrixesOfWeights.Count; i++)
         {
-            for (int j = 0; j < weightsBetweenTheLayers[i].GetLength(0); j++)
+            for (int rowIndex = 0; rowIndex < _matrixesOfWeights[i].RowCount; rowIndex++)
             {
                 if (!ShouldMutate(mutationProb))
+                {
                     continue;
+                }
 
-                int randomCol = GetRandomValue(0, weightsBetweenTheLayers[i].GetLength(1));
-                weightsBetweenTheLayers[i][j, randomCol] = GetRandomValue();
+                var randomColumn = Random.Range(0, _matrixesOfWeights[i].ColumnCount);
+                _matrixesOfWeights[i][rowIndex, randomColumn] = Random.Range(-1f, 1f);
+            }
+        }
+
+        for (int i = 0; i < _valuesOfBiases.Count; i++)
+        {
+            for (int rowIndex = 0; rowIndex < _valuesOfBiases[i].RowCount; rowIndex++)
+            {
+                if (!ShouldMutate(mutationProb))
+                {
+                    continue;
+                }
+
+                _valuesOfBiases[i][rowIndex, 0] = Random.Range(-1f, 1f);
             }
         }
     }
 
     private bool ShouldMutate(float mutationProb)
     {
-        float randomValueBetween01 = GetRandomValue(0f, 1f);
+        float randomValueBetween01 = Random.Range(0f, 1f);
 
         if (randomValueBetween01 < mutationProb)
         {
@@ -164,44 +225,5 @@ public class NeuralNetwork
         }
 
         return false;
-    }
-
-    private float GetRandomValue(float from, float to)
-    {
-        return Random.Range(from, to);
-    }
-
-    private int GetRandomValue(int from, int to)
-    {
-        return Random.Range(from, to);
-    }
-
-    private float GetRandomValue()
-    {
-        return Random.Range(-1f, 1f);
-    }
-
-    private float ActivationFunction(float value)
-    {
-        //return (float)Math.Tanh(value);
-        return value.Sigmoid();
-    }
-
-    public bool Equals(NeuralNetwork other)
-    {
-        if (ReferenceEquals(other, null)) return false;
-        if (ReferenceEquals(this, other)) return true;
-        return Fitness.Equals(other.Fitness) && weightsBetweenTheLayers.Equals(other.weightsBetweenTheLayers);
-    }
-
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            int hash = 13;
-            hash = (hash * 7) + Fitness.GetHashCode();
-            hash = (hash * 7) + weightsBetweenTheLayers.GetHashCode();
-            return hash;
-        }
     }
 }

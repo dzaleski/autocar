@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             CameraController.Instance.SetCameraToStartPosition();
         }
@@ -42,13 +42,12 @@ public class GameManager : MonoBehaviour
     {
         var bestNetwork = TrainingManager.Instance.BestNetwork;
 
-        if(bestNetwork == null)
+        if (bestNetwork == null)
         {
             return;
         }
 
-        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness, bestNetwork.HiddenLayers, bestNetwork.NeuronsPerHiddenLayer);
-        SaveManager.Instance.Save(networkToSave);
+        SaveManager.Instance.Save(Network.FromNeuralNetwork(bestNetwork));
     }
 
     public void SaveObserverNetwork()
@@ -60,8 +59,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness, bestNetwork.HiddenLayers, bestNetwork.NeuronsPerHiddenLayer);
-        SaveManager.Instance.SaveToObserve(networkToSave);
+        SaveManager.Instance.SaveToObserve(Network.FromNeuralNetwork(bestNetwork));
     }
 
     public void SetHideBoards(bool isVisible)

@@ -3425,7 +3425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655ebe674657c864087701fdda8ada73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MutationProb: 0.055
+  MutationProb: 0.06
   GroupSize: 9
   GroupsCount: 3
   PercentOfTheBestPass: 0.1

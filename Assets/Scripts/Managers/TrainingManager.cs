@@ -55,13 +55,9 @@ public class TrainingManager : MonoBehaviour
     {
         if (!DidCurrentGroupDie())
         {
-            Debug.Log($"{currentGroupIndex} | {groupsCount}");
             var networks = neuralNetworksGroups.SelectMany(x => x).ToArray();
-            Debug.Log(networks.Count());
             return;
         }
-
-        Debug.Log($"{currentGroupIndex} | {groupsCount}");
 
         var isAnyBoardHidden = boardGroup.IsAnyBoardHidden();
 

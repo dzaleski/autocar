@@ -31,6 +31,8 @@ public class AutoCar : MonoBehaviour
     private float startLossValue;
     private bool disabled;
     private bool isIdling;
+    private bool isInParkingSpot;
+    private float bonusPoints;
 
     private void Awake()
     {
@@ -49,8 +51,21 @@ public class AutoCar : MonoBehaviour
 
     private void Update()
     {
-        if (disabled) return;
-        if (isIdling) Disable();
+        if (disabled)
+        {
+            return;
+        }
+        
+        if (isIdling) 
+        {
+            if(isInParkingSpot)
+            {
+                bonusPoints = .5f;
+                Debug.Log("Added bouns points");
+            }
+            Disable();
+            bonusPoints = 0f;
+        };
 
         loss = GetLoss();
         SetLossText();
@@ -70,14 +85,14 @@ public class AutoCar : MonoBehaviour
 
         float accelerateMultiplier = outputs[0];
         float steerMultiplier = outputs[1];
-        float brakeMultiplier = outputs[2].Sigmoid() <= .5f ? 0f : 1f;
+        float brakeMultiplier = outputs[2] <= 0f ? 0f : 1f;
 
         wheelsController.Move(accelerateMultiplier, steerMultiplier, brakeMultiplier);
     }
 
     public void Disable()
     {
-        neuralNetwork.Fitness = 3 * (1 / loss);
+        neuralNetwork.Fitness = 100 * (1 / loss) + bonusPoints;
         disabled = true;
         sensorsController.HideSensors();
         GetComponentInChildren<Rigidbody>().isKinematic = true;
@@ -92,15 +107,21 @@ public class AutoCar : MonoBehaviour
     {
         if (collision.collider.CompareTag("Wall") || collision.collider.CompareTag("Car"))
         {
+            bonusPoints = -0.3f;
             Disable();
+            bonusPoints = 0;
+        }
+        if(collision.collider.CompareTag("ParkingSpot"))
+        {
+            isInParkingSpot = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("ParkingArea"))
+        if (other.CompareTag("ParkingSpot"))
         {
-            Disable();
+            isInParkingSpot = false;
         }
     }
 

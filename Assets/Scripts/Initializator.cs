@@ -33,7 +33,10 @@ public class Initializator : MonoBehaviour
         {
             Instance = this;
         }
+    }
 
+    private void Start()
+    {
         InitializeAll();
     }
 

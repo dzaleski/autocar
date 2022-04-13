@@ -56,7 +56,7 @@ public static class GeneticManager
 
         while (index - _parentsCount < randomCount)
         {
-            newPopulation[index] = new NeuralNetwork(orderedNetworks[index]);
+            newPopulation[index] = new NeuralNetwork();
             index++;
         }
 
