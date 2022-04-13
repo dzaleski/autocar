@@ -90,27 +90,6 @@ public static class GeneticManager
         return newPopulation;
     }
 
-    //private static (NeuralNetwork, int) GetWeightedRandomNetwork(NeuralNetwork[] orderedNetworks)
-    //{
-    //    var sumOfAllWeights = orderedNetworks.Sum(x => x.Fitness);
-
-    //    var rand = Random.Range(0, sumOfAllWeights);
-
-    //    for (int index = 0; index < orderedNetworks.Length; index++)
-    //    {
-    //        var networkFitness = orderedNetworks[index].Fitness;
-
-    //        if(rand < networkFitness)
-    //        {
-    //            return (orderedNetworks[index], index);
-    //        }
-
-    //        rand -= networkFitness;
-    //    }
-
-    //    return (null, -1); //Should never get here
-    //}
-
     private static (NeuralNetwork, int) GetWeightedRandomNetwork(NeuralNetwork[] orderedNetworks)
     {
         // - weights = [1, 4, 3]

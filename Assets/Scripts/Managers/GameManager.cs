@@ -41,8 +41,27 @@ public class GameManager : MonoBehaviour
     public void SaveBestNetwork()
     {
         var bestNetwork = TrainingManager.Instance.BestNetwork;
-        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness);
+
+        if(bestNetwork == null)
+        {
+            return;
+        }
+
+        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness, bestNetwork.HiddenLayers, bestNetwork.NeuronsPerHiddenLayer);
         SaveManager.Instance.Save(networkToSave);
+    }
+
+    public void SaveObserverNetwork()
+    {
+        var bestNetwork = TrainingManager.Instance.BestNetwork;
+
+        if (bestNetwork == null)
+        {
+            return;
+        }
+
+        var networkToSave = new Network(bestNetwork.weightsBetweenTheLayers, bestNetwork.Fitness, bestNetwork.HiddenLayers, bestNetwork.NeuronsPerHiddenLayer);
+        SaveManager.Instance.SaveToObserve(networkToSave);
     }
 
     public void SetHideBoards(bool isVisible)

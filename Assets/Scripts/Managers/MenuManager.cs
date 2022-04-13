@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Network = Assets.Scripts.Persistance.Models.Network;
 
 public class MenuManager : MonoBehaviour
 {
@@ -20,10 +21,11 @@ public class MenuManager : MonoBehaviour
 
     public void LoadTrainScene()
     {
+        Initializator.Instance.InitializeAll();
         SceneManager.LoadScene(Scenes.Training);
     }
 
-    public void LoadTestSceneWithNetwork(NeuralNetwork network)
+    public void LoadTestSceneWithNetwork(Network network)
     {
         SaveManager.ChoosenNetwork = network;
         LoadTestScene();
@@ -31,7 +33,7 @@ public class MenuManager : MonoBehaviour
 
     public void LoadTestSceneWithPretrainedNetwork()
     {
-        SaveManager.ChoosenNetwork = new NeuralNetwork(SaveManager.Pretrained);
+        SaveManager.ChoosenNetwork = SaveManager.Pretrained;
         LoadTestScene();
     }
 

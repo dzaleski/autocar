@@ -34,10 +34,20 @@ public class Initializator : MonoBehaviour
             Instance = this;
         }
 
+        InitializeAll();
+    }
+
+    public void InitializeAll()
+    {
         PopulationSize = GroupsCount * GroupSize;
         GeneticManager.Initialise(PopulationSize, MutationProb, PercentOfTheBestPass, PercentOfRandom);
         NeuralNetwork.Initialise(Inputs, HiddenLayers, NeuronsPerHiddenLayer, Outputs);
         SensorsController.Initialise(Inputs, Length, RayMask, IsVisible);
+    }
+
+    public void InitializeNN()
+    {
+        NeuralNetwork.Initialise(Inputs, HiddenLayers, NeuronsPerHiddenLayer, Outputs);
     }
 
     public void SetGroupSize(float value)
@@ -53,5 +63,15 @@ public class Initializator : MonoBehaviour
     public void SetIsVisible(bool isVisible)
     {
         IsVisible = isVisible;
+    }
+
+    public void SetHiddenLayers(float hiddenLayers)
+    {
+        HiddenLayers = (int)hiddenLayers;
+    }
+
+    public void SetNeuronsPerHiddenLayer(float neurons)
+    {
+        NeuronsPerHiddenLayer = (int)neurons;
     }
 }

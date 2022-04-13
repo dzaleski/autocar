@@ -4,12 +4,11 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 using Network = Assets.Scripts.Persistance.Models.Network;
-using System.Linq;
 
 public class SaveManager : MonoBehaviour
 {
     public static List<Network> BestNetworks;
-    public static NeuralNetwork ChoosenNetwork;
+    public static Network ChoosenNetwork;
     public static Network Pretrained;
 
     public static SaveManager Instance { get; private set; }
@@ -59,6 +58,12 @@ public class SaveManager : MonoBehaviour
     public void LoadPretrained()
     {
         string pretrainedPath = $"{Application.dataPath}/pretrained.save";
+
+        if (!File.Exists(pretrainedPath))
+        {
+            return;
+        }
+
         var formatter = GetBinaryFormatter();
         var file = File.Open(pretrainedPath, FileMode.Open);
 
@@ -66,8 +71,7 @@ public class SaveManager : MonoBehaviour
         {
             var save = formatter.Deserialize(file);
             file.Close();
-            var networks = save as List<Network>;
-            Pretrained = networks.First();
+            Pretrained = save as Network;
         }
         catch (Exception)
         {
@@ -87,6 +91,14 @@ public class SaveManager : MonoBehaviour
         var formatter = GetBinaryFormatter();
         var file = File.Create(filePath);
         formatter.Serialize(file, BestNetworks);
+        file.Close();
+    }
+
+    public void SaveToObserve(Network network)
+    {
+        var formatter = GetBinaryFormatter();
+        var file = File.Create($"{Application.dataPath}/pretrained.save");
+        formatter.Serialize(file, network);
         file.Close();
     }
 

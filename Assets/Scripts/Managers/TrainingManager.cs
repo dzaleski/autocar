@@ -53,13 +53,21 @@ public class TrainingManager : MonoBehaviour
 
     private void Update()
     {
-        if (!DidCurrentGroupDie()) return;
+        if (!DidCurrentGroupDie())
+        {
+            Debug.Log($"{currentGroupIndex} | {groupsCount}");
+            var networks = neuralNetworksGroups.SelectMany(x => x).ToArray();
+            Debug.Log(networks.Count());
+            return;
+        }
+
+        Debug.Log($"{currentGroupIndex} | {groupsCount}");
 
         var isAnyBoardHidden = boardGroup.IsAnyBoardHidden();
 
         DestroyCurrentGroupCars();
         boardGroup.ResetBoards();
-        var a = neuralNetworksGroups.GetLength(0);
+
         if (currentGroupIndex == neuralNetworksGroups.GetLength(0))
         {
             CreateNewPopulation();
@@ -75,11 +83,9 @@ public class TrainingManager : MonoBehaviour
         if (GameManager.Instance.HideBoards || isAnyBoardHidden)
         {
             LeanTween.delayedCall(2.1f, () => InstantiateNextCarsGroup());
+            return;
         }
-        else
-        {
-            InstantiateNextCarsGroup();
-        }
+        InstantiateNextCarsGroup();
     }
 
     private bool DidCurrentGroupDie()

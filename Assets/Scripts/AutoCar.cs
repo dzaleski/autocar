@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Extensions;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -24,8 +25,6 @@ public class AutoCar : MonoBehaviour
     private SensorsController sensorsController;
     private DistancesController distancesController;
 
-    private Transform parkingSpot;
-    private BoxCollider parkingSpotCollider;
     private NeuralNetwork neuralNetwork;
 
     private float loss;
@@ -42,7 +41,7 @@ public class AutoCar : MonoBehaviour
 
     private void Start()
     {
-        if (!drivingByPlayer || IsTesting)
+        if (!drivingByPlayer)
         {
             StartCoroutine(KillIfIdleCoroutine());
         }
@@ -71,7 +70,7 @@ public class AutoCar : MonoBehaviour
 
         float accelerateMultiplier = outputs[0];
         float steerMultiplier = outputs[1];
-        float brakeMultiplier = outputs[2] <= 0f ? 0f : 1f;
+        float brakeMultiplier = outputs[2].Sigmoid() <= .5f ? 0f : 1f;
 
         wheelsController.Move(accelerateMultiplier, steerMultiplier, brakeMultiplier);
     }
@@ -85,7 +84,7 @@ public class AutoCar : MonoBehaviour
 
         if(OnDisable != null)
         {
-            OnDisable();
+            OnDisable.Invoke();
         }
     }
 
@@ -107,7 +106,7 @@ public class AutoCar : MonoBehaviour
 
     private IEnumerator KillIfIdleCoroutine()
     {
-        while (true)
+        while (true && !IsTesting)
         {
             var prevPosition = transform.position;
             yield return new WaitForSeconds(secondsUntilCheck);

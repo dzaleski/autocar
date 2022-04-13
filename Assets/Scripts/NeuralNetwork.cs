@@ -9,6 +9,8 @@ using Random = UnityEngine.Random;
 public class NeuralNetwork
 {
     public float Fitness { get; set; }
+    public int HiddenLayers => _hiddenLayers;
+    public int NeuronsPerHiddenLayer => _neuronsPerHiddenLayer;
 
     private static int _inputs;
     private static int _hiddenLayers;

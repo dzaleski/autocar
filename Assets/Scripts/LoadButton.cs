@@ -2,10 +2,11 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Network = Assets.Scripts.Persistance.Models.Network;
 
 public class LoadButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    [HideInInspector] public NeuralNetwork Network { get; set; }
+    [HideInInspector] public Network Network { get; set; }
 
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI fitnessText;
@@ -29,7 +30,7 @@ public class LoadButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHand
         fitnessText.text = $"Score: {fitness.ToString("#0.0")}";
     }
 
-    public void SetNN(NeuralNetwork network)
+    public void SetSavedNetwork(Network network)
     {
         Network = network;
     }

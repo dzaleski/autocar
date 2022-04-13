@@ -25610,7 +25610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7537151210907962843}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.920003, y: 0, z: 6.7033286}
+  m_LocalPosition: {x: -12.586667, y: 0, z: 6.0366616}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26018,7 +26018,6 @@ MonoBehaviour:
   startPoint: {fileID: 1381157640352521653}
   carsHolder: {fileID: 7095475502552182735}
   parkingSpot: {fileID: 4291974104778086817}
-  greyCube: {fileID: 0}
   carPrefab: {fileID: 6097305871347139369, guid: 809584909ccee7447a4b7c6ab570dd52,
     type: 3}
   m_NavMeshData: {fileID: 23800000, guid: 9567fd28d31ca4644bac7757858f8709, type: 2}

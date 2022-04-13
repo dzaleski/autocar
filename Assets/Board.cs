@@ -112,6 +112,7 @@ public class Board : MonoBehaviour
 
     public void TurnOffBoard()
     {
+        if (car.IsTesting) return;
         if (!GameManager.Instance.HideBoards) return;
 
         isHidden = true;

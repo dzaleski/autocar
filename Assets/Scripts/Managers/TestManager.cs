@@ -7,9 +7,15 @@ public class TestManager : MonoBehaviour
     [SerializeField] private Board testingBoard;
     [SerializeField] private float timeScale;
 
+    private NeuralNetwork loadedNeuralNetwork;
+    private float startTimeScale;
+
     private void Awake()
     {
-        testingBoard.SpawnCar(SaveManager.ChoosenNetwork, true);
+        NeuralNetwork.Initialise(8, SaveManager.ChoosenNetwork.HiddenLayers, SaveManager.ChoosenNetwork.NeuronsPerHiddenLayer, 3);
+        loadedNeuralNetwork = new NeuralNetwork(SaveManager.ChoosenNetwork);
+        StartTest();
+        startTimeScale = Time.timeScale;
     }
 
     public void BackToMenu()
@@ -20,5 +26,18 @@ public class TestManager : MonoBehaviour
     public void SetTimeScale(float timeScale)
     {
         Time.timeScale = timeScale;
+    }
+
+    private void StartTest()
+    {
+        testingBoard.SpawnCar(loadedNeuralNetwork, true);
+    }
+
+
+    public void Restart()
+    {
+        testingBoard.DestroyCar();
+        StartTest();
+        SetTimeScale(startTimeScale);
     }
 }

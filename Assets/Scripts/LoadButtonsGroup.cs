@@ -17,7 +17,7 @@ public class LoadButtonsGroup : Group<LoadButton>
         {
             var button = Instantiate(loadNetworkButton, transform);
             button.SetCreatedDate(network.CreatedDate);
-            button.SetNN(new NeuralNetwork(network));
+            button.SetSavedNetwork(network);
             button.SetFitnessText(network.Fitness);
         }
     }
